@@ -10,6 +10,7 @@
     <Description>A .NET Standard 2.0 API that interacts directly with the MySQL database to give you an API for OSTicket in C#.</Description>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>osticket</PackageTags>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
