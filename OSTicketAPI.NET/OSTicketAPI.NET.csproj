@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Joshua Garrison</Authors>
+    <PackageProjectUrl>https://github.com/JoshuaGarrison27/OSTicketAPI.NET</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JoshuaGarrison27/OSTicketAPI.NET</RepositoryUrl>
+    <Copyright>2019 Joshua C Garrison</Copyright>
+    <Description>A .NET Standard 2.0 API that interacts directly with the MySQL database to give you an API for OSTicket in C#.</Description>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageTags>osticket</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +20,13 @@
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.16" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore.Design" Version="8.0.16" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
