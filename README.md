@@ -1,11 +1,13 @@
 # OSTIcketAPI.NET
 This project has been created to add more support for interfacing with OSTicket. The current web API provided my OSTicket is sufficient for submitting new Tickets. However, we found that we wanted to be able to do more with the data inside of OSTicket.
 
-# Getting Started
+## __This project is currently incomplete and is available as a pre-release for testing and further development__
 
-Your project must support at least `.Net Standard 2.0`
+This project is build using `.Net Standard 2.0`
 
 ## Getting started
+
+> This project is currently incomplete and is available for testing and further development
 
 This .NET Library tries to make setup as painless as possible.
 
