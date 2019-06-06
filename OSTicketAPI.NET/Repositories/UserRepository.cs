@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
@@ -14,9 +15,12 @@ namespace OSTicketAPI.NET.Repositories
             _osticketContext = osticketContext;
         }
 
-        public Task<OstUser> GetUserByEmail(string email)
+        public async Task<OstUser> GetUserByEmail(string email)
         {
-            throw new System.NotImplementedException();
+            var user = await _osticketContext.OstUserEmail
+                .FirstOrDefaultAsync(o => o.Address.Equals(email, StringComparison.InvariantCultureIgnoreCase));
+
+            return user.OstUser;
         }
 
         public async Task<OstUser> GetUserById(int id)
@@ -32,9 +36,13 @@ namespace OSTicketAPI.NET.Repositories
             return user;
         }
 
-        public Task<OstUser> GetUserByUsername(string username)
+        public async Task<OstUser> GetUserByUsername(string username)
         {
-            throw new System.NotImplementedException();
+            var user = await _osticketContext.OstUserAccount
+                .Include(o => o.OstUserEmail)
+                .FirstOrDefaultAsync(o => o.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            
+            return user.OstUser;
         }
     }
 }

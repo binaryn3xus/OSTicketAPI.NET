@@ -18,5 +18,9 @@ namespace OSTicketAPI.NET.Entities
 
         [ForeignKey("UserId")]
         public virtual OstUser OstUser { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual OstUserEmail OstUserEmail { get; set; }
+
     }
 }
