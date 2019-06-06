@@ -1,4 +1,7 @@
-# OSTIcketAPI.NET
+# OSTicketAPI.NET
+
+[![Build status](https://dev.azure.com/DotNetEvolved/OSTicketAPI.NET/_apis/build/status/OSTicketAPI.NET-ASP.NET%20Core-CI)](https://dev.azure.com/DotNetEvolved/OSTicketAPI.NET/_build/latest?definitionId=3) ![Azure DevOps builds](https://img.shields.io/azure-devops/build/dotnetevolved/a2092f90-85c9-4044-b29a-4a24109f72ee/3.svg) ![GitHub](https://img.shields.io/github/license/joshuagarrison27/osticketapi.net.svg?style=popout) ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/OSTicketAPI.NET.svg?style=popout) ![GitHub contributors](https://img.shields.io/github/contributors/joshuagarrison27/OSTicketAPI.NET.svg?style=popout)
+
 This project has been created to add more support for interfacing with OSTicket. The current web API provided my OSTicket is sufficient for submitting new Tickets. However, we found that we wanted to be able to do more with the data inside of OSTicket.
 
 ## __This project is currently incomplete and is available as a pre-release for testing and further development__
