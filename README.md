@@ -8,6 +8,8 @@ This project has been created to add more support for interfacing with OSTicket.
 
 This project is build using `.Net Standard 2.0`
 
+Currently supported OSTicket Version: __v1.12 (a076918)__
+
 ## Getting started
 
 > This project is currently incomplete and is available for testing and further development
