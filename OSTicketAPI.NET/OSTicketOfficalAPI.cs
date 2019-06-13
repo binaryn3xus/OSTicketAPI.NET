@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using OSTicketAPI.NET.DTO.OfficalApi;
+using OSTicketAPI.NET.DTO;
 using OSTicketAPI.NET.Interfaces;
 
 namespace OSTicketAPI.NET

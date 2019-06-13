@@ -51,5 +51,8 @@ namespace OSTicketAPI.NET.Entities
 
         [ForeignKey("TeamId")]
         public OstTeam OstTeam { get; set; }
+
+        [InverseProperty("OstTicket")]
+        public OstThread OstThread { get; set; }
     }
 }

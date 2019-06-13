@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using OSTicketAPI.NET.Helpers;
 
-namespace OSTicketAPI.NET.DTO.OfficalApi
+namespace OSTicketAPI.NET.DTO
 {
     [JsonConverter(typeof(TicketCreationOptionsConverter))]
     public class TicketCreationOptions
