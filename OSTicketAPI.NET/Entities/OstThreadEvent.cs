@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSTicketAPI.NET.Entities
 {
@@ -17,5 +18,8 @@ namespace OSTicketAPI.NET.Entities
         public string UidType { get; set; }
         public byte Annulled { get; set; }
         public DateTime Timestamp { get; set; }
+
+        [ForeignKey("ThreadId")]
+        public virtual OstThread OstThread { get; set; }
     }
 }

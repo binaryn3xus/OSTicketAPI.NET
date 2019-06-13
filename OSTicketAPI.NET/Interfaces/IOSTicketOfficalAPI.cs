@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using OSTicketAPI.NET.DTO.OfficalApi;
+using OSTicketAPI.NET.DTO;
 
 namespace OSTicketAPI.NET.Interfaces
 {

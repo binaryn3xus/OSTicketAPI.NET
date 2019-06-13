@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Newtonsoft.Json;
-using OSTicketAPI.NET.DTO.OfficalApi;
+using OSTicketAPI.NET.DTO;
 using JsonIgnoreAttribute = Newtonsoft.Json.JsonIgnoreAttribute;
 
 namespace OSTicketAPI.NET.Helpers

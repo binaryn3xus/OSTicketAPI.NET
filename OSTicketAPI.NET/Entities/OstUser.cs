@@ -14,12 +14,15 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
+        [InverseProperty("OstUser")]
         public ICollection<OstTicket> Tickets { get; set; }
 
         [ForeignKey("OrgId")]
         public virtual OstOrganization OstOrganization { get; set; }
+
         [InverseProperty("OstUser")]
         public virtual OstUserEmail OstUserEmail { get; set; }
+
         [InverseProperty("OstUser")]
         public virtual OstUserAccount OstUserAccount { get; set; }
     }
