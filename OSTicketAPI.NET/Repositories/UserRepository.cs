@@ -107,6 +107,12 @@ namespace OSTicketAPI.NET.Repositories
                     if (!(await _osticketContext.SaveChangesAsync() > 0))
                         throw new Exception("Error occurred during saving the new user's email details!");
 
+                    user.DefaultEmailId = userEmail.Id;
+                    _osticketContext.OstUser.Update(user);
+
+                    if (!(await _osticketContext.SaveChangesAsync() > 0))
+                        throw new Exception("Error occurred during saving the default email for the new user!");
+
                     transaction.Commit();
 
                     return await GetUserById(user.Id);

@@ -22,7 +22,7 @@ namespace OSTicketAPI.NET.DTO
         public string Source { get; set; }
         public int TopicId { get; set; }
         [JsonProperty()]
-        public Dictionary<string, string> CustomProperties = new Dictionary<string, string>();
+        public Dictionary<string, object> CustomProperties = new Dictionary<string, object>();
 
         //TODO Attachments not supported in this API yet
 

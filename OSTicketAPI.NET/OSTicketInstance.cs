@@ -8,6 +8,7 @@ namespace OSTicketAPI.NET
     {
         public ITicketRepository Tickets { get; set; }
         public IUserRepository Users { get; set; }
+        public IHelpTopicsRepository HelpTopics { get; set; }
         public IOSTicketOfficalApi OSTicketOfficalApi { get; }
 
         public OSTicketInstance(string databaseServer, string databaseUsername, string databasePassword, string databaseName, IOSTicketOfficalApi osTicketOfficalApi, int portNumber = 3306)
@@ -19,6 +20,7 @@ namespace OSTicketAPI.NET
             OSTicketOfficalApi = osTicketOfficalApi;
             Tickets = new TicketRepository(osticketContext);
             Users = new UserRepository(osticketContext);
+            HelpTopics = new HelpTopicsRepository(osticketContext);
         }
 
         public OSTicketInstance(string connectionString, IOSTicketOfficalApi osTicketOfficalApi)
@@ -30,6 +32,7 @@ namespace OSTicketAPI.NET
             OSTicketOfficalApi = osTicketOfficalApi;
             Tickets = new TicketRepository(osticketContext);
             Users = new UserRepository(osticketContext);
+            HelpTopics = new HelpTopicsRepository(osticketContext);
         }
     }
 }
