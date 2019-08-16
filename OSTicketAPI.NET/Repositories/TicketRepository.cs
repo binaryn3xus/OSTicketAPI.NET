@@ -17,6 +17,12 @@ namespace OSTicketAPI.NET.Repositories
             _osticketContext = osticketContext;
         }
 
+        public async Task<IEnumerable<OstTicket>> GetTickets()
+        {
+            var data = GetQueryableTickets();
+            return await data.ToListAsync().ConfigureAwait(false);
+        }
+
         public async Task<List<OstTicketStatus>> GetTicketStatuses()
         {
             return await _osticketContext.OstTicketStatus.OrderBy(o => o.Sort).ToListAsync().ConfigureAwait(false);
@@ -24,7 +30,7 @@ namespace OSTicketAPI.NET.Repositories
 
         public async Task<OstTicket> GetTicketByTicketId(int ticketId)
         {
-            var ticket = await GetTickets()
+            var ticket = await GetQueryableTickets()
                 .FirstOrDefaultAsync(o => o.TicketId == ticketId)
                 .ConfigureAwait(false);
 
@@ -45,7 +51,7 @@ namespace OSTicketAPI.NET.Repositories
 
         public async Task<OstTicket> GetTicketByTicketNumber(string ticketNumber)
         {
-            var ticket = await GetTickets()
+            var ticket = await GetQueryableTickets()
                 .FirstOrDefaultAsync(o => o.Number == ticketNumber)
                 .ConfigureAwait(false);
 
@@ -69,7 +75,7 @@ namespace OSTicketAPI.NET.Repositories
             if (userId == default)
                 throw new ArgumentNullException($"\"{userId}\" is not a valid user id");
 
-            var data = GetTickets();
+            var data = GetQueryableTickets();
 
             var returnData = await data.Where(o => o.UserId.Equals(userId)).ToListAsync().ConfigureAwait(false);
             return returnData;
@@ -80,13 +86,13 @@ namespace OSTicketAPI.NET.Repositories
             if (user?.OstUserAccount?.Username == null)
                 throw new ArgumentNullException($"Username not found in Type {user?.GetType()}");
 
-            var data = GetTickets();
+            var data = GetQueryableTickets();
 
             var returnData = await data.Where(o => o.UserId.Equals(user.Id)).ToListAsync().ConfigureAwait(false);
             return returnData;
         }
 
-        private IQueryable<OstTicket> GetTickets()
+        private IQueryable<OstTicket> GetQueryableTickets()
         {
             return _osticketContext.OstTicket
                 .Include(o => o.OstUser)
