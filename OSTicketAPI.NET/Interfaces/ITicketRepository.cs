@@ -6,6 +6,7 @@ namespace OSTicketAPI.NET.Interfaces
 {
     public interface ITicketRepository
     {
+        Task<IEnumerable<OstTicket>> GetTickets();
         Task<List<OstTicketStatus>> GetTicketStatuses();
         Task<OstTicket> GetTicketByTicketId(int ticketId);
         Task<OstTicket> GetTicketByTicketNumber(string ticketNumber);
