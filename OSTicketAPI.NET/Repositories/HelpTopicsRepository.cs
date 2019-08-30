@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
+using OSTicketAPI.NET.Logging;
 
 namespace OSTicketAPI.NET.Repositories
 {
     public class HelpTopicsRepository : IHelpTopicsRepository
     {
         private readonly OSTicketContext _osticketContext;
+        private readonly ILog _logger = LogProvider.For<HelpTopicsRepository>();
 
         public HelpTopicsRepository(OSTicketContext osticketContext)
         {
