@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using OSTicketAPI.NET.DTO;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
+using OSTicketAPI.NET.Logging;
 
 namespace OSTicketAPI.NET.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly OSTicketContext _osticketContext;
+        private readonly ILog _logger = LogProvider.For<UserRepository>();
 
         public UserRepository(OSTicketContext osticketContext)
         {

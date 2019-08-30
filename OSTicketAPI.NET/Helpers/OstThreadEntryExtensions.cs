@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json.Linq;
 using OSTicketAPI.NET.Entities;
 
