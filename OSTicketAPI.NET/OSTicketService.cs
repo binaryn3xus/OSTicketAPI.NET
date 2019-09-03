@@ -10,9 +10,9 @@ namespace OSTicketAPI.NET
         public ITicketRepository Tickets { get; set; }
         public IUserRepository Users { get; set; }
         public IHelpTopicsRepository HelpTopics { get; set; }
-        public IOSTicketOfficialApi OSTicketOfficalApi { get; }
+        public IOSTicketOfficialApi OSTicketOfficialApi { get; }
 
-        public OSTicketService(string databaseServer, string databaseUsername, string databasePassword, string databaseName, IOSTicketOfficialApi osTicketOfficalApi, int portNumber = 3306)
+        public OSTicketService(string databaseServer, string databaseUsername, string databasePassword, string databaseName, IOSTicketOfficialApi osTicketOfficialApi, int portNumber = 3306)
         {
             if (string.IsNullOrWhiteSpace(databaseServer))
                 throw new ArgumentException("Database server cannot be null or empty", nameof(databaseServer));
@@ -26,21 +26,21 @@ namespace OSTicketAPI.NET
             var osticketContext =
                 BuildOSTicketContext(
                     $"server={databaseServer};uid={databaseUsername};pwd={databasePassword};database={databaseName};port={portNumber};Convert Zero Datetime=True;");
-            
-            OSTicketOfficalApi = osTicketOfficalApi;
+
+            OSTicketOfficialApi = osTicketOfficialApi;
             Tickets = new TicketRepository(osticketContext);
             Users = new UserRepository(osticketContext);
             HelpTopics = new HelpTopicsRepository(osticketContext);
         }
 
-        public OSTicketService(string connectionString, IOSTicketOfficialApi osTicketOfficalApi)
+        public OSTicketService(string connectionString, IOSTicketOfficialApi osTicketOfficialApi)
         {
-            if(string.IsNullOrWhiteSpace(connectionString))
+            if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Connection string cannot be null or empty", nameof(connectionString));
 
             var osticketContext = BuildOSTicketContext(connectionString);
 
-            OSTicketOfficalApi = osTicketOfficalApi;
+            OSTicketOfficialApi = osTicketOfficialApi;
             Tickets = new TicketRepository(osticketContext);
             Users = new UserRepository(osticketContext);
             HelpTopics = new HelpTopicsRepository(osticketContext);

@@ -43,9 +43,9 @@ namespace OSTicketAPI.NET
                 {
                     Content = new StringContent(json, Encoding.UTF8, "application/json")
                 };
-                var result = await _client.SendAsync(request);
-                
-                if(!result.IsSuccessStatusCode)
+                var result = await _client.SendAsync(request).ConfigureAwait(false);
+
+                if (!result.IsSuccessStatusCode)
                     _logger.Error($"{result.ReasonPhrase}: {result.Content}");
 
                 return result;

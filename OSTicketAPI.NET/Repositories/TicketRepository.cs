@@ -13,7 +13,7 @@ namespace OSTicketAPI.NET.Repositories
     public class TicketRepository : ITicketRepository
     {
         private readonly OSTicketContext _osticketContext;
-        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
 
         public TicketRepository(OSTicketContext osticketContext)
         {
@@ -22,7 +22,7 @@ namespace OSTicketAPI.NET.Repositories
 
         public async Task<IEnumerable<OstTicket>> GetTickets()
         {
-            var data = await GetQueryableTicketsAsync(null);
+            var data = await GetQueryableTicketsAsync(null).ConfigureAwait(false);
             return data.ToList();
         }
 
@@ -36,7 +36,7 @@ namespace OSTicketAPI.NET.Repositories
             var data = await GetQueryableTicketsAsync(o => o.TicketId == ticketId).ConfigureAwait(false);
             var ticket = data.FirstOrDefault(o => o.TicketId == ticketId);
             if (ticket != null)
-                Logger.Info("Found {TicketId}", ticket.TicketId);
+                _logger.Info("Found {TicketId}", ticket.TicketId);
             return ticket;
         }
 
@@ -45,7 +45,7 @@ namespace OSTicketAPI.NET.Repositories
             var data = await GetQueryableTicketsAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
             var ticket = data.FirstOrDefault(o => o.Number == ticketNumber);
             if (ticket != null)
-                Logger.Info("Found {TicketId}", ticket.TicketId);
+                _logger.Info("Found {TicketId}", ticket.TicketId);
             return ticket;
         }
 
@@ -54,9 +54,9 @@ namespace OSTicketAPI.NET.Repositories
             if (userId == default)
                 throw new ArgumentNullException($"\"{userId}\" is not a valid user id");
 
-            var data = await GetQueryableTicketsAsync(o =>o.UserId.Equals(userId)).ConfigureAwait(false);
+            var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(userId)).ConfigureAwait(false);
             var ticketList = data.ToList();
-            Logger.Info("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, userId);
+            _logger.Info("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, userId);
             return ticketList;
         }
 
@@ -67,7 +67,7 @@ namespace OSTicketAPI.NET.Repositories
 
             var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(user.Id)).ConfigureAwait(false);
             var ticketList = data.ToList();
-            Logger.Info("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, user.OstUserAccount.Username);
+            _logger.Info("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, user.OstUserAccount.Username);
             return ticketList;
         }
 
@@ -88,7 +88,7 @@ namespace OSTicketAPI.NET.Repositories
                 ticketQuery = ticketQuery.Where(expression);
 
             var tickets = ticketQuery.ToList();
-            
+
             foreach (var ticket in tickets)
             {
                 if (ticket.TopicId != 0)

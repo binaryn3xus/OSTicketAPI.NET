@@ -17,7 +17,7 @@ namespace OSTicketAPI.NET.Repositories
         {
             _osticketContext = osticketContext;
         }
-        
+
         public async Task<IEnumerable<OstHelpTopic>> GetHelpTopics(bool onlyPublicTopic = true)
         {
             var topics = _osticketContext.OstHelpTopic.AsQueryable();
@@ -25,7 +25,12 @@ namespace OSTicketAPI.NET.Repositories
             if (!onlyPublicTopic)
                 topics = topics.Where(o => o.Ispublic == 1);
 
-            return await topics.ToListAsync().ConfigureAwait(false);
+            var topicsList = await topics.ToListAsync().ConfigureAwait(false);
+
+            if (topicsList != null)
+                _logger.Info("Found {TopicCount} topics", topicsList.Count);
+
+            return topicsList;
         }
 
         public async Task<OstHelpTopic> GetHelpTopicsByTopicId(int topicId, bool onlyPublicTopic = true)
@@ -35,7 +40,12 @@ namespace OSTicketAPI.NET.Repositories
             if (!onlyPublicTopic)
                 topics = topics.Where(o => o.Ispublic == 1);
 
-            return await topics.FirstOrDefaultAsync(o => o.TopicId == topicId).ConfigureAwait(false);
+            var topic = await topics.FirstOrDefaultAsync(o => o.TopicId == topicId).ConfigureAwait(false);
+
+            if (topic != null)
+                _logger.Info("Found \"{TopicName}\" using Topic Id {TopicId}", topic.Topic, topicId);
+
+            return topic;
         }
 
         public async Task<IEnumerable<OstHelpTopic>> GetHelpTopicsByDepartmentId(int departmentId, bool onlyPublicTopic = true)
@@ -45,7 +55,12 @@ namespace OSTicketAPI.NET.Repositories
             if (!onlyPublicTopic)
                 topics = topics.Where(o => o.Ispublic == 1);
 
-            return await topics.Where(o => o.DeptId == departmentId).ToListAsync().ConfigureAwait(false);
+            var topicsByDepartment =
+                await topics.Where(o => o.DeptId == departmentId).ToListAsync().ConfigureAwait(false);
+
+            _logger.Info("Found {TopicCount} topics for Department Id {DepartmentId}", topicsByDepartment.Count, departmentId);
+
+            return topicsByDepartment;
         }
     }
 }
