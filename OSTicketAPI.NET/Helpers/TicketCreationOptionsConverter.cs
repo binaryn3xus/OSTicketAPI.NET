@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Newtonsoft.Json;
 using OSTicketAPI.NET.DTO;
@@ -42,11 +43,13 @@ namespace OSTicketAPI.NET.Helpers
             writer.WriteEndObject();
         }
 
+        [SuppressMessage("NotRequired", "RCS1079")]
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
+        [SuppressMessage("NotRequired", "RCS1079")]
         public override bool CanConvert(Type objectType)
         {
             throw new NotImplementedException();
