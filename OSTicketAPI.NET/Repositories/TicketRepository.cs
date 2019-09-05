@@ -36,7 +36,7 @@ namespace OSTicketAPI.NET.Repositories
             var data = await GetQueryableTicketsAsync(o => o.TicketId == ticketId).ConfigureAwait(false);
             var ticket = data.FirstOrDefault(o => o.TicketId == ticketId);
             if (ticket != null)
-                _logger.Info("Found {TicketId}", ticket.TicketId);
+                _logger.Debug("Found {TicketId}", ticket.TicketId);
             return ticket;
         }
 
@@ -45,7 +45,7 @@ namespace OSTicketAPI.NET.Repositories
             var data = await GetQueryableTicketsAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
             var ticket = data.FirstOrDefault(o => o.Number == ticketNumber);
             if (ticket != null)
-                _logger.Info("Found {TicketId}", ticket.TicketId);
+                _logger.Debug("Found {TicketId}", ticket.TicketId);
             return ticket;
         }
 
@@ -56,7 +56,7 @@ namespace OSTicketAPI.NET.Repositories
 
             var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(userId)).ConfigureAwait(false);
             var ticketList = data.ToList();
-            _logger.Info("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, userId);
+            _logger.Debug("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, userId);
             return ticketList;
         }
 
@@ -67,7 +67,7 @@ namespace OSTicketAPI.NET.Repositories
 
             var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(user.Id)).ConfigureAwait(false);
             var ticketList = data.ToList();
-            _logger.Info("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, user.OstUserAccount.Username);
+            _logger.Debug("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, user.OstUserAccount.Username);
             return ticketList;
         }
 

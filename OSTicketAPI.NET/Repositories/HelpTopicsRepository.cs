@@ -28,7 +28,7 @@ namespace OSTicketAPI.NET.Repositories
             var topicsList = await topics.ToListAsync().ConfigureAwait(false);
 
             if (topicsList != null)
-                _logger.Info("Found {TopicCount} topics", topicsList.Count);
+                _logger.Debug("Found {TopicCount} topics", topicsList.Count);
 
             return topicsList;
         }
@@ -43,7 +43,7 @@ namespace OSTicketAPI.NET.Repositories
             var topic = await topics.FirstOrDefaultAsync(o => o.TopicId == topicId).ConfigureAwait(false);
 
             if (topic != null)
-                _logger.Info("Found \"{TopicName}\" using Topic Id {TopicId}", topic.Topic, topicId);
+                _logger.Debug("Found \"{TopicName}\" using Topic Id {TopicId}", topic.Topic, topicId);
 
             return topic;
         }
@@ -58,7 +58,7 @@ namespace OSTicketAPI.NET.Repositories
             var topicsByDepartment =
                 await topics.Where(o => o.DeptId == departmentId).ToListAsync().ConfigureAwait(false);
 
-            _logger.Info("Found {TopicCount} topics for Department Id {DepartmentId}", topicsByDepartment.Count, departmentId);
+            _logger.Debug("Found {TopicCount} topics for Department Id {DepartmentId}", topicsByDepartment.Count, departmentId);
 
             return topicsByDepartment;
         }
