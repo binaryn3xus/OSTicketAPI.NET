@@ -46,7 +46,7 @@ namespace OSTicketAPI.NET
             HelpTopics = new HelpTopicsRepository(osticketContext);
         }
 
-        private OSTicketContext BuildOSTicketContext(string connectionString)
+        private static OSTicketContext BuildOSTicketContext(string connectionString)
         {
             var optionsBuilder = new DbContextOptionsBuilder<OSTicketContext>();
             optionsBuilder.UseMySQL(connectionString);

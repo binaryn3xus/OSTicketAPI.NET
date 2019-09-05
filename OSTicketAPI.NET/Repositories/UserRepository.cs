@@ -25,7 +25,7 @@ namespace OSTicketAPI.NET.Repositories
                 .ConfigureAwait(false);
 
             if (user != null)
-                _logger.Info("{UserName} found using the email address of {EmailAddress}", user.OstUser.Name, email);
+                _logger.Debug("{UserName} found using the email address of {EmailAddress}", user.OstUser.Name, email);
             else
                 _logger.Warn("Unable to find a user with the email of {EmailAddress}", email);
 
@@ -42,7 +42,7 @@ namespace OSTicketAPI.NET.Repositories
 
             if (user != null)
             {
-                _logger.Info("{UserName} found using the Id of {UserId}", user.Name, id);
+                _logger.Debug("{UserName} found using the Id of {UserId}", user.Name, id);
                 if (user.OrgId != 0)
                     user.OstOrganization = await _osticketContext.OstOrganization.FirstOrDefaultAsync(o => o.Id == user.OrgId).ConfigureAwait(false);
             }
@@ -62,7 +62,7 @@ namespace OSTicketAPI.NET.Repositories
             .FirstOrDefaultAsync(o => o.OstUserAccount.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase)).ConfigureAwait(false);
 
             if (user != null)
-                _logger.Info("{UserName} found using the username of {Username}", user.Name, username);
+                _logger.Debug("{UserName} found using the username of {Username}", user.Name, username);
             else
                 _logger.Warn("Unable to find a user with the username of {Username}", username);
 
