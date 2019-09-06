@@ -4,7 +4,7 @@ using OSTicketAPI.NET.Entities;
 
 namespace OSTicketAPI.NET.Interfaces
 {
-    public interface IHelpTopicsRepository
+    public interface IHelpTopicRepository
     {
         Task<IEnumerable<OstHelpTopic>> GetHelpTopics(bool onlyPublicTopic = true);
         Task<OstHelpTopic> GetHelpTopicsByTopicId(int topicId, bool onlyPublicTopic = true);

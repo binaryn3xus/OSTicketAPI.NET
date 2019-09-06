@@ -7,9 +7,10 @@ namespace OSTicketAPI.NET
 {
     public class OSTicketService
     {
+        public IDepartmentRepository Departments { get; set; }
+        public IHelpTopicRepository HelpTopic { get; set; }
         public ITicketRepository Tickets { get; set; }
         public IUserRepository Users { get; set; }
-        public IHelpTopicsRepository HelpTopics { get; set; }
         public IOSTicketOfficialApi OSTicketOfficialApi { get; }
 
         public OSTicketService(string databaseServer, string databaseUsername, string databasePassword, string databaseName, IOSTicketOfficialApi osTicketOfficialApi, int portNumber = 3306)
@@ -28,9 +29,10 @@ namespace OSTicketAPI.NET
                     $"server={databaseServer};uid={databaseUsername};pwd={databasePassword};database={databaseName};port={portNumber};Convert Zero Datetime=True;");
 
             OSTicketOfficialApi = osTicketOfficialApi;
+            Departments = new DepartmentRepository(osticketContext);
+            HelpTopic = new HelpTopicRepository(osticketContext);
             Tickets = new TicketRepository(osticketContext);
             Users = new UserRepository(osticketContext);
-            HelpTopics = new HelpTopicsRepository(osticketContext);
         }
 
         public OSTicketService(string connectionString, IOSTicketOfficialApi osTicketOfficialApi)
@@ -41,9 +43,10 @@ namespace OSTicketAPI.NET
             var osticketContext = BuildOSTicketContext(connectionString);
 
             OSTicketOfficialApi = osTicketOfficialApi;
+            Departments = new DepartmentRepository(osticketContext);
+            HelpTopic = new HelpTopicRepository(osticketContext);
             Tickets = new TicketRepository(osticketContext);
             Users = new UserRepository(osticketContext);
-            HelpTopics = new HelpTopicsRepository(osticketContext);
         }
 
         private static OSTicketContext BuildOSTicketContext(string connectionString)

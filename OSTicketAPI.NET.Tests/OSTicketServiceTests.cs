@@ -63,6 +63,28 @@ namespace OSTicketAPI.NET.Tests
         }
 
         [RunnableInDebugOnly]
+        public void DepartmentsRepository_GetAllDepartments()
+        {
+            var departments = _osTicketService.Departments.GetDepartments().Result.ToList();
+            foreach (var department in departments)
+            {
+                _testOutputHelper.WriteLine(department.Name);
+                foreach(var staff in department.OstStaff)
+                    _testOutputHelper.WriteLine("--{0}, {1}",staff.Lastname, staff.Firstname);
+            }
+
+            Assert.True(departments.Count > 0);
+        }
+
+        [RunnableInDebugOnly]
+        public void DepartmentsRepository_GetDepartmentById()
+        {
+            var departments = _osTicketService.Departments.GetDepartments().Result.ToList();
+            var singleDepartment = _osTicketService.Departments.GetDepartmentById(departments.First().Id).Result;
+            Assert.NotNull(singleDepartment?.Name);
+        }
+
+        [RunnableInDebugOnly]
         public void TestServiceConfiguration_AddOSTicketServices_WithValidIConfiguration()
         {
             var serviceCollection = new ServiceCollection();

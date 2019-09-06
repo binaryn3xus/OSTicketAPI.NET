@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSTicketAPI.NET.Entities
 {
@@ -38,5 +39,8 @@ namespace OSTicketAPI.NET.Entities
         public DateTime? Lastlogin { get; set; }
         public DateTime? Passwdreset { get; set; }
         public DateTime Updated { get; set; }
+
+        [ForeignKey("DeptId")]
+        public virtual OstDepartment OstDepartment { get; set; }
     }
 }
