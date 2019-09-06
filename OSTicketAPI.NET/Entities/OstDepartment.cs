@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSTicketAPI.NET.Entities
 {
@@ -21,5 +23,8 @@ namespace OSTicketAPI.NET.Entities
         public string Path { get; set; }
         public DateTime Updated { get; set; }
         public DateTime Created { get; set; }
+
+        [InverseProperty("OstDepartment")]
+        public virtual ICollection<OstStaff> OstStaff { get; set; }
     }
 }

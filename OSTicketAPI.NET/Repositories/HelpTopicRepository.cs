@@ -8,12 +8,12 @@ using OSTicketAPI.NET.Logging;
 
 namespace OSTicketAPI.NET.Repositories
 {
-    public class HelpTopicsRepository : IHelpTopicsRepository
+    public class HelpTopicRepository : IHelpTopicRepository
     {
         private readonly OSTicketContext _osticketContext;
-        private readonly ILog _logger = LogProvider.For<HelpTopicsRepository>();
+        private readonly ILog _logger = LogProvider.For<HelpTopicRepository>();
 
-        public HelpTopicsRepository(OSTicketContext osticketContext)
+        public HelpTopicRepository(OSTicketContext osticketContext)
         {
             _osticketContext = osticketContext;
         }
