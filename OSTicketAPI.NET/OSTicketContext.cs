@@ -3,7 +3,7 @@ using OSTicketAPI.NET.Entities;
 
 namespace OSTicketAPI.NET
 {
-    public partial class OSTicketContext : DbContext
+    public class OSTicketContext : DbContext
     {
         public OSTicketContext()
         {

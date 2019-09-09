@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstThread
+    public class OstThread
     {
         public int Id { get; set; }
         public int ObjectId { get; set; }

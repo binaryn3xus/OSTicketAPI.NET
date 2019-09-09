@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstThreadEntryEmail
+    public class OstThreadEntryEmail
     {
         public int Id { get; set; }
         public int ThreadEntryId { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstUserCdata
+    public class OstUserCdata
     {
         public int UserId { get; set; }
         public string Email { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstThreadEvent
+    public class OstThreadEvent
     {
         public int Id { get; set; }
         public int ThreadId { get; set; }

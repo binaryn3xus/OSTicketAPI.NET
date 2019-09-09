@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstUserEmail
+    [DebuggerDisplay("{Address,nq}")]
+    public class OstUserEmail
     {
         public int Id { get; set; }
         public int UserId { get; set; }

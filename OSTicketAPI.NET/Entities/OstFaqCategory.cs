@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstFaqCategory
+    public class OstFaqCategory
     {
         public int CategoryId { get; set; }
         public int? CategoryPid { get; set; }

@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstEmailTemplateGroup
+    public class OstEmailTemplateGroup
     {
         public int TplId { get; set; }
         public byte Isactive { get; set; }

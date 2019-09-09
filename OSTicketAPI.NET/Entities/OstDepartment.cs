@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstDepartment
+    [DebuggerDisplay("{Name,nq}")]
+    public class OstDepartment
     {
         public int Id { get; set; }
         public int? Pid { get; set; }
@@ -26,5 +28,8 @@ namespace OSTicketAPI.NET.Entities
 
         [InverseProperty("OstDepartment")]
         public virtual ICollection<OstStaff> OstStaff { get; set; }
+
+        [ForeignKey("ManagerId")]
+        public virtual OstStaff Manager { get; set; }
     }
 }

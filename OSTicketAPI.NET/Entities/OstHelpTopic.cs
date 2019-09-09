@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstHelpTopic
+    public class OstHelpTopic
     {
         public int TopicId { get; set; }
         public int TopicPid { get; set; }
