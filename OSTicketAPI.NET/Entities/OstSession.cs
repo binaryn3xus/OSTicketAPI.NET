@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstSession
+    public class OstSession
     {
         public string SessionId { get; set; }
         public byte[] SessionData { get; set; }

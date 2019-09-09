@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstListItems
+    public class OstListItems
     {
         public int Id { get; set; }
         public int? ListId { get; set; }

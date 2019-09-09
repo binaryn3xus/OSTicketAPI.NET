@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstTicketCdata
+    public class OstTicketCdata
     {
         public int TicketId { get; set; }
         public string Subject { get; set; }

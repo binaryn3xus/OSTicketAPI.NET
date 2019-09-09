@@ -1,9 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstTicket
+    // ReSharper disable once UseNameofExpression
+    [DebuggerDisplay("{Number,nq}")]
+    public class OstTicket
     {
         public int TicketId { get; set; }
         public string Number { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstFormEntryValues
+    public class OstFormEntryValues
     {
         public int EntryId { get; set; }
         public int FieldId { get; set; }

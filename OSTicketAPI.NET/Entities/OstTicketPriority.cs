@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstTicketPriority
+    public class OstTicketPriority
     {
         public sbyte PriorityId { get; set; }
         public string Priority { get; set; }

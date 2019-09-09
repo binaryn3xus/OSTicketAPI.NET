@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OSTicketAPI.NET.DTO;
+using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Tests.Attributes;
 using Xunit;
 using Xunit.Abstractions;
@@ -74,6 +75,13 @@ namespace OSTicketAPI.NET.Tests
             }
 
             Assert.True(departments.Count > 0);
+        }
+
+        [RunnableInDebugOnly]
+        public void DepartmentsRepository_ReturnsManagerObject()
+        {
+            var departments = _osTicketService.Departments.GetDepartments().Result.ToList();
+            Assert.Equal(typeof(OstStaff), departments.First().Manager.GetType());
         }
 
         [RunnableInDebugOnly]

@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstFileChunk
+    public class OstFileChunk
     {
         public int FileId { get; set; }
         public int ChunkId { get; set; }

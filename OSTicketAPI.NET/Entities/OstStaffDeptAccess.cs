@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstStaffDeptAccess
+    public class OstStaffDeptAccess
     {
         public int StaffId { get; set; }
         public int DeptId { get; set; }

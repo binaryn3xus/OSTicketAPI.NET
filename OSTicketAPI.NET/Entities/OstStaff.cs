@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstStaff
+    [DebuggerDisplay("{Lastname,nq}, {Firstname,nq}")]
+    public class OstStaff
     {
         public int StaffId { get; set; }
         public int DeptId { get; set; }

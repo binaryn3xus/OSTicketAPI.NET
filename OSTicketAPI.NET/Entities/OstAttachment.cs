@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstAttachment
+    public class OstAttachment
     {
         public int Id { get; set; }
         public int ObjectId { get; set; }

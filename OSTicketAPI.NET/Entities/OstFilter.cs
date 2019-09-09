@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstFilter
+    public class OstFilter
     {
         public int Id { get; set; }
         public int Execorder { get; set; }

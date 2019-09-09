@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstCannedResponse
+    public class OstCannedResponse
     {
         public int CannedId { get; set; }
         public int DeptId { get; set; }
