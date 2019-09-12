@@ -10,7 +10,7 @@ using OSTicketAPI.NET.Logging;
 
 namespace OSTicketAPI.NET.Repositories
 {
-    public class TicketRepository : ITicketRepository
+    public class TicketRepository : ITicketRepository<OstTicket>
     {
         private readonly OSTicketContext _osticketContext;
         private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
@@ -20,17 +20,37 @@ namespace OSTicketAPI.NET.Repositories
             _osticketContext = osticketContext;
         }
 
-        public async Task<IEnumerable<OstTicket>> GetTickets()
+        /// <summary>
+        /// Get all tickets in OSTicket
+        /// </summary>
+        /// <param name="expression">Expression to narrow down tickets in a search</param>
+        /// <returns>Returns an IEnumerable of OstTickets</returns>
+        public async Task<IEnumerable<OstTicket>> GetTickets(Expression<Func<OstTicket, bool>> expression = null)
         {
-            var data = await GetQueryableTicketsAsync(null).ConfigureAwait(false);
+            var data = await GetQueryableTicketsAsync(expression).ConfigureAwait(false);
             return data.ToList();
         }
 
-        public async Task<List<OstTicketStatus>> GetTicketStatuses()
+        /// <summary>
+        /// Returns all ticket statuses based on an expression
+        /// </summary>
+        /// <param name="expression">Optional expression for narrowing down statuses returned</param>
+        /// <returns>IEnumerable of OstTicketStatus</returns>
+        public async Task<IEnumerable<OstTicketStatus>> GetTicketStatuses(Expression<Func<OstTicketStatus, bool>> expression = null)
         {
-            return await _osticketContext.OstTicketStatus.OrderBy(o => o.Sort).ToListAsync().ConfigureAwait(false);
+            var statuses = _osticketContext.OstTicketStatus.AsQueryable();
+
+            if (expression != null)
+                statuses = statuses.Where(expression);
+
+            return await statuses.ToListAsync().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Get ticket by id
+        /// </summary>
+        /// <param name="ticketId">Required ticket id</param>
+        /// <returns>Returns an OstTicket object or null if it does not exist</returns>
         public async Task<OstTicket> GetTicketByTicketId(int ticketId)
         {
             var data = await GetQueryableTicketsAsync(o => o.TicketId == ticketId).ConfigureAwait(false);
@@ -40,6 +60,11 @@ namespace OSTicketAPI.NET.Repositories
             return ticket;
         }
 
+        /// <summary>
+        /// Get ticket by ticket number
+        /// </summary>
+        /// <param name="ticketNumber">Required ticket number</param>
+        /// <returns>Returns an OstTicket object or null if it does not exist</returns>
         public async Task<OstTicket> GetTicketByTicketNumber(string ticketNumber)
         {
             var data = await GetQueryableTicketsAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
@@ -49,6 +74,11 @@ namespace OSTicketAPI.NET.Repositories
             return ticket;
         }
 
+        /// <summary>
+        /// Get all tickets for a certain user by user id
+        /// </summary>
+        /// <param name="userId">Required integer of User Id</param>
+        /// <returns>Returns IEnumerable of OstTicket objects</returns>
         public async Task<IEnumerable<OstTicket>> GetTicketsByUserId(int userId)
         {
             if (userId == default)
@@ -60,6 +90,11 @@ namespace OSTicketAPI.NET.Repositories
             return ticketList;
         }
 
+        /// <summary>
+        /// Get all tickets for a certain user by OstUser
+        /// </summary>
+        /// <param name="userId">OstUser</param>
+        /// <returns>Returns IEnumerable of OstTicket objects</returns>
         public async Task<IEnumerable<OstTicket>> GetTicketsByOstUser(OstUser user)
         {
             if (user?.OstUserAccount?.Username == null)

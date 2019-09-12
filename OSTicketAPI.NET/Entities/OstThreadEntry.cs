@@ -23,7 +23,7 @@ namespace OSTicketAPI.NET.Entities
         public string Recipients { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
-        
+
         [ForeignKey("ThreadId")]
         public virtual OstThread OstThread { get; set; }
     }

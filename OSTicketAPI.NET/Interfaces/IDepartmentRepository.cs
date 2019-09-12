@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using OSTicketAPI.NET.Entities;
 
 namespace OSTicketAPI.NET.Interfaces
 {
-    public interface IDepartmentRepository
+    public interface IDepartmentRepository<T>
     {
-        Task<IEnumerable<OstDepartment>> GetDepartments(Expression<Func<OstDepartment, bool>> expression = null);
-        Task<OstDepartment> GetDepartmentById(int id);
+        Task<IEnumerable<T>> GetDepartments(Expression<Func<T, bool>> expression = null);
+        Task<T> GetDepartmentById(int id);
     }
 }

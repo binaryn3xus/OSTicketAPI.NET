@@ -26,11 +26,11 @@ namespace OSTicketAPI.NET.Entities
         public string Notes { get; set; }
         public sbyte Isactive { get; set; }
         public sbyte Isadmin { get; set; }
-        public byte Isvisible { get; set; }
-        public byte Onvacation { get; set; }
-        public byte AssignedOnly { get; set; }
-        public byte ShowAssignedTickets { get; set; }
-        public byte ChangePasswd { get; set; }
+        public bool Isvisible { get; set; }
+        public bool Onvacation { get; set; }
+        public bool AssignedOnly { get; set; }
+        public bool ShowAssignedTickets { get; set; }
+        public bool ChangePasswd { get; set; }
         public int MaxPageSize { get; set; }
         public int AutoRefreshRate { get; set; }
         public string DefaultSignatureType { get; set; }

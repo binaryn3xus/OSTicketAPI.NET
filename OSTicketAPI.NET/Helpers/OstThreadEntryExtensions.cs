@@ -6,6 +6,11 @@ namespace OSTicketAPI.NET.Helpers
 {
     public static class OstThreadEntryExtensions
     {
+        /// <summary>
+        /// Converts an OstThreadEvent to a human readable string
+        /// </summary>
+        /// <param name="threadEvent">Extension to an OstThreadEvent object</param>
+        /// <returns>Returns a user friendly string</returns>
         public static string ToFriendlyString(this OstThreadEvent threadEvent)
         {
             var data = JObject.Parse(threadEvent.Data);

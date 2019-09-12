@@ -18,7 +18,7 @@ namespace OSTicketAPI.NET.Entities
         public int Flags { get; set; }
         public string Name { get; set; }
         public string Signature { get; set; }
-        public byte Ispublic { get; set; }
+        public bool Ispublic { get; set; }
         public sbyte GroupMembership { get; set; }
         public sbyte TicketAutoResponse { get; set; }
         public sbyte MessageAutoResponse { get; set; }
