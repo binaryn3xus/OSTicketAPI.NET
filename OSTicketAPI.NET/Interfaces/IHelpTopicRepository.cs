@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using OSTicketAPI.NET.Entities;
 
 namespace OSTicketAPI.NET.Interfaces
 {
-    public interface IHelpTopicRepository
+    public interface IHelpTopicRepository<T>
     {
-        Task<IEnumerable<OstHelpTopic>> GetHelpTopics(bool onlyPublicTopic = true);
-        Task<OstHelpTopic> GetHelpTopicsByTopicId(int topicId, bool onlyPublicTopic = true);
-        Task<IEnumerable<OstHelpTopic>> GetHelpTopicsByDepartmentId(int departmentId, bool onlyPublicTopic = true);
+        Task<IEnumerable<T>> GetHelpTopics(Expression<Func<T, bool>> expression = null);
+
+        Task<T> GetHelpTopicsByTopicId(int topicId);
+
+        Task<IEnumerable<T>> GetHelpTopicsByDepartmentId(int departmentId,
+            Expression<Func<T, bool>> expression = null);
     }
 }

@@ -29,7 +29,7 @@ First, you want to update your `appsettings.json` to include the appropriate con
 }
 ~~~
 
-> Note: It is recommended to leave the `Convert Zero Date` as true.
+> Note: This library request the use of these connection string flags: `ConvertZeroDateTime=True;TreatTinyAsBoolean=false`. Be aware they are automatically added for you or changed to these values if you attempt to provide different flag values.
 
 Add the following to your .Net Core `startup.cs` file in the `ConfigureServices`
 

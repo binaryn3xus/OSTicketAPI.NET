@@ -16,7 +16,7 @@ namespace OSTicketAPI.NET.Entities
         public string Username { get; set; }
         public int? Uid { get; set; }
         public string UidType { get; set; }
-        public byte Annulled { get; set; }
+        public bool Annulled { get; set; }
         public DateTime Timestamp { get; set; }
 
         [ForeignKey("ThreadId")]

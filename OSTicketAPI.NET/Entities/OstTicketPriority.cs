@@ -6,7 +6,7 @@
         public string Priority { get; set; }
         public string PriorityDesc { get; set; }
         public string PriorityColor { get; set; }
-        public byte PriorityUrgency { get; set; }
+        public bool PriorityUrgency { get; set; }
         public sbyte Ispublic { get; set; }
     }
 }

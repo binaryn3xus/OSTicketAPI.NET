@@ -81,7 +81,7 @@ namespace OSTicketAPI.NET
         public virtual DbSet<OstUserAccount> OstUserAccount { get; set; }
         public virtual DbSet<OstUserCdata> OstUserCdata { get; set; }
         public virtual DbSet<OstUserEmail> OstUserEmail { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OstApiKey>(entity =>
@@ -2831,7 +2831,7 @@ namespace OSTicketAPI.NET
                     .HasColumnName("user_id")
                     .HasDefaultValueSql("'0'");
             });
-            
+
             modelBuilder.Entity<OstTicketCdata>(entity =>
             {
                 entity.HasKey(e => e.TicketId)
