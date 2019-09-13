@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OSTicketAPI.NET.Entities
 {
@@ -14,5 +15,7 @@ namespace OSTicketAPI.NET.Entities
         public string Notes { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        public virtual ICollection<OstListItems> OstListItems { get; set; }
     }
 }

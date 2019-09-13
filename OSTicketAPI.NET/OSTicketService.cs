@@ -12,6 +12,7 @@ namespace OSTicketAPI.NET
         public IDepartmentRepository<OstDepartment> Departments { get; set; }
         public IFormRepository<OstForm> Forms { get; set; }
         public IHelpTopicRepository<OstHelpTopic> HelpTopics { get; set; }
+        public IListRepository<OstList> Lists { get; set; }
         public ITicketRepository<OstTicket> Tickets { get; set; }
         public IUserRepository<OstUser> Users { get; set; }
         public IOSTicketOfficialApi OSTicketOfficialApi { get; }
@@ -38,13 +39,9 @@ namespace OSTicketAPI.NET
             };
 
             var osticketContext = BuildOSTicketContext(builder.ToString());
-
+            
             OSTicketOfficialApi = osTicketOfficialApi;
-            Departments = new DepartmentRepository(osticketContext);
-            Forms = new FormRepository(osticketContext);
-            HelpTopics = new HelpTopicRepository(osticketContext);
-            Tickets = new TicketRepository(osticketContext);
-            Users = new UserRepository(osticketContext);
+            InitializeRepositories(osticketContext);
         }
 
         public OSTicketService(string connectionString, IOSTicketOfficialApi osTicketOfficialApi)
@@ -61,9 +58,15 @@ namespace OSTicketAPI.NET
             var osticketContext = BuildOSTicketContext(builder.ToString());
 
             OSTicketOfficialApi = osTicketOfficialApi;
+            InitializeRepositories(osticketContext);
+        }
+
+        private void InitializeRepositories(OSTicketContext osticketContext)
+        {
             Departments = new DepartmentRepository(osticketContext);
             Forms = new FormRepository(osticketContext);
             HelpTopics = new HelpTopicRepository(osticketContext);
+            Lists = new ListRepository(osticketContext);
             Tickets = new TicketRepository(osticketContext);
             Users = new UserRepository(osticketContext);
         }
