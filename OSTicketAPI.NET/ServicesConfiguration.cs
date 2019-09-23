@@ -8,34 +8,37 @@ namespace OSTicketAPI.NET
 {
     public static class ServicesConfiguration
     {
-        public static void AddOSTicketServices(this IServiceCollection services, OSTicketServiceOptions options = null)
+        public static IServiceCollection AddOSTicketServices(this IServiceCollection services, Action<OSTicketServiceOptions> setupAction)
         {
-            IConfiguration configuration;
             var logger = LogProvider.For<OSTicketOfficialApi>();
+            logger?.Info("Attempting to load OSTicket settings using {OptionsType}", setupAction?.GetType().Name);
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
 
-            services.AddLogging();
+            if (setupAction == null)
+                throw new ArgumentNullException(nameof(setupAction));
+
+            services.Configure(setupAction);
+            return services.AddSingleton<OSTicketService>();
+        }
+        
+        //TODO Update documentation on this change
+        public static void AddOSTicketServices(this IServiceCollection services, IConfigurationSection customConfigurationSection = null)
+        {
             using (var sp = services.BuildServiceProvider())
             {
-                configuration = sp.GetService<IConfiguration>();
-            }
+                var logger = LogProvider.For<OSTicketOfficialApi>();
+                var configuration = sp.GetService<IConfiguration>();
+                var configurationSection = customConfigurationSection ?? configuration?.GetSection("OSTicket");
 
-            if (options != null)
-            {
-                logger?.Info("Attempting to load OSTicket settings using {OptionsType}", options.GetType().Name);
-                services.AddSingleton(new OSTicketService(options.ConnectionString, new OSTicketOfficialApi(options.BaseUrl, options.ApiKey)));
-            }
-            else if (configuration != null)
-            {
-                logger?.Info("Attempting to load OSTicket settings using {OptionsType}", configuration.GetType().Name);
-                var connectionString = configuration.GetValue<string>("OSTicket:DatabaseConnectionString");
-                var baseUrl = configuration.GetValue<string>("OSTicket:BaseUrl");
-                var apiKey = configuration.GetValue<string>("OSTicket:ApiKey");
+                if (!configurationSection.Exists())
+                    throw new Exception($"No configurations were setup for {configurationSection?.Key}");
+
+                logger?.Info("Attempting to load OSTicket settings using {OptionsType}", configurationSection?.GetType().Name);
+                var connectionString = configurationSection.GetValue<string>("DatabaseConnectionString");
+                var baseUrl = configurationSection.GetValue<string>("BaseUrl");
+                var apiKey = configurationSection.GetValue<string>("ApiKey");
                 services.AddSingleton(new OSTicketService(connectionString, new OSTicketOfficialApi(baseUrl, apiKey)));
-            }
-            else
-            {
-                logger?.Error("Unable to set up OSTicketService - No IConfiguration setup OR OSTicketServicesOptions setup.");
-                throw new Exception("Unable to set up OSTicketService - No IConfiguration setup OR OSTicketServicesOptions setup.");
             }
         }
     }

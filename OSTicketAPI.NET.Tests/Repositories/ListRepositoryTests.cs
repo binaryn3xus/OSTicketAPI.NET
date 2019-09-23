@@ -25,8 +25,11 @@ namespace OSTicketAPI.NET.Tests.Repositories
             var lists = await _fixture.OSTicketService.Lists.GetLists().ConfigureAwait(false);
             var ostLists = lists.ToList();
             foreach (var list in ostLists)
+            {
                 _testOutputHelper.WriteLine("\"{0}\" with the item names of \"{1}\"", list.Name,
                     string.Join(',', list.OstListItems?.Select(o => o.Value)));
+            }
+
             Assert.NotEmpty(ostLists);
         }
 
@@ -36,8 +39,11 @@ namespace OSTicketAPI.NET.Tests.Repositories
             var lists = await _fixture.OSTicketService.Lists.GetLists(o => o.Type.Equals("ticket-status",StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
             var ostLists = lists.ToList();
             foreach (var list in ostLists)
+            {
                 _testOutputHelper.WriteLine("\"{0}\" with the item names of \"{1}\"", list.Name,
                     string.Join(',', list.OstListItems?.Select(o => o.Value)));
+            }
+
             Assert.NotEmpty(ostLists);
         }
     }
