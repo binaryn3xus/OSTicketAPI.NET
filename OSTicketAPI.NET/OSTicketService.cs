@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
+using OSTicketAPI.NET.DTO;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
 using OSTicketAPI.NET.Repositories;
@@ -16,6 +18,19 @@ namespace OSTicketAPI.NET
         public ITicketRepository<OstTicket> Tickets { get; set; }
         public IUserRepository<OstUser> Users { get; set; }
         public IOSTicketOfficialApi OSTicketOfficialApi { get; }
+
+        public OSTicketService(IOptions<OSTicketServiceOptions> options)
+        {
+            if (options.Value == null)
+                throw new ArgumentException("OSTicketServiceOptions cannot be null", nameof(options));
+
+            if (string.IsNullOrWhiteSpace(options.Value?.ConnectionString))
+                throw new ArgumentException("Connection string cannot be null or empty", nameof(options.Value.ConnectionString));
+
+            var osticketContext = BuildOSTicketContext(options.Value.ConnectionString);
+            OSTicketOfficialApi = new OSTicketOfficialApi(options.Value.BaseUrl, options.Value.ApiKey);
+            InitializeRepositories(osticketContext);
+        }
 
         public OSTicketService(string databaseServer, string databaseUsername, string databasePassword, string databaseName, IOSTicketOfficialApi osTicketOfficialApi, int portNumber = 3306)
         {
@@ -33,13 +48,9 @@ namespace OSTicketAPI.NET
                 Server = databaseServer,
                 UserID = databaseUsername,
                 Password = databasePassword,
-                Port = Convert.ToUInt32(portNumber),
-                ConvertZeroDateTime = true,
-                TreatTinyAsBoolean = false
+                Port = Convert.ToUInt32(portNumber)
             };
-
             var osticketContext = BuildOSTicketContext(builder.ToString());
-            
             OSTicketOfficialApi = osTicketOfficialApi;
             InitializeRepositories(osticketContext);
         }
@@ -49,14 +60,7 @@ namespace OSTicketAPI.NET
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Connection string cannot be null or empty", nameof(connectionString));
 
-            var builder = new MySqlConnectionStringBuilder(connectionString)
-            {
-                ConvertZeroDateTime = true,
-                TreatTinyAsBoolean = false
-            };
-
-            var osticketContext = BuildOSTicketContext(builder.ToString());
-
+            var osticketContext = BuildOSTicketContext(connectionString);
             OSTicketOfficialApi = osTicketOfficialApi;
             InitializeRepositories(osticketContext);
         }
