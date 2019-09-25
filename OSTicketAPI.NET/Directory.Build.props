@@ -10,7 +10,7 @@
   <Choose>
     <When Condition=" '$(Prerelease)' != '' ">
       <PropertyGroup>
-        <VersionSuffix>$(Prerelease)-$(Build_BuildNumber.PadLeft(4, '0'))</VersionSuffix>
+        <VersionSuffix>$(Prerelease)-$(Build_BuildNumber.PadLeft(5, '0'))</VersionSuffix>
       </PropertyGroup>
     </When>
   </Choose>
