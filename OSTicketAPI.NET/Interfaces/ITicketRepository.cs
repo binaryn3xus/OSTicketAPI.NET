@@ -14,5 +14,7 @@ namespace OSTicketAPI.NET.Interfaces
         Task<T> GetTicketByTicketNumber(string ticketNumber);
         Task<IEnumerable<T>> GetTicketsByUserId(int userId);
         Task<IEnumerable<T>> GetTicketsByOstUser(OstUser user);
+        Task<T> UpdateTicketById(int ticketNumber, T ticket);
+        Task<T> UpdateTicketByNumber(string ticketNumber, T ticket);
     }
 }

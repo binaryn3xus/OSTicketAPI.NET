@@ -106,6 +106,34 @@ namespace OSTicketAPI.NET.Repositories
             return ticketList;
         }
 
+        /// <summary>
+        /// Update a ticket by Id
+        /// </summary>
+        /// <param name="ticketId">Number of the ticket to update</param>
+        /// <param name="newTicket">Ticket object to update</param>
+        /// <returns>The ticket object will be returned</returns>
+        public async Task<OstTicket> UpdateTicketById(int ticketId, OstTicket newTicket)
+        {
+            var ticket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.TicketId ==  ticketId);
+            _osticketContext.Entry(ticket).CurrentValues.SetValues(newTicket);
+            await _osticketContext.SaveChangesAsync().ConfigureAwait(false);
+            return null;
+        }
+
+        /// <summary>
+        /// Update a ticket by Number
+        /// </summary>
+        /// <param name="ticketNumber">Number of the ticket to update</param>
+        /// <param name="newTicket">Ticket object to update</param>
+        /// <returns>The ticket object will be returned</returns>
+        public async Task<OstTicket> UpdateTicketByNumber(string ticketNumber, OstTicket newTicket)
+        {
+            var ticket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.Number == ticketNumber);
+            _osticketContext.Entry(ticket).CurrentValues.SetValues(newTicket);
+            await _osticketContext.SaveChangesAsync().ConfigureAwait(false);
+            return null;
+        }
+
         private async Task<IEnumerable<OstTicket>> GetQueryableTicketsAsync(Expression<Func<OstTicket, bool>> expression)
         {
             var ticketQuery = _osticketContext.OstTicket
