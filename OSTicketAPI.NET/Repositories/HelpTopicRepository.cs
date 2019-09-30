@@ -66,7 +66,7 @@ namespace OSTicketAPI.NET.Repositories
             if (expression != null)
                 topics = topics.Where(expression);
 
-            _logger.Debug("{NumberOfTopicsFound} for Department Id {DepartmentId}", topics.Count(), departmentId);
+            _logger.Debug("{NumberOfTopicsFound} topics found for Department Id {DepartmentId}", topics.Count(), departmentId);
             return topics;
         }
 
