@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstQueueSorts
+    public class OstQueueSorts
     {
         public int QueueId { get; set; }
         public int SortId { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstThreadEntry
+    public class OstThreadEntry
     {
         public int Id { get; set; }
         public int Pid { get; set; }
@@ -23,7 +23,7 @@ namespace OSTicketAPI.NET.Entities
         public string Recipients { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
-        
+
         [ForeignKey("ThreadId")]
         public virtual OstThread OstThread { get; set; }
     }

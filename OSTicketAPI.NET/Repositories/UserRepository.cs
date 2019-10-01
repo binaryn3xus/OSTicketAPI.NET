@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OSTicketAPI.NET.DTO;
@@ -8,7 +11,7 @@ using OSTicketAPI.NET.Logging;
 
 namespace OSTicketAPI.NET.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository<OstUser>
     {
         private readonly OSTicketContext _osticketContext;
         private readonly ILog _logger = LogProvider.For<UserRepository>();
@@ -18,31 +21,49 @@ namespace OSTicketAPI.NET.Repositories
             _osticketContext = osticketContext;
         }
 
+        /// <summary>
+        /// Get users from OSTicket
+        /// </summary>
+        /// <param name="expression">Optional parameter to filter users</param>
+        /// <returns>Returns a collection of OstUsers</returns>
+        public async Task<IEnumerable<OstUser>> GetUsers(Expression<Func<OstUser, bool>> expression = null)
+        {
+            var users = await GetQueryableUsersAsync(expression).ConfigureAwait(false);
+            return users.ToList();
+        }
+
+        /// <summary>
+        /// Get a User by email address
+        /// </summary>
+        /// <param name="email">Email Address</param>
+        /// <returns>Returns an OstUser object or null if user does not exist</returns>
         public async Task<OstUser> GetUserByEmail(string email)
         {
-            var user = await _osticketContext.OstUserEmail
-                .FirstOrDefaultAsync(o => o.Address.Equals(email, StringComparison.InvariantCultureIgnoreCase))
-                .ConfigureAwait(false);
+            var users = await GetQueryableUsersAsync(o => o.OstUserEmail.Address.Equals(email
+                , StringComparison.InvariantCultureIgnoreCase)).ConfigureAwait(false);
+            var user = users.FirstOrDefault();
 
             if (user != null)
-                _logger.Info("{UserName} found using the email address of {EmailAddress}", user.OstUser.Name, email);
+                _logger.Debug("{UserName} found using the email address of {EmailAddress}", user.Name, email);
             else
                 _logger.Warn("Unable to find a user with the email of {EmailAddress}", email);
 
-            return user?.OstUser;
+            return user;
         }
 
+        /// <summary>
+        /// Get a User by User Id
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <returns>Returns an OstUser object or null if user does not exist</returns>
         public async Task<OstUser> GetUserById(int id)
         {
-            var user = await _osticketContext.OstUser
-                .Include(o => o.OstUserEmail)
-                .Include(o => o.OstUserAccount)
-                .FirstOrDefaultAsync(o => o.Id == id)
-                .ConfigureAwait(false);
+            var users = await GetQueryableUsersAsync(o => o.Id == id).ConfigureAwait(false);
+            var user = await users.FirstOrDefaultAsync().ConfigureAwait(false);
 
             if (user != null)
             {
-                _logger.Info("{UserName} found using the Id of {UserId}", user.Name, id);
+                _logger.Debug("{UserName} found using the Id of {UserId}", user.Name, id);
                 if (user.OrgId != 0)
                     user.OstOrganization = await _osticketContext.OstOrganization.FirstOrDefaultAsync(o => o.Id == user.OrgId).ConfigureAwait(false);
             }
@@ -54,21 +75,29 @@ namespace OSTicketAPI.NET.Repositories
             return user;
         }
 
+        /// <summary>
+        /// Get a User by username
+        /// </summary>
+        /// <param name="username">Required username of the User to retrieve</param>
+        /// <returns>Returns an OstUser object or null if user does not exist</returns>
         public async Task<OstUser> GetUserByUsername(string username)
         {
-            var user = await _osticketContext.OstUser
-            .Include(o => o.OstUserEmail)
-            .Include(o => o.OstUserAccount)
-            .FirstOrDefaultAsync(o => o.OstUserAccount.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase)).ConfigureAwait(false);
+            var user = await GetQueryableUsersAsync(o => o.OstUserAccount.Username.Equals(username, StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
 
-            if (user != null)
-                _logger.Info("{UserName} found using the username of {Username}", user.Name, username);
+            var returnUser = user.FirstOrDefault();
+            if (returnUser != null)
+                _logger.Debug("{UserName} found using the username of {Username}", returnUser.Name, username);
             else
                 _logger.Warn("Unable to find a user with the username of {Username}", username);
 
-            return user;
+            return returnUser;
         }
 
+        /// <summary>
+        /// Create an already registered user in OSTicket
+        /// </summary>
+        /// <param name="options">Options for user creation</param>
+        /// <returns>Returns the created OstUser</returns>
         public async Task<OstUser> CreateRegisteredUser(UserCreationOptions options)
         {
             if (string.IsNullOrWhiteSpace(options.Email))
@@ -160,6 +189,22 @@ namespace OSTicketAPI.NET.Repositories
             }
 
             return null;
+        }
+
+        private async Task<IQueryable<OstUser>> GetQueryableUsersAsync(Expression<Func<OstUser, bool>> expression)
+        {
+            return await Task.Run(() =>
+            {
+                var query = _osticketContext.OstUser
+                    .Include(o => o.OstUserEmail)
+                    .Include(o => o.OstUserAccount)
+                    .AsQueryable();
+
+                if (expression != null)
+                    query = query.Where(expression);
+
+                return query;
+            }).ConfigureAwait(false);
         }
     }
 }

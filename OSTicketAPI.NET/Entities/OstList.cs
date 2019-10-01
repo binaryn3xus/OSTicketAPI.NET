@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstList
+    public class OstList
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -14,5 +15,7 @@ namespace OSTicketAPI.NET.Entities
         public string Notes { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        public virtual ICollection<OstListItems> OstListItems { get; set; }
     }
 }

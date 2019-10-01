@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstTranslation
+    public class OstTranslation
     {
         public int Id { get; set; }
         public string ObjectHash { get; set; }

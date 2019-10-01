@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstThreadCollaborator
+    public class OstThreadCollaborator
     {
         public int Id { get; set; }
         public int Flags { get; set; }

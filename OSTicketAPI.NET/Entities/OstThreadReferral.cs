@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstThreadReferral
+    public class OstThreadReferral
     {
         public int Id { get; set; }
         public int ThreadId { get; set; }

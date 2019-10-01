@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstTicketStatus
+    [DebuggerDisplay("{Name,nq}")]
+    public class OstTicketStatus
     {
         public int Id { get; set; }
         public string Name { get; set; }

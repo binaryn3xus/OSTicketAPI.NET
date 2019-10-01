@@ -1,16 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using OSTicketAPI.NET.Entities;
 
 namespace OSTicketAPI.NET.Interfaces
 {
-    public interface ITicketRepository
+    public interface ITicketRepository<T>
     {
-        Task<IEnumerable<OstTicket>> GetTickets();
-        Task<List<OstTicketStatus>> GetTicketStatuses();
-        Task<OstTicket> GetTicketByTicketId(int ticketId);
-        Task<OstTicket> GetTicketByTicketNumber(string ticketNumber);
-        Task<IEnumerable<OstTicket>> GetTicketsByUserId(int userId);
-        Task<IEnumerable<OstTicket>> GetTicketsByOstUser(OstUser user);
+        Task<IEnumerable<T>> GetTickets(Expression<Func<T, bool>> expression = null);
+        Task<IEnumerable<OstTicketStatus>> GetTicketStatuses(Expression<Func<OstTicketStatus, bool>> expression = null);
+        Task<T> GetTicketByTicketId(int ticketId);
+        Task<T> GetTicketByTicketNumber(string ticketNumber);
+        Task<IEnumerable<T>> GetTicketsByUserId(int userId);
+        Task<IEnumerable<T>> GetTicketsByOstUser(OstUser user);
+        Task<T> UpdateTicketById(int ticketNumber, T ticket);
+        Task<T> UpdateTicketByNumber(string ticketNumber, T ticket);
     }
 }

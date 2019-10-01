@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstUserAccount
+    [DebuggerDisplay("{Username,nq}")]
+    public class OstUserAccount
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -21,6 +23,5 @@ namespace OSTicketAPI.NET.Entities
 
         [ForeignKey("UserId")]
         public virtual OstUserEmail OstUserEmail { get; set; }
-
     }
 }

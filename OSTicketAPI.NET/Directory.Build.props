@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <MsBuildAllProjects>$(MsBuildAllProjects);$(MsBuildThisFileFullPath)</MsBuildAllProjects>
+  </PropertyGroup>
+ 
+  <PropertyGroup>
+    <VersionPrefix>0.3</VersionPrefix>
+  </PropertyGroup>
+ 
+  <Choose>
+    <When Condition=" '$(Prerelease)' != '' ">
+      <PropertyGroup>
+        <VersionSuffix>$(Prerelease)-$(Build_BuildNumber.PadLeft(5, '0'))</VersionSuffix>
+      </PropertyGroup>
+    </When>
+  </Choose>
+</Project>

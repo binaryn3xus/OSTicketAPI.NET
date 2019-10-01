@@ -11,6 +11,9 @@ namespace OSTicketAPI.NET.Helpers
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            if (value == null)
+                throw new ArgumentException("Value cannot be null", nameof(value));
+
             var options = (TicketCreationOptions)value;
             var nonIgnoredProperties = options.GetType().GetProperties()
                 .Where(o => !o.IsDefined(typeof(JsonIgnoreAttribute), false)).ToList();

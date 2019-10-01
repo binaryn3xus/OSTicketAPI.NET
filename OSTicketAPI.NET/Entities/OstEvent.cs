@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstEvent
+    public class OstEvent
     {
         public int Id { get; set; }
         public string Name { get; set; }
