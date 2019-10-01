@@ -36,7 +36,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
         public void GetDepartments_ShouldReturnADepartmentWithAValidManagerObject()
         {
             var departments = _fixture.OSTicketService.Departments.GetDepartments().Result.ToList();
-            Assert.Equal(typeof(OstStaff),departments[0].Manager.GetType());
+            Assert.Equal(typeof(OstStaff), departments[0].Manager.GetType());
         }
 
         [RunnableInDebugOnly]

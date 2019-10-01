@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
@@ -19,7 +18,7 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        [InverseProperty("OstForm")]
         public virtual ICollection<OstFormField> OstFormFields { get; set; }
+        public virtual ICollection<OstFormEntry> OstFormEntries { get; set; }
     }
 }

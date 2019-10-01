@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
+    [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
     public class OstSla
     {
         public int Id { get; set; }

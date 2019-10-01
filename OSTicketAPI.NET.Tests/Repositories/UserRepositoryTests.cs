@@ -48,7 +48,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
         [RunnableInDebugOnly]
         public async Task GetUserByUsername_ShouldReturnOneOstUser()
         {
-            var user = _fixture.OSTicketService.Users.GetUsers(o=>o.OstUserAccount.Username != null).Result.First();
+            var user = _fixture.OSTicketService.Users.GetUsers(o => o.OstUserAccount.Username != null).Result.First();
             var userByUsername = await _fixture.OSTicketService.Users.GetUserByUsername("GARRISJ");
             Assert.Equal(user.OstUserAccount.Username, userByUsername.OstUserAccount.Username);
         }

@@ -19,7 +19,6 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        [ForeignKey("FormId")]
         public virtual OstForm OstForm { get; set; }
     }
 }
