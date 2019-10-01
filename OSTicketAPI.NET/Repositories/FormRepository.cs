@@ -60,6 +60,30 @@ namespace OSTicketAPI.NET.Repositories
             {
                 var query = _osticketContext.OstForm
                     .Include(o => o.OstFormFields)
+                    //.Include(o => o.OstFormEntries)
+                    .AsQueryable();
+
+                if (expression != null)
+                    query = query.Where(expression);
+
+                return query;
+            }).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<OstFormEntry>> GetFormEntries(Expression<Func<OstFormEntry, bool>> expression = null)
+        {
+            var data = expression != null ? await GetQueryableFormEntriesAsync(expression).ConfigureAwait(false) : await GetQueryableFormEntriesAsync(null).ConfigureAwait(false);
+            _logger.Debug("GetFormEntries: Returning {0} OstFormEntries", data.Count());
+            return data.ToList();
+        }
+
+        private async Task<IQueryable<OstFormEntry>> GetQueryableFormEntriesAsync(Expression<Func<OstFormEntry, bool>> expression)
+        {
+            return await Task.Run(() =>
+            {
+                var query = _osticketContext.OstFormEntry
+                    //.Include(o => o.OstFormEntryValues)
+                    //.Include(o => o.OstForm)
                     .AsQueryable();
 
                 if (expression != null)

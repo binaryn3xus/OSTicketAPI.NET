@@ -114,7 +114,7 @@ namespace OSTicketAPI.NET.Repositories
         /// <returns>The ticket object will be returned</returns>
         public async Task<OstTicket> UpdateTicketById(int ticketId, OstTicket newTicket)
         {
-            var ticket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.TicketId ==  ticketId);
+            var ticket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.TicketId == ticketId).ConfigureAwait(false);
             _osticketContext.Entry(ticket).CurrentValues.SetValues(newTicket);
             await _osticketContext.SaveChangesAsync().ConfigureAwait(false);
             return null;
@@ -128,7 +128,7 @@ namespace OSTicketAPI.NET.Repositories
         /// <returns>The ticket object will be returned</returns>
         public async Task<OstTicket> UpdateTicketByNumber(string ticketNumber, OstTicket newTicket)
         {
-            var ticket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.Number == ticketNumber);
+            var ticket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
             _osticketContext.Entry(ticket).CurrentValues.SetValues(newTicket);
             await _osticketContext.SaveChangesAsync().ConfigureAwait(false);
             return null;
@@ -145,6 +145,10 @@ namespace OSTicketAPI.NET.Repositories
                 .ThenInclude(o => o.OstThreadEntries)
                 .Include(o => o.OstThread)
                 .ThenInclude(o => o.OstThreadEvents)
+                .Include(o => o.OstFormEntry)
+                .ThenInclude(o=>o.OstForm)
+                .Include(o => o.OstFormEntry)
+                .ThenInclude(o => o.OstFormEntryValues)
                 .AsQueryable();
 
             if (expression != null)
@@ -155,13 +159,22 @@ namespace OSTicketAPI.NET.Repositories
             foreach (var ticket in tickets)
             {
                 if (ticket.TopicId != 0)
-                    ticket.OstHelpTopic = await _osticketContext.OstHelpTopic.SingleOrDefaultAsync(o => o.TopicId == ticket.TopicId).ConfigureAwait(false);
+                {
+                    ticket.OstHelpTopic = await _osticketContext.OstHelpTopic
+                        .SingleOrDefaultAsync(o => o.TopicId == ticket.TopicId).ConfigureAwait(false);
+                }
 
                 if (ticket.StaffId != 0)
-                    ticket.OstStaff = await _osticketContext.OstStaff.SingleOrDefaultAsync(o => o.StaffId == ticket.StaffId).ConfigureAwait(false);
+                {
+                    ticket.OstStaff = await _osticketContext.OstStaff
+                        .SingleOrDefaultAsync(o => o.StaffId == ticket.StaffId).ConfigureAwait(false);
+                }
 
                 if (ticket.TeamId != 0)
-                    ticket.OstTeam = await _osticketContext.OstTeam.SingleOrDefaultAsync(o => o.TeamId == ticket.TicketId).ConfigureAwait(false);
+                {
+                    ticket.OstTeam = await _osticketContext.OstTeam
+                        .SingleOrDefaultAsync(o => o.TeamId == ticket.TicketId).ConfigureAwait(false);
+                }
             }
 
             return tickets.AsQueryable();

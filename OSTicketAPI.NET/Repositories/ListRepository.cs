@@ -32,7 +32,7 @@ namespace OSTicketAPI.NET.Repositories
             return await Task.Run(() =>
             {
                 var query = _osticketContext.OstList
-                    .Include(o=>o.OstListItems)
+                    .Include(o => o.OstListItems)
                     .AsQueryable();
 
                 if (expression != null)

@@ -25,7 +25,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
         [RunnableInDebugOnly]
         public async Task FormsRepository_GetFormById_ShouldReturnAFormObject()
         {
-            var form = await _fixture.OSTicketService.Forms.GetFormById(1).ConfigureAwait(false);
+            var form = await _fixture.OSTicketService.Forms.GetFormById(2).ConfigureAwait(false);
             Assert.NotNull(form);
         }
 
@@ -34,6 +34,13 @@ namespace OSTicketAPI.NET.Tests.Repositories
         {
             var form = await _fixture.OSTicketService.Forms.GetFormById(int.MaxValue).ConfigureAwait(false);
             Assert.Null(form);
+        }
+
+        [RunnableInDebugOnly]
+        public async Task FormsRepository_GetFormEntries_ShouldReturnSomeEntries()
+        {
+            var form = await _fixture.OSTicketService.Forms.GetFormEntries(o => o != null).ConfigureAwait(false);
+            Assert.NotEmpty(form);
         }
     }
 }

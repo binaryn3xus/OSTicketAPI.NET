@@ -36,7 +36,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
         [RunnableInDebugOnly]
         public async Task GetLists_UsingAnExpression()
         {
-            var lists = await _fixture.OSTicketService.Lists.GetLists(o => o.Type.Equals("ticket-status",StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
+            var lists = await _fixture.OSTicketService.Lists.GetLists(o => o.Type.Equals("ticket-status", StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
             var ostLists = lists.ToList();
             foreach (var list in ostLists)
             {

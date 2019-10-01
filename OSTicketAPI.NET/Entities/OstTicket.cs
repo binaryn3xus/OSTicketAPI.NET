@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
@@ -56,5 +57,7 @@ namespace OSTicketAPI.NET.Entities
 
         [InverseProperty("OstTicket")]
         public OstThread OstThread { get; set; }
+
+        public virtual OstFormEntry OstFormEntry { get; set; }
     }
 }
