@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstQueue
+    public class OstQueue
     {
         public int Id { get; set; }
         public int ParentId { get; set; }

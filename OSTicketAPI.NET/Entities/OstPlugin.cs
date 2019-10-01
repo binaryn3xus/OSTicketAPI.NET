@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstPlugin
+    public class OstPlugin
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstLock
+    public class OstLock
     {
         public int LockId { get; set; }
         public int StaffId { get; set; }

@@ -1,10 +1,15 @@
-﻿namespace OSTicketAPI.NET.Entities
+﻿using System.Diagnostics;
+
+namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstFormEntryValues
+    [DebuggerDisplay("{" + nameof(Value) + "}")]
+    public class OstFormEntryValues
     {
         public int EntryId { get; set; }
         public int FieldId { get; set; }
         public string Value { get; set; }
         public int? ValueId { get; set; }
+
+        public virtual OstFormEntry OstFormEntry { get; set; }
     }
 }

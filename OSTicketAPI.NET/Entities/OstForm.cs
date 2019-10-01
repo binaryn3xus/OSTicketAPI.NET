@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstForm
+    [DebuggerDisplay("{" + nameof(Title) + "}")]
+    public class OstForm
     {
         public int Id { get; set; }
         public int? Pid { get; set; }
@@ -14,5 +17,8 @@ namespace OSTicketAPI.NET.Entities
         public string Notes { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        public virtual ICollection<OstFormField> OstFormFields { get; set; }
+        public virtual ICollection<OstFormEntry> OstFormEntries { get; set; }
     }
 }

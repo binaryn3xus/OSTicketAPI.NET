@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstQueueColumns
+    public class OstQueueColumns
     {
         public int QueueId { get; set; }
         public int ColumnId { get; set; }

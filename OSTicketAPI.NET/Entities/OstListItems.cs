@@ -1,6 +1,8 @@
-﻿namespace OSTicketAPI.NET.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstListItems
+    public class OstListItems
     {
         public int Id { get; set; }
         public int? ListId { get; set; }
@@ -9,5 +11,8 @@
         public string Extra { get; set; }
         public int Sort { get; set; }
         public string Properties { get; set; }
+
+        [ForeignKey("ListId")]
+        public virtual OstList OstList { get; set; }
     }
 }

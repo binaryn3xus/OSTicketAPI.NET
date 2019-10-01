@@ -2,12 +2,12 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstEmail
+    public class OstEmail
     {
         public int EmailId { get; set; }
-        public byte Noautoresp { get; set; }
-        public byte PriorityId { get; set; }
-        public byte DeptId { get; set; }
+        public bool Noautoresp { get; set; }
+        public bool PriorityId { get; set; }
+        public bool DeptId { get; set; }
         public int TopicId { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
@@ -30,7 +30,7 @@ namespace OSTicketAPI.NET.Entities
         public int? SmtpPort { get; set; }
         public sbyte SmtpSecure { get; set; }
         public sbyte SmtpAuth { get; set; }
-        public byte SmtpSpoofing { get; set; }
+        public bool SmtpSpoofing { get; set; }
         public string Notes { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }

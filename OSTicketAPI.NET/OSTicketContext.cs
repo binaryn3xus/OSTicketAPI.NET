@@ -3,7 +3,7 @@ using OSTicketAPI.NET.Entities;
 
 namespace OSTicketAPI.NET
 {
-    public partial class OSTicketContext : DbContext
+    public class OSTicketContext : DbContext
     {
         public OSTicketContext()
         {
@@ -81,7 +81,7 @@ namespace OSTicketAPI.NET
         public virtual DbSet<OstUserAccount> OstUserAccount { get; set; }
         public virtual DbSet<OstUserCdata> OstUserCdata { get; set; }
         public virtual DbSet<OstUserEmail> OstUserEmail { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OstApiKey>(entity =>
@@ -1125,6 +1125,13 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.Updated)
                     .HasColumnName("updated")
                     .HasColumnType("datetime");
+
+                entity.HasMany(e => e.OstFormFields)
+                    .WithOne(o => o.OstForm);
+
+                entity.HasMany(e => e.OstFormEntries)
+                    .WithOne(o => o.OstForm)
+                    .HasForeignKey(o => o.FormId);
             });
 
             modelBuilder.Entity<OstFormEntry>(entity =>
@@ -1161,6 +1168,14 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.Updated)
                     .HasColumnName("updated")
                     .HasColumnType("datetime");
+
+                entity.HasMany(e => e.OstFormEntryValues)
+                    .WithOne(o => o.OstFormEntry)
+                    .HasForeignKey(e => e.EntryId);
+
+                entity.HasOne(o => o.OstForm)
+                    .WithMany(o => o.OstFormEntries)
+                    .HasForeignKey(e => e.FormId);
             });
 
             modelBuilder.Entity<OstFormEntryValues>(entity =>
@@ -1228,6 +1243,10 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.Updated)
                     .HasColumnName("updated")
                     .HasColumnType("datetime");
+
+                entity.HasOne(e => e.OstForm)
+                    .WithMany(o => o.OstFormFields)
+                    .HasForeignKey(e => e.FormId);
             });
 
             modelBuilder.Entity<OstGroup>(entity =>
@@ -2830,8 +2849,13 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.UserId)
                     .HasColumnName("user_id")
                     .HasDefaultValueSql("'0'");
+
+                entity.HasOne(e => e.OstFormEntry)
+                    .WithOne(o => o.OstTicket)
+                    .IsRequired(false)
+                    .HasForeignKey<OstFormEntry>(f => f.ObjectId);
             });
-            
+
             modelBuilder.Entity<OstTicketCdata>(entity =>
             {
                 entity.HasKey(e => e.TicketId)

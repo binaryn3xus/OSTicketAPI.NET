@@ -1,8 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstFormField
+    [DebuggerDisplay("{" + nameof(Label) + "}")]
+    public class OstFormField
     {
         public int Id { get; set; }
         public int FormId { get; set; }
@@ -15,5 +18,7 @@ namespace OSTicketAPI.NET.Entities
         public string Hint { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        public virtual OstForm OstForm { get; set; }
     }
 }

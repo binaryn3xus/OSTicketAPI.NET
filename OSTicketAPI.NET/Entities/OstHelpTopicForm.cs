@@ -1,6 +1,6 @@
 ﻿namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstHelpTopicForm
+    public class OstHelpTopicForm
     {
         public int Id { get; set; }
         public int TopicId { get; set; }

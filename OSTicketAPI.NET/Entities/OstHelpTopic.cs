@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstHelpTopic
+    [DebuggerDisplay("{" + nameof(Topic) + ",nq}")]
+    public class OstHelpTopic
     {
         public int TopicId { get; set; }
         public int TopicPid { get; set; }
-        public byte Ispublic { get; set; }
-        public byte Noautoresp { get; set; }
+        public bool Ispublic { get; set; }
+        public bool Noautoresp { get; set; }
         public int? Flags { get; set; }
         public int StatusId { get; set; }
         public int PriorityId { get; set; }

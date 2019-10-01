@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstTicket
+    [DebuggerDisplay("{" + nameof(Number) + ",nq}")]
+    public class OstTicket
     {
         public int TicketId { get; set; }
         public string Number { get; set; }
@@ -21,8 +24,8 @@ namespace OSTicketAPI.NET.Entities
         public string IpAddress { get; set; }
         public string Source { get; set; }
         public string SourceExtra { get; set; }
-        public byte Isoverdue { get; set; }
-        public byte Isanswered { get; set; }
+        public bool Isoverdue { get; set; }
+        public bool Isanswered { get; set; }
         public DateTime? Duedate { get; set; }
         public DateTime? EstDuedate { get; set; }
         public DateTime? Reopened { get; set; }
@@ -36,7 +39,7 @@ namespace OSTicketAPI.NET.Entities
 
         [ForeignKey("StatusId")]
         public OstTicketStatus OstTicketStatus { get; set; }
-        
+
         [ForeignKey("DeptId")]
         public OstDepartment OstDepartment { get; set; }
 
@@ -45,7 +48,7 @@ namespace OSTicketAPI.NET.Entities
 
         [ForeignKey("TopicId")]
         public OstHelpTopic OstHelpTopic { get; set; }
-        
+
         [ForeignKey("StaffId")]
         public OstStaff OstStaff { get; set; }
 
@@ -54,5 +57,7 @@ namespace OSTicketAPI.NET.Entities
 
         [InverseProperty("OstTicket")]
         public OstThread OstThread { get; set; }
+
+        public virtual OstFormEntry OstFormEntry { get; set; }
     }
 }

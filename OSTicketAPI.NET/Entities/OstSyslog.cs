@@ -2,7 +2,7 @@
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstSyslog
+    public class OstSyslog
     {
         public int LogId { get; set; }
         public string LogType { get; set; }

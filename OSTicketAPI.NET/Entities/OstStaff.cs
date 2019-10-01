@@ -1,8 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    public partial class OstStaff
+    [DebuggerDisplay("{Lastname,nq}, {Firstname,nq}")]
+    public class OstStaff
     {
         public int StaffId { get; set; }
         public int DeptId { get; set; }
@@ -23,11 +26,11 @@ namespace OSTicketAPI.NET.Entities
         public string Notes { get; set; }
         public sbyte Isactive { get; set; }
         public sbyte Isadmin { get; set; }
-        public byte Isvisible { get; set; }
-        public byte Onvacation { get; set; }
-        public byte AssignedOnly { get; set; }
-        public byte ShowAssignedTickets { get; set; }
-        public byte ChangePasswd { get; set; }
+        public bool Isvisible { get; set; }
+        public bool Onvacation { get; set; }
+        public bool AssignedOnly { get; set; }
+        public bool ShowAssignedTickets { get; set; }
+        public bool ChangePasswd { get; set; }
         public int MaxPageSize { get; set; }
         public int AutoRefreshRate { get; set; }
         public string DefaultSignatureType { get; set; }
@@ -38,5 +41,8 @@ namespace OSTicketAPI.NET.Entities
         public DateTime? Lastlogin { get; set; }
         public DateTime? Passwdreset { get; set; }
         public DateTime Updated { get; set; }
+
+        [ForeignKey("DeptId")]
+        public virtual OstDepartment OstDepartment { get; set; }
     }
 }
