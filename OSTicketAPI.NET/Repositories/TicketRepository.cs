@@ -149,6 +149,7 @@ namespace OSTicketAPI.NET.Repositories
                 .ThenInclude(o=>o.OstForm)
                 .Include(o => o.OstFormEntry)
                 .ThenInclude(o => o.OstFormEntryValues)
+                .ThenInclude(o => o.OstFormField)
                 .AsQueryable();
 
             if (expression != null)

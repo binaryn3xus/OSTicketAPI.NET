@@ -1196,6 +1196,10 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.ValueId)
                     .HasColumnName("value_id")
                     .HasColumnType("int(11)");
+
+                entity.HasOne(e => e.OstFormField)
+                    .WithMany(o => o.OstFormEntryValues)
+                    .HasForeignKey(e => e.FieldId);
             });
 
             modelBuilder.Entity<OstFormField>(entity =>

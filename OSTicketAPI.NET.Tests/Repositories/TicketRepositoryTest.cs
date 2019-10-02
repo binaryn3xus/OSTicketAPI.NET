@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using OSTicketAPI.NET.Tests.Attributes;
 using OSTicketAPI.NET.Tests.Fixtures;
@@ -41,6 +42,26 @@ namespace OSTicketAPI.NET.Tests.Repositories
             Assert.NotNull(ticket.OstThread);
             Assert.NotNull(ticket.OstTicketStatus);
             Assert.NotNull(ticket.OstUser);
+        }
+
+        [RunnableInDebugOnly]
+        public async Task TicketRepository_GetTickets_ShouldBeAbleToFindTicketsByAFormField()
+        {
+            //Might need to change this number when testing
+            var tickets = await _fixture.OSTicketService.Tickets.GetTickets();
+            var customFormItemName = "legacyTicketNumber";
+            var foundValues = false;
+            foreach (var ticket in tickets)
+            {
+                if (!ticket.OstFormEntry.OstFormEntryValues.Any(o => o.OstFormField.Name.Equals(customFormItemName, StringComparison.OrdinalIgnoreCase)))
+                    continue;
+
+                var formEntryValue = ticket.OstFormEntry.OstFormEntryValues
+                    .FirstOrDefault(o => o.OstFormField.Name.Equals(customFormItemName, StringComparison.OrdinalIgnoreCase));
+                _testOutputHelper.WriteLine("Ticket #{0} has a {1} of {2}", ticket.Number, customFormItemName, formEntryValue?.Value);
+                foundValues = true;
+            }
+            Assert.True(foundValues);
         }
 
         [RunnableInDebugOnly]
