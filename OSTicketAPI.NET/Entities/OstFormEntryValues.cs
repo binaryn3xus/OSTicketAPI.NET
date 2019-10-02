@@ -9,7 +9,7 @@ namespace OSTicketAPI.NET.Entities
         public int FieldId { get; set; }
         public string Value { get; set; }
         public int? ValueId { get; set; }
-
         public virtual OstFormEntry OstFormEntry { get; set; }
+        public virtual OstFormField OstFormField { get; set; }
     }
 }

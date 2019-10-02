@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
@@ -20,5 +20,6 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Updated { get; set; }
 
         public virtual OstForm OstForm { get; set; }
+        public virtual ICollection<OstFormEntryValues> OstFormEntryValues { get; set; }
     }
 }
