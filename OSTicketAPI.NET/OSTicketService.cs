@@ -11,6 +11,7 @@ namespace OSTicketAPI.NET
 {
     public class OSTicketService
     {
+        public OSTicketContext OstTicketContext { get; set; }
         public IDepartmentRepository<OstDepartment> Departments { get; set; }
         public IFormRepository<OstForm> Forms { get; set; }
         public IHelpTopicRepository<OstHelpTopic> HelpTopics { get; set; }
@@ -29,6 +30,7 @@ namespace OSTicketAPI.NET
 
             var osticketContext = BuildOSTicketContext(options.Value.ConnectionString);
             OSTicketOfficialApi = new OSTicketOfficialApi(options.Value.BaseUrl, options.Value.ApiKey);
+            OstTicketContext = osticketContext;
             InitializeRepositories(osticketContext);
         }
 
@@ -52,6 +54,7 @@ namespace OSTicketAPI.NET
             };
             var osticketContext = BuildOSTicketContext(builder.ToString());
             OSTicketOfficialApi = osTicketOfficialApi;
+            OstTicketContext = osticketContext;
             InitializeRepositories(osticketContext);
         }
 
@@ -61,6 +64,7 @@ namespace OSTicketAPI.NET
                 throw new ArgumentException("Connection string cannot be null or empty", nameof(connectionString));
 
             var osticketContext = BuildOSTicketContext(connectionString);
+            OstTicketContext = osticketContext;
             OSTicketOfficialApi = osTicketOfficialApi;
             InitializeRepositories(osticketContext);
         }
