@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
+using OSTicketAPI.NET.AutoMapperProfiles;
 using OSTicketAPI.NET.DTO;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
@@ -31,6 +34,7 @@ namespace OSTicketAPI.NET
             var osticketContext = BuildOSTicketContext(options.Value.ConnectionString);
             OSTicketOfficialApi = new OSTicketOfficialApi(options.Value.BaseUrl, options.Value.ApiKey);
             OstTicketContext = osticketContext;
+            GetOSTicketAutoMapperInstance();
             InitializeRepositories(osticketContext);
         }
 
@@ -73,10 +77,20 @@ namespace OSTicketAPI.NET
         {
             Departments = new DepartmentRepository(osticketContext);
             Forms = new FormRepository(osticketContext);
-            HelpTopics = new HelpTopicRepository(osticketContext);
+            HelpTopics = new HelpTopicRepository(osticketContext, GetOSTicketAutoMapperInstance());
             Lists = new ListRepository(osticketContext);
             Tickets = new TicketRepository(osticketContext);
             Users = new UserRepository(osticketContext);
+        }
+
+        private IMapper GetOSTicketAutoMapperInstance()
+        {
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new HelpTopicsProfile());
+            });
+
+            return mappingConfig.CreateMapper();
         }
 
         private static OSTicketContext BuildOSTicketContext(string connectionString)

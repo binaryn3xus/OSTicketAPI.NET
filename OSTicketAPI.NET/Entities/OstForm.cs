@@ -20,5 +20,6 @@ namespace OSTicketAPI.NET.Entities
 
         public virtual ICollection<OstFormField> OstFormFields { get; set; }
         public virtual ICollection<OstFormEntry> OstFormEntries { get; set; }
+        public virtual OstHelpTopicForm OstHelpTopicForm { get; set; }
     }
 }
