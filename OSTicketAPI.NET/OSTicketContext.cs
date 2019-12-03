@@ -1391,6 +1391,10 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.Updated)
                     .HasColumnName("updated")
                     .HasColumnType("datetime");
+
+                entity.HasMany(e => e.HelpTopicForms)
+                    .WithOne(e => e.OstHelpTopic)
+                    .HasForeignKey(e => e.TopicId);
             });
 
             modelBuilder.Entity<OstHelpTopicForm>(entity =>
@@ -1417,6 +1421,10 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.TopicId)
                     .HasColumnName("topic_id")
                     .HasDefaultValueSql("'0'");
+
+                entity.HasMany(e => e.OstForms)
+                    .WithOne(e => e.OstHelpTopicForm)
+                    .HasForeignKey(e => e.Id);
             });
 
             modelBuilder.Entity<OstList>(entity =>

@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
 using OSTicketAPI.NET.Logging;
+using OSTicketAPI.NET.Models;
 
 namespace OSTicketAPI.NET.Repositories
 {
     public class HelpTopicRepository : IHelpTopicRepository<OstHelpTopic>
     {
         private readonly OSTicketContext _osticketContext;
+        private readonly IMapper _mapper;
         private readonly ILog _logger = LogProvider.For<HelpTopicRepository>();
 
-        public HelpTopicRepository(OSTicketContext osticketContext)
+        public HelpTopicRepository(OSTicketContext osticketContext, IMapper mapper)
         {
             _osticketContext = osticketContext;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -74,7 +79,14 @@ namespace OSTicketAPI.NET.Repositories
         {
             return await Task.Run(() =>
             {
-                var query = _osticketContext.OstHelpTopic.AsQueryable();
+                var query = _osticketContext.OstHelpTopic
+                    .Include(o => o.HelpTopicForms)
+                    .ThenInclude(o => o.OstForms)
+                    .ThenInclude(o => o.OstFormFields)
+                    .AsQueryable();
+                var first = query.First();
+                //TODO: Working on the automapper for this
+                var test = _mapper.Map<HelpTopic>(first);
 
                 if (expression != null)
                     query = query.Where(expression);
