@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Models;
 
-namespace OSTicketAPI.NET.AutomapperProfiles
+namespace OSTicketAPI.NET.AutoMapperProfiles
 {
     public class TicketsProfile : Profile
     {

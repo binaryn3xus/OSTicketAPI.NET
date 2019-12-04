@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
-using OSTicketAPI.NET.AutoMapperProfiles;
 using OSTicketAPI.NET.DTO;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
@@ -17,10 +15,11 @@ namespace OSTicketAPI.NET
     public class OSTicketService
     {
         public OSTicketContext OstTicketContext { get; set; }
-        public IDepartmentRepository<OstDepartment> Departments { get; set; }
+        public IDepartmentRepository<Department, OstDepartment> Departments { get; set; }
         public IFormRepository<OstForm> Forms { get; set; }
         public IHelpTopicRepository<HelpTopic, OstHelpTopic> HelpTopics { get; set; }
         public IListRepository<OstList> Lists { get; set; }
+        public IStaffRepository<Staff, OstStaff> Staff { get; set; }
         public ITicketRepository<OstTicket> Tickets { get; set; }
         public IUserRepository<OstUser> Users { get; set; }
         public IOSTicketOfficialApi OSTicketOfficialApi { get; }
@@ -78,10 +77,11 @@ namespace OSTicketAPI.NET
         private void InitializeRepositories(OSTicketContext osticketContext)
         {
             var mapper = GetOSTicketAutoMapperInstance();
-            Departments = new DepartmentRepository(osticketContext);
+            Departments = new DepartmentRepository(osticketContext, mapper);
             Forms = new FormRepository(osticketContext);
             HelpTopics = new HelpTopicRepository(osticketContext, mapper);
             Lists = new ListRepository(osticketContext);
+            Staff = new StaffRepository(osticketContext, mapper);
             Tickets = new TicketRepository(osticketContext, mapper);
             Users = new UserRepository(osticketContext);
         }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace OSTicketAPI.NET.Interfaces
 {
-    public interface IDepartmentRepository<T>
+    public interface IDepartmentRepository<T, TExpression>
     {
-        Task<IEnumerable<T>> GetDepartments(Expression<Func<T, bool>> expression = null);
+        Task<IEnumerable<T>> GetDepartments(Expression<Func<TExpression, bool>> expression = null);
         Task<T> GetDepartmentById(int id);
     }
 }

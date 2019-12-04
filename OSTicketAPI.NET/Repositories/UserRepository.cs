@@ -59,7 +59,7 @@ namespace OSTicketAPI.NET.Repositories
         public async Task<OstUser> GetUserById(int id)
         {
             var users = await GetQueryableUsersAsync(o => o.Id == id).ConfigureAwait(false);
-            var user = await users.FirstOrDefaultAsync().ConfigureAwait(false);
+            var user = users.FirstOrDefault();
 
             if (user != null)
             {
