@@ -25,7 +25,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
             var ostHelpTopics = data.ToList();
             foreach (var topic in ostHelpTopics)
             {
-                _testOutputHelper.WriteLine(topic.Topic);
+                _testOutputHelper.WriteLine(topic.TopicName);
             }
             Assert.True(ostHelpTopics.Count > 0);
         }
@@ -45,7 +45,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
         }
 
         [RunnableInDebugOnly]
-        public async Task GetHelpTopicsByDepartmentId_ShouldReturnOneOrMoreHelpTopics_NotUsingExpression()
+        public async Task GetHelpTopicsByDepartmentId_ShouldReturnOneOrMoreHelpTopics()
         {
             var departments = await _fixture.OSTicketService.Departments.GetDepartments().ConfigureAwait(false);
             var data = await _fixture.OSTicketService.HelpTopics.GetHelpTopicsByDepartmentId(departments.First().Id).ConfigureAwait(false);
@@ -53,24 +53,9 @@ namespace OSTicketAPI.NET.Tests.Repositories
         }
 
         [RunnableInDebugOnly]
-        public async Task GetHelpTopicsByDepartmentId_ShouldReturnOneOrMoreHelpTopics_UsingExpression()
-        {
-            var departments = await _fixture.OSTicketService.Departments.GetDepartments().ConfigureAwait(false);
-            var data = await _fixture.OSTicketService.HelpTopics.GetHelpTopicsByDepartmentId(departments.First().Id, o => o.Flags == 2).ConfigureAwait(false);
-            Assert.True(data.Any());
-        }
-
-        [RunnableInDebugOnly]
-        public async Task GetHelpTopicsByDepartmentId_ShouldReturnNone_NotUsingExpression()
+        public async Task GetHelpTopicsByDepartmentId_ShouldReturnNone()
         {
             var data = await _fixture.OSTicketService.HelpTopics.GetHelpTopicsByDepartmentId(int.MaxValue).ConfigureAwait(false);
-            Assert.False(data.Any());
-        }
-
-        [RunnableInDebugOnly]
-        public async Task GetHelpTopicsByDepartmentId_ShouldReturnNone_UsingExpression()
-        {
-            var data = await _fixture.OSTicketService.HelpTopics.GetHelpTopicsByDepartmentId(int.MaxValue, o => o.Flags == 4).ConfigureAwait(false);
             Assert.False(data.Any());
         }
     }
