@@ -11,6 +11,6 @@ namespace OSTicketAPI.NET.Entities
         public string Extra { get; set; }
 
         public virtual OstHelpTopic OstHelpTopic { get; set; }
-        public virtual ICollection<OstForm> OstForms { get; set; }
+        public virtual OstForm OstForm { get; set; }
     }
 }

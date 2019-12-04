@@ -1132,6 +1132,10 @@ namespace OSTicketAPI.NET
                 entity.HasMany(e => e.OstFormEntries)
                     .WithOne(o => o.OstForm)
                     .HasForeignKey(o => o.FormId);
+                
+                entity.HasMany(e => e.OstHelpTopicForms)
+                    .WithOne(e => e.OstForm)
+                    .HasForeignKey(e => e.FormId);
             });
 
             modelBuilder.Entity<OstFormEntry>(entity =>
@@ -1421,10 +1425,6 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.TopicId)
                     .HasColumnName("topic_id")
                     .HasDefaultValueSql("'0'");
-
-                entity.HasMany(e => e.OstForms)
-                    .WithOne(e => e.OstHelpTopicForm)
-                    .HasForeignKey(e => e.Id);
             });
 
             modelBuilder.Entity<OstList>(entity =>

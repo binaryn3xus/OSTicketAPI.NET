@@ -41,14 +41,14 @@ namespace OSTicketAPI.NET.Tests
         public void TestServiceConfiguration_AddOSTicketServices_ReturnExceptionForNullIConfiguration()
         {
             var serviceCollection = new ServiceCollection();
-            Assert.Throws<Exception>(() => serviceCollection.AddOSTicketServices());
+            Assert.Throws<ArgumentNullException>(() => serviceCollection.AddOSTicketServices());
         }
 
         [RunnableInDebugOnly]
         public void TestServiceConfiguration_AddOSTicketServices_ReturnExceptionForInvalidConfigurationSection()
         {
             var serviceCollection = new ServiceCollection();
-            Assert.Throws<Exception>(() => serviceCollection.AddOSTicketServices(_fixture.Configuration.GetSection("Invalid:OSTicket")));
+            Assert.Throws<ArgumentNullException>(() => serviceCollection.AddOSTicketServices(_fixture.Configuration.GetSection("Invalid:OSTicket")));
         }
 
         [RunnableInDebugOnly]

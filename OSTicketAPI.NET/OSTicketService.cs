@@ -8,6 +8,7 @@ using OSTicketAPI.NET.AutoMapperProfiles;
 using OSTicketAPI.NET.DTO;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
+using OSTicketAPI.NET.Models;
 using OSTicketAPI.NET.Repositories;
 
 namespace OSTicketAPI.NET
@@ -17,7 +18,7 @@ namespace OSTicketAPI.NET
         public OSTicketContext OstTicketContext { get; set; }
         public IDepartmentRepository<OstDepartment> Departments { get; set; }
         public IFormRepository<OstForm> Forms { get; set; }
-        public IHelpTopicRepository<OstHelpTopic> HelpTopics { get; set; }
+        public IHelpTopicRepository<HelpTopic, OstHelpTopic> HelpTopics { get; set; }
         public IListRepository<OstList> Lists { get; set; }
         public ITicketRepository<OstTicket> Tickets { get; set; }
         public IUserRepository<OstUser> Users { get; set; }
