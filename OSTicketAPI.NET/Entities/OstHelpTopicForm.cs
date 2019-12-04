@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace OSTicketAPI.NET.Entities
+﻿namespace OSTicketAPI.NET.Entities
 {
     public class OstHelpTopicForm
     {

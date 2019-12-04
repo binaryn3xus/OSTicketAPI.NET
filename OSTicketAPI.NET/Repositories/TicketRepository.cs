@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
 using OSTicketAPI.NET.Logging;
+using OSTicketAPI.NET.Models;
 
 namespace OSTicketAPI.NET.Repositories
 {
     public class TicketRepository : ITicketRepository<OstTicket>
     {
         private readonly OSTicketContext _osticketContext;
+        private readonly IMapper _mapper;
         private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
 
-        public TicketRepository(OSTicketContext osticketContext)
+        public TicketRepository(OSTicketContext osticketContext, IMapper mapper)
         {
             _osticketContext = osticketContext;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -36,14 +40,16 @@ namespace OSTicketAPI.NET.Repositories
         /// </summary>
         /// <param name="expression">Optional expression for narrowing down statuses returned</param>
         /// <returns>IEnumerable of OstTicketStatus</returns>
-        public async Task<IEnumerable<OstTicketStatus>> GetTicketStatuses(Expression<Func<OstTicketStatus, bool>> expression = null)
+        public async Task<IEnumerable<TicketStatus>> GetTicketStatuses()
         {
-            var statuses = _osticketContext.OstTicketStatus.AsQueryable();
+            return await Task.Run(() =>
+            {
+                var dbStatuses = _osticketContext.OstTicketStatus.AsQueryable();
 
-            if (expression != null)
-                statuses = statuses.Where(expression);
+                var statuses = _mapper.Map<IEnumerable<TicketStatus>>(dbStatuses);
 
-            return await statuses.ToListAsync().ConfigureAwait(false);
+                return statuses.ToList();
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -146,7 +152,7 @@ namespace OSTicketAPI.NET.Repositories
                 .Include(o => o.OstThread)
                 .ThenInclude(o => o.OstThreadEvents)
                 .Include(o => o.OstFormEntry)
-                .ThenInclude(o=>o.OstForm)
+                .ThenInclude(o => o.OstForm)
                 .Include(o => o.OstFormEntry)
                 .ThenInclude(o => o.OstFormEntryValues)
                 .ThenInclude(o => o.OstFormField)
