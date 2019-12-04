@@ -30,8 +30,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
         [RunnableInDebugOnly]
         public async Task TicketRepository_GetTickets_ShouldBePopulatedWithAllRelatedTableData()
         {
-            //Might need to change this number when testing
-            const int ticketId = 681;
+            var ticketId = _fixture.OSTicketService.Tickets.GetTickets().Result.First().TicketId;
             var tickets = await _fixture.OSTicketService.Tickets.GetTickets(o => o.TicketId == ticketId);
             var ticket = tickets.FirstOrDefault();
             Assert.NotNull(ticket);

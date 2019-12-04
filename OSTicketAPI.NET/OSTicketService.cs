@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -76,19 +77,24 @@ namespace OSTicketAPI.NET
 
         private void InitializeRepositories(OSTicketContext osticketContext)
         {
+            var mapper = GetOSTicketAutoMapperInstance();
             Departments = new DepartmentRepository(osticketContext);
             Forms = new FormRepository(osticketContext);
-            HelpTopics = new HelpTopicRepository(osticketContext, GetOSTicketAutoMapperInstance());
+            HelpTopics = new HelpTopicRepository(osticketContext, mapper);
             Lists = new ListRepository(osticketContext);
-            Tickets = new TicketRepository(osticketContext);
+            Tickets = new TicketRepository(osticketContext, mapper);
             Users = new UserRepository(osticketContext);
         }
 
         private IMapper GetOSTicketAutoMapperInstance()
         {
+            var profileClasses = typeof(OSTicketService).Assembly.GetTypes()
+                .Where(t => t.IsSubclassOf(typeof(Profile)))
+                .Select(t => (Profile)Activator.CreateInstance(t));
+
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new HelpTopicsProfile());
+                mc.AddProfiles(profileClasses);
             });
 
             return mappingConfig.CreateMapper();
