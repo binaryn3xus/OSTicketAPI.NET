@@ -388,6 +388,13 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.Updated)
                     .HasColumnName("updated")
                     .HasColumnType("datetime");
+
+                entity.HasMany(e => e.OstStaff)
+                    .WithOne(e => e.OstDepartment)
+                    .HasForeignKey(e => e.DeptId);
+
+                entity.HasOne(e => e.Manager)
+                    .WithOne(e => e.DepartmentManagerOf);
             });
 
             modelBuilder.Entity<OstDraft>(entity =>
@@ -2223,6 +2230,14 @@ namespace OSTicketAPI.NET
                     .HasColumnName("username")
                     .HasColumnType("varchar(32)")
                     .HasDefaultValueSql("''");
+
+                entity.HasOne(o => o.OstDepartment)
+                    .WithMany(o=>o.OstStaff)
+                    .HasForeignKey(o=>o.DeptId);
+
+                entity.HasMany(o => o.OstStaffDepartmentAccess)
+                    .WithOne(o => o.Staff)
+                    .HasForeignKey(o => o.StaffId);
             });
 
             modelBuilder.Entity<OstStaffDeptAccess>(entity =>

@@ -6,5 +6,6 @@
         public int DeptId { get; set; }
         public int RoleId { get; set; }
         public int Flags { get; set; }
+        public virtual OstStaff Staff { get; set; }
     }
 }
