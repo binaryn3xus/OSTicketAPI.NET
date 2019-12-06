@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    [DebuggerDisplay("{Name,nq}")]
+    [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
     public class OstDepartment
     {
         public int Id { get; set; }

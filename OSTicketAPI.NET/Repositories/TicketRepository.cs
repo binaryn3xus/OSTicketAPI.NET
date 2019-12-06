@@ -38,7 +38,6 @@ namespace OSTicketAPI.NET.Repositories
         /// <summary>
         /// Returns all ticket statuses based on an expression
         /// </summary>
-        /// <param name="expression">Optional expression for narrowing down statuses returned</param>
         /// <returns>IEnumerable of OstTicketStatus</returns>
         public async Task<IEnumerable<TicketStatus>> GetTicketStatuses()
         {
@@ -80,31 +79,36 @@ namespace OSTicketAPI.NET.Repositories
             return ticket;
         }
 
-        /// <summary>
-        /// Get all tickets for a certain user by user id
-        /// </summary>
-        /// <param name="userId">Required integer of User Id</param>
-        /// <returns>Returns IEnumerable of OstTicket objects</returns>
-        public async Task<IEnumerable<OstTicket>> GetTicketsByUserId(int userId)
+        public Task<IEnumerable<OstTicket>> GetTicketsByUserId(int userId)
         {
             if (userId == default)
                 throw new ArgumentNullException($"\"{userId}\" is not a valid user id");
 
+            return GetTicketsByUserIdInternal(userId);
+        }
+
+        private async Task<IEnumerable<OstTicket>> GetTicketsByUserIdInternal(int userId)
+        {
             var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(userId)).ConfigureAwait(false);
             var ticketList = data.ToList();
             _logger.Debug("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, userId);
             return ticketList;
         }
 
-        /// <summary>
-        /// Get all tickets for a certain user by OstUser
-        /// </summary>
-        /// <param name="userId">OstUser</param>
-        /// <returns>Returns IEnumerable of OstTicket objects</returns>
-        public async Task<IEnumerable<OstTicket>> GetTicketsByOstUser(OstUser user)
+        public Task<IEnumerable<OstTicket>> GetTicketsByOstUser(OstUser user)
         {
             if (user?.OstUserAccount?.Username == null)
                 throw new ArgumentNullException($"Username not found in Type {user?.GetType()}");
+            return GetTicketsByOstUserInternal(user);
+        }
+
+        /// <summary>
+        /// Get all tickets for a certain user by OstUser
+        /// </summary>
+        /// <param name="user">OstUser</param>
+        /// <returns>Returns IEnumerable of OstTicket objects</returns>
+        public async Task<IEnumerable<OstTicket>> GetTicketsByOstUserInternal(OstUser user)
+        {
 
             var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(user.Id)).ConfigureAwait(false);
             var ticketList = data.ToList();
@@ -115,13 +119,13 @@ namespace OSTicketAPI.NET.Repositories
         /// <summary>
         /// Update a ticket by Id
         /// </summary>
-        /// <param name="ticketId">Number of the ticket to update</param>
-        /// <param name="newTicket">Ticket object to update</param>
+        /// <param name="ticketNumber">Number of the ticket to update</param>
+        /// <param name="ticket">Ticket object to update</param>
         /// <returns>The ticket object will be returned</returns>
-        public async Task<OstTicket> UpdateTicketById(int ticketId, OstTicket newTicket)
+        public async Task<OstTicket> UpdateTicketById(int ticketNumber, OstTicket ticket)
         {
-            var ticket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.TicketId == ticketId).ConfigureAwait(false);
-            _osticketContext.Entry(ticket).CurrentValues.SetValues(newTicket);
+            var dbTicket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.TicketId == ticketNumber).ConfigureAwait(false);
+            _osticketContext.Entry(ticket).CurrentValues.SetValues(dbTicket);
             await _osticketContext.SaveChangesAsync().ConfigureAwait(false);
             return null;
         }
@@ -130,12 +134,12 @@ namespace OSTicketAPI.NET.Repositories
         /// Update a ticket by Number
         /// </summary>
         /// <param name="ticketNumber">Number of the ticket to update</param>
-        /// <param name="newTicket">Ticket object to update</param>
+        /// <param name="ticket">Ticket object to update</param>
         /// <returns>The ticket object will be returned</returns>
-        public async Task<OstTicket> UpdateTicketByNumber(string ticketNumber, OstTicket newTicket)
+        public async Task<OstTicket> UpdateTicketByNumber(string ticketNumber, OstTicket ticket)
         {
-            var ticket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
-            _osticketContext.Entry(ticket).CurrentValues.SetValues(newTicket);
+            var dbTicket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
+            _osticketContext.Entry(dbTicket).CurrentValues.SetValues(ticket);
             await _osticketContext.SaveChangesAsync().ConfigureAwait(false);
             return null;
         }
