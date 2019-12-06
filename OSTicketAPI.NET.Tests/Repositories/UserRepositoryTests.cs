@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OSTicketAPI.NET.Tests.Attributes;
 using OSTicketAPI.NET.Tests.Fixtures;
 using Xunit;
@@ -32,9 +34,10 @@ namespace OSTicketAPI.NET.Tests.Repositories
         [RunnableInDebugOnly]
         public async Task GetUserByEmail_ShouldReturnOneOstUser()
         {
-            var user = _fixture.OSTicketService.Users.GetUsers().Result.First();
-            var userByEmail = await _fixture.OSTicketService.Users.GetUserByEmail(user.OstUserEmail.Address);
-            Assert.Equal(user.OstUserEmail.Address, userByEmail.OstUserEmail.Address);
+            var userEmail = _fixture.OSTicketService.OstTicketContext.OstUser.Include(e => e.OstUserAccount).First()
+                .OstUserEmail.Address;
+            var userByEmail = await _fixture.OSTicketService.Users.GetUserByEmail(userEmail);
+            Assert.Equal(userEmail, userByEmail.Email);
         }
 
         [RunnableInDebugOnly]
@@ -48,9 +51,10 @@ namespace OSTicketAPI.NET.Tests.Repositories
         [RunnableInDebugOnly]
         public async Task GetUserByUsername_ShouldReturnOneOstUser()
         {
-            var user = _fixture.OSTicketService.Users.GetUsers(o => o.OstUserAccount.Username != null).Result.First();
-            var userByUsername = await _fixture.OSTicketService.Users.GetUserByUsername("GARRISJ");
-            Assert.Equal(user.OstUserAccount.Username, userByUsername.OstUserAccount.Username);
+            var dbUsername = _fixture.OSTicketService.OstTicketContext.OstUser.Include(e=>e.OstUserAccount).First(e => e.OstUserAccount.Username != null)
+                .OstUserAccount.Username;
+            var userByUsername = await _fixture.OSTicketService.Users.GetUserByUsername(dbUsername);
+            Assert.Equal(dbUsername, userByUsername.Username);
         }
     }
 }
