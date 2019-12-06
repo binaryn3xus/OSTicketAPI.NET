@@ -95,6 +95,7 @@ namespace OSTicketAPI.NET.Repositories
             {
                 var query = _osticketContext.OstStaff
                     .Include(o=>o.OstStaffDepartmentAccess)
+                    .Include(o => o.DepartmentManagerOf)
                     .AsQueryable();
 
                 if (expression != null)

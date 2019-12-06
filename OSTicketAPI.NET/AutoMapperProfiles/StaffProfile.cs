@@ -13,6 +13,7 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
             CreateMap<OstStaff, Staff>()
                 .ForMember(dest => dest.Extra, opt => opt.MapFrom<StaffExtrasResolver>())
                 .ForMember(dest => dest.Permissions, opt => opt.MapFrom<StaffPermissionsResolver>())
+                .ForMember(dest => dest.DepartmentManagerOf, opt => opt.MapFrom(src => src.DepartmentManagerOf))
                 .ForAllOtherMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }

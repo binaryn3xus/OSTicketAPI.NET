@@ -43,7 +43,7 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Updated { get; set; }
 
         public virtual OstDepartment OstDepartment { get; set; }
-        public virtual OstDepartment DepartmentManagerOf { get; set; }
+        public virtual ICollection<OstDepartment> DepartmentManagerOf { get; set; }
         public virtual ICollection<OstStaffDeptAccess> OstStaffDepartmentAccess { get; set; }
     }
 }
