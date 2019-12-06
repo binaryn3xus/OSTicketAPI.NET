@@ -12,7 +12,7 @@ using OSTicketAPI.NET.Models;
 
 namespace OSTicketAPI.NET.Repositories
 {
-    public class TicketRepository : ITicketRepository<OstTicket>
+    public class TicketRepository : ITicketRepository<Ticket, OstTicket, TicketStatus>
     {
         private readonly OSTicketContext _osticketContext;
         private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ namespace OSTicketAPI.NET.Repositories
         /// </summary>
         /// <param name="expression">Expression to narrow down tickets in a search</param>
         /// <returns>Returns an IEnumerable of OstTickets</returns>
-        public async Task<IEnumerable<OstTicket>> GetTickets(Expression<Func<OstTicket, bool>> expression = null)
+        public async Task<IEnumerable<Ticket>> GetTickets(Expression<Func<OstTicket, bool>> expression = null)
         {
             var data = await GetQueryableTicketsAsync(expression).ConfigureAwait(false);
             return data.ToList();
@@ -56,7 +56,7 @@ namespace OSTicketAPI.NET.Repositories
         /// </summary>
         /// <param name="ticketId">Required ticket id</param>
         /// <returns>Returns an OstTicket object or null if it does not exist</returns>
-        public async Task<OstTicket> GetTicketByTicketId(int ticketId)
+        public async Task<Ticket> GetTicketByTicketId(int ticketId)
         {
             var data = await GetQueryableTicketsAsync(o => o.TicketId == ticketId).ConfigureAwait(false);
             var ticket = data.FirstOrDefault(o => o.TicketId == ticketId);
@@ -70,7 +70,7 @@ namespace OSTicketAPI.NET.Repositories
         /// </summary>
         /// <param name="ticketNumber">Required ticket number</param>
         /// <returns>Returns an OstTicket object or null if it does not exist</returns>
-        public async Task<OstTicket> GetTicketByTicketNumber(string ticketNumber)
+        public async Task<Ticket> GetTicketByTicketNumber(string ticketNumber)
         {
             var data = await GetQueryableTicketsAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
             var ticket = data.FirstOrDefault(o => o.Number == ticketNumber);
@@ -79,7 +79,7 @@ namespace OSTicketAPI.NET.Repositories
             return ticket;
         }
 
-        public Task<IEnumerable<OstTicket>> GetTicketsByUserId(int userId)
+        public Task<IEnumerable<Ticket>> GetTicketsByUserId(int userId)
         {
             if (userId == default)
                 throw new ArgumentNullException($"\"{userId}\" is not a valid user id");
@@ -87,32 +87,11 @@ namespace OSTicketAPI.NET.Repositories
             return GetTicketsByUserIdInternal(userId);
         }
 
-        private async Task<IEnumerable<OstTicket>> GetTicketsByUserIdInternal(int userId)
+        private async Task<IEnumerable<Ticket>> GetTicketsByUserIdInternal(int userId)
         {
             var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(userId)).ConfigureAwait(false);
             var ticketList = data.ToList();
             _logger.Debug("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, userId);
-            return ticketList;
-        }
-
-        public Task<IEnumerable<OstTicket>> GetTicketsByOstUser(OstUser user)
-        {
-            if (user?.OstUserAccount?.Username == null)
-                throw new ArgumentNullException($"Username not found in Type {user?.GetType()}");
-            return GetTicketsByOstUserInternal(user);
-        }
-
-        /// <summary>
-        /// Get all tickets for a certain user by OstUser
-        /// </summary>
-        /// <param name="user">OstUser</param>
-        /// <returns>Returns IEnumerable of OstTicket objects</returns>
-        public async Task<IEnumerable<OstTicket>> GetTicketsByOstUserInternal(OstUser user)
-        {
-
-            var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(user.Id)).ConfigureAwait(false);
-            var ticketList = data.ToList();
-            _logger.Debug("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, user.OstUserAccount.Username);
             return ticketList;
         }
 
@@ -122,7 +101,7 @@ namespace OSTicketAPI.NET.Repositories
         /// <param name="ticketNumber">Number of the ticket to update</param>
         /// <param name="ticket">Ticket object to update</param>
         /// <returns>The ticket object will be returned</returns>
-        public async Task<OstTicket> UpdateTicketById(int ticketNumber, OstTicket ticket)
+        public async Task<Ticket> UpdateTicketById(int ticketNumber, OstTicket ticket)
         {
             var dbTicket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.TicketId == ticketNumber).ConfigureAwait(false);
             _osticketContext.Entry(ticket).CurrentValues.SetValues(dbTicket);
@@ -136,7 +115,7 @@ namespace OSTicketAPI.NET.Repositories
         /// <param name="ticketNumber">Number of the ticket to update</param>
         /// <param name="ticket">Ticket object to update</param>
         /// <returns>The ticket object will be returned</returns>
-        public async Task<OstTicket> UpdateTicketByNumber(string ticketNumber, OstTicket ticket)
+        public async Task<Ticket> UpdateTicketByNumber(string ticketNumber, OstTicket ticket)
         {
             var dbTicket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
             _osticketContext.Entry(dbTicket).CurrentValues.SetValues(ticket);
@@ -144,7 +123,7 @@ namespace OSTicketAPI.NET.Repositories
             return null;
         }
 
-        private async Task<IEnumerable<OstTicket>> GetQueryableTicketsAsync(Expression<Func<OstTicket, bool>> expression)
+        private async Task<IEnumerable<Ticket>> GetQueryableTicketsAsync(Expression<Func<OstTicket, bool>> expression)
         {
             var ticketQuery = _osticketContext.OstTicket
                 .Include(o => o.OstUser)
@@ -167,11 +146,15 @@ namespace OSTicketAPI.NET.Repositories
 
             var tickets = ticketQuery.ToList();
 
+            //TODO Clean this up if at all possible because of the amount of time it would take to process hundreds of records
             foreach (var ticket in tickets)
             {
                 if (ticket.TopicId != 0)
                 {
                     ticket.OstHelpTopic = await _osticketContext.OstHelpTopic
+                        .Include(o => o.HelpTopicForms)
+                        .ThenInclude(o => o.OstForm)
+                        .ThenInclude(o => o.OstFormFields)
                         .SingleOrDefaultAsync(o => o.TopicId == ticket.TopicId).ConfigureAwait(false);
                 }
 
@@ -188,7 +171,9 @@ namespace OSTicketAPI.NET.Repositories
                 }
             }
 
-            return tickets.AsQueryable();
+            var mappedTickets = _mapper.Map<List<Ticket>>(tickets);
+
+            return mappedTickets.AsQueryable();
         }
     }
 }

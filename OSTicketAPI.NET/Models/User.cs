@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Models
 {
+    [DebuggerDisplay("{" + nameof(Name) + "}")]
     public class User
     {
         public int Id { get; set; }
