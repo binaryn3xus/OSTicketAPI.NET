@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Models;
 using OSTicketAPI.NET.Tests.Attributes;
 using OSTicketAPI.NET.Tests.Fixtures;

@@ -22,7 +22,6 @@ namespace OSTicketAPI.NET
             return services.AddSingleton<OSTicketService>();
         }
 
-        //TODO Update documentation on this change
         public static void AddOSTicketServices(this IServiceCollection services, IConfigurationSection customConfigurationSection = null)
         {
             using var sp = services.BuildServiceProvider();

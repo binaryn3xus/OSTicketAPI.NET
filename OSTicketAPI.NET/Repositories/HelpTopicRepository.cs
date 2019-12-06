@@ -62,7 +62,6 @@ namespace OSTicketAPI.NET.Repositories
         /// Get all Help Topics based on a certain Department
         /// </summary>
         /// <param name="departmentId">Id of the Department</param>
-        /// <param name="expression">Optional expression to be used if you want to narrow down the results more</param>
         /// <returns>Return an IEnumerable of OstHelpTopics that first matches Department Id then an expression, if provided</returns>
         public async Task<IEnumerable<HelpTopic>> GetHelpTopicsByDepartmentId(int departmentId)
         {

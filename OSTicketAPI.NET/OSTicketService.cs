@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +17,7 @@ namespace OSTicketAPI.NET
     {
         public OSTicketContext OstTicketContext { get; set; }
         public IDepartmentRepository<Department, OstDepartment> Departments { get; set; }
-        public IFormRepository<OstForm> Forms { get; set; }
         public IHelpTopicRepository<HelpTopic, OstHelpTopic> HelpTopics { get; set; }
-        public IListRepository<OstList> Lists { get; set; }
         public IStaffRepository<Staff, OstStaff> Staff { get; set; }
         public ITicketRepository<OstTicket> Tickets { get; set; }
         public IUserRepository<OstUser> Users { get; set; }
@@ -30,7 +29,7 @@ namespace OSTicketAPI.NET
                 throw new ArgumentException("OSTicketServiceOptions cannot be null", nameof(options));
 
             if (string.IsNullOrWhiteSpace(options.Value?.ConnectionString))
-                throw new ArgumentException("Connection string cannot be null or empty", nameof(options.Value.ConnectionString));
+                throw new NoNullAllowedException($"Connection string cannot be null or empty ({ nameof(options.Value.ConnectionString) })");
 
             var osticketContext = BuildOSTicketContext(options.Value.ConnectionString);
             OSTicketOfficialApi = new OSTicketOfficialApi(options.Value.BaseUrl, options.Value.ApiKey);
@@ -78,9 +77,7 @@ namespace OSTicketAPI.NET
         {
             var mapper = GetOSTicketAutoMapperInstance();
             Departments = new DepartmentRepository(osticketContext, mapper);
-            Forms = new FormRepository(osticketContext);
             HelpTopics = new HelpTopicRepository(osticketContext, mapper);
-            Lists = new ListRepository(osticketContext);
             Staff = new StaffRepository(osticketContext, mapper);
             Tickets = new TicketRepository(osticketContext, mapper);
             Users = new UserRepository(osticketContext);
