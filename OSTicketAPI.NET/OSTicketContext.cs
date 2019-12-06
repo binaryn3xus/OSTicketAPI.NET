@@ -394,7 +394,7 @@ namespace OSTicketAPI.NET
                     .HasForeignKey(e => e.DeptId);
 
                 entity.HasOne(e => e.Manager)
-                    .WithOne(e => e.DepartmentManagerOf);
+                    .WithMany(e => e.DepartmentManagerOf);
             });
 
             modelBuilder.Entity<OstDraft>(entity =>

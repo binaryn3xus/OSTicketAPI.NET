@@ -35,6 +35,7 @@ namespace OSTicketAPI.NET.Models
         public int AutoRefreshRate { get; set; }
         public string DefaultSignatureType { get; set; }
         public string DefaultPaperSize { get; set; }
+        public IEnumerable<Department> DepartmentManagerOf { get; set; }
         public Dictionary<string, object> Extra { get; set; }
         public Dictionary<string, int> Permissions { get; set; }
         public DateTime Created { get; set; }
