@@ -20,7 +20,7 @@ namespace OSTicketAPI.NET
         public IHelpTopicRepository<HelpTopic, OstHelpTopic> HelpTopics { get; set; }
         public IStaffRepository<Staff, OstStaff> Staff { get; set; }
         public ITicketRepository<OstTicket> Tickets { get; set; }
-        public IUserRepository<OstUser> Users { get; set; }
+        public IUserRepository<User, OstUser> Users { get; set; }
         public IOSTicketOfficialApi OSTicketOfficialApi { get; }
 
         public OSTicketService(IOptions<OSTicketServiceOptions> options)
@@ -80,7 +80,7 @@ namespace OSTicketAPI.NET
             HelpTopics = new HelpTopicRepository(osticketContext, mapper);
             Staff = new StaffRepository(osticketContext, mapper);
             Tickets = new TicketRepository(osticketContext, mapper);
-            Users = new UserRepository(osticketContext);
+            Users = new UserRepository(osticketContext, mapper);
         }
 
         private IMapper GetOSTicketAutoMapperInstance()

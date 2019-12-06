@@ -6,9 +6,9 @@ using OSTicketAPI.NET.DTO;
 
 namespace OSTicketAPI.NET.Interfaces
 {
-    public interface IUserRepository<T>
+    public interface IUserRepository<T, TExpression>
     {
-        Task<IEnumerable<T>> GetUsers(Expression<Func<T, bool>> expression = null);
+        Task<IEnumerable<T>> GetUsers(Expression<Func<TExpression, bool>> expression = null);
         Task<T> GetUserById(int id);
         Task<T> GetUserByEmail(string email);
         Task<T> GetUserByUsername(string username);
