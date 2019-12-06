@@ -19,7 +19,7 @@ namespace OSTicketAPI.NET
         public IDepartmentRepository<Department, OstDepartment> Departments { get; set; }
         public IHelpTopicRepository<HelpTopic, OstHelpTopic> HelpTopics { get; set; }
         public IStaffRepository<Staff, OstStaff> Staff { get; set; }
-        public ITicketRepository<OstTicket> Tickets { get; set; }
+        public ITicketRepository<Ticket, OstTicket, TicketStatus> Tickets { get; set; }
         public IUserRepository<User, OstUser> Users { get; set; }
         public IOSTicketOfficialApi OSTicketOfficialApi { get; }
 

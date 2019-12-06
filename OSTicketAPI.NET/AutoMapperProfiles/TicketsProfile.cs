@@ -19,8 +19,17 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
                 .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
                 .ForMember(dest => dest.Properties, opt => opt.MapFrom<TicketStatusPropertiesResolver>());
-        }
 
+            CreateMap<OstTicket, Ticket>()
+                .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
+                .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.Number))
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.OstUser))
+                .ForMember(dest => dest.Department, opt => opt.MapFrom(src => src.OstDepartment))
+                .ForMember(dest => dest.HelpTopic, opt => opt.MapFrom(src => src.OstHelpTopic))
+                .ForMember(dest => dest.Staff, opt => opt.MapFrom(src => src.OstStaff))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.OstTicketStatus))
+                .ForAllOtherMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        }
     }
 
     public class TicketStatusPropertiesResolver : IValueResolver<OstTicketStatus, TicketStatus, Dictionary<string, object>>
