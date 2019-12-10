@@ -20,6 +20,5 @@ namespace OSTicketAPI.NET.Entities
 
         public virtual OstForm OstForm { get; set; }
 
-        public virtual OstTicket OstTicket { get; set; }
     }
 }

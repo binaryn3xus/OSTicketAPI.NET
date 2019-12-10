@@ -25,6 +25,7 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Updated { get; set; }
         public DateTime Created { get; set; }
 
+        public virtual ICollection<OstTicket> OstTickets { get; set; }
         public virtual ICollection<OstStaff> OstStaff { get; set; }
         public virtual OstStaff Manager { get; set; }
     }

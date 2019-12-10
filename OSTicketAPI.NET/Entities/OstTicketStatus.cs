@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    [DebuggerDisplay("{Name,nq}")]
+    [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
     public class OstTicketStatus
     {
         public int Id { get; set; }
@@ -15,5 +16,7 @@ namespace OSTicketAPI.NET.Entities
         public string Properties { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        public virtual ICollection<OstTicket> OstTickets { get; set; }
     }
 }

@@ -130,45 +130,25 @@ namespace OSTicketAPI.NET.Repositories
                 .Include(o => o.OstTicketStatus)
                 .Include(o => o.OstDepartment)
                 .Include(o => o.OstSla)
-                .Include(o => o.OstThread)
-                .ThenInclude(o => o.OstThreadEntries)
-                .Include(o => o.OstThread)
-                .ThenInclude(o => o.OstThreadEvents)
-                .Include(o => o.OstFormEntry)
+                .Include(o => o.OstStaff)
+                .Include(o => o.OstTeam)
+                .Include(o => o.OstHelpTopic)
+                .ThenInclude(o => o.HelpTopicForms)
                 .ThenInclude(o => o.OstForm)
-                .Include(o => o.OstFormEntry)
-                .ThenInclude(o => o.OstFormEntryValues)
-                .ThenInclude(o => o.OstFormField)
+                .ThenInclude(o => o.OstFormFields)
                 .AsQueryable();
 
             if (expression != null)
                 ticketQuery = ticketQuery.Where(expression);
 
             var tickets = ticketQuery.ToList();
+            var ticketsIds = tickets.Select(e => e.TicketId);
+            var ticketAll = _osticketContext.OstTicket.Select(e => e.TicketId);
 
-            //TODO Clean this up if at all possible because of the amount of time it would take to process hundreds of records
-            foreach (var ticket in tickets)
+            var result = ticketAll.Where(p => ticketsIds.All(p2 => p2 != p));
+            if (result.Any())
             {
-                if (ticket.TopicId != 0)
-                {
-                    ticket.OstHelpTopic = await _osticketContext.OstHelpTopic
-                        .Include(o => o.HelpTopicForms)
-                        .ThenInclude(o => o.OstForm)
-                        .ThenInclude(o => o.OstFormFields)
-                        .SingleOrDefaultAsync(o => o.TopicId == ticket.TopicId).ConfigureAwait(false);
-                }
-
-                if (ticket.StaffId != 0)
-                {
-                    ticket.OstStaff = await _osticketContext.OstStaff
-                        .SingleOrDefaultAsync(o => o.StaffId == ticket.StaffId).ConfigureAwait(false);
-                }
-
-                if (ticket.TeamId != 0)
-                {
-                    ticket.OstTeam = await _osticketContext.OstTeam
-                        .SingleOrDefaultAsync(o => o.TeamId == ticket.TicketId).ConfigureAwait(false);
-                }
+                int fff = 2 + 3;
             }
 
             var mappedTickets = _mapper.Map<List<Ticket>>(tickets);

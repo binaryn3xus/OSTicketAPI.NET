@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using AutoMapper;
 using Newtonsoft.Json;
 using OSTicketAPI.NET.Entities;
@@ -28,6 +30,7 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.HelpTopic, opt => opt.MapFrom(src => src.OstHelpTopic))
                 .ForMember(dest => dest.Staff, opt => opt.MapFrom(src => src.OstStaff))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.OstTicketStatus))
+                .ForMember(dest => dest.FormFields, opt => opt.MapFrom<TicketFormFieldsResolver>())
                 .ForAllOtherMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
@@ -37,6 +40,15 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
         public Dictionary<string, object> Resolve(OstTicketStatus source, TicketStatus destination, Dictionary<string, object> destMember, ResolutionContext context)
         {
             return JsonConvert.DeserializeObject<Dictionary<string, object>>(source.Properties);
+        }
+    }
+
+    public class TicketFormFieldsResolver : IValueResolver<OstTicket, Ticket, Dictionary<FormField, object>>
+    {
+        public Dictionary<FormField, object> Resolve(OstTicket source, Ticket destination, Dictionary<FormField, object> destMember, ResolutionContext context)
+        {
+            //TODO Finish
+            return new Dictionary<FormField, object>();
         }
     }
 }

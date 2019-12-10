@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Models
@@ -13,6 +14,7 @@ namespace OSTicketAPI.NET.Models
         public Department Department { get; set; }
         public HelpTopic HelpTopic { get; set; }
         public Staff Staff { get; set; }
+        public Dictionary<FormField, object> FormFields { get; set; }
         public int SlaId { get; set; }
         public int TeamId { get; set; }
         public int LockId { get; set; }
