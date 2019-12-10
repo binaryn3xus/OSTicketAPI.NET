@@ -20,7 +20,6 @@ namespace OSTicketAPI.NET.Entities
         [InverseProperty("OstThread")]
         public virtual ICollection<OstThreadEvent> OstThreadEvents { get; set; }
 
-        [ForeignKey("ObjectId")]
         public virtual OstTicket OstTicket { get; set; }
     }
 }

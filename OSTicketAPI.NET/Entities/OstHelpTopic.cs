@@ -27,6 +27,7 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        public virtual IEnumerable<OstHelpTopicForm> HelpTopicForms { get; set; }
+        public virtual ICollection<OstTicket> OstTickets { get; set; }
+        public virtual ICollection<OstHelpTopicForm> HelpTopicForms { get; set; }
     }
 }

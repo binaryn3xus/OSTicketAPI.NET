@@ -1134,11 +1134,11 @@ namespace OSTicketAPI.NET
                     .HasColumnType("datetime");
 
                 entity.HasMany(e => e.OstFormFields)
-                    .WithOne(o => o.OstForm);
+                    .WithOne(e => e.OstForm);
 
                 entity.HasMany(e => e.OstFormEntries)
-                    .WithOne(o => o.OstForm)
-                    .HasForeignKey(o => o.FormId);
+                    .WithOne(e => e.OstForm)
+                    .HasForeignKey(e => e.FormId);
                 
                 entity.HasMany(e => e.OstHelpTopicForms)
                     .WithOne(e => e.OstForm)
@@ -1181,11 +1181,11 @@ namespace OSTicketAPI.NET
                     .HasColumnType("datetime");
 
                 entity.HasMany(e => e.OstFormEntryValues)
-                    .WithOne(o => o.OstFormEntry)
+                    .WithOne(e => e.OstFormEntry)
                     .HasForeignKey(e => e.EntryId);
 
-                entity.HasOne(o => o.OstForm)
-                    .WithMany(o => o.OstFormEntries)
+                entity.HasOne(e => e.OstForm)
+                    .WithMany(e => e.OstFormEntries)
                     .HasForeignKey(e => e.FormId);
             });
 
@@ -1209,7 +1209,7 @@ namespace OSTicketAPI.NET
                     .HasColumnType("int(11)");
 
                 entity.HasOne(e => e.OstFormField)
-                    .WithMany(o => o.OstFormEntryValues)
+                    .WithMany(e => e.OstFormEntryValues)
                     .HasForeignKey(e => e.FieldId);
             });
 
@@ -1260,7 +1260,7 @@ namespace OSTicketAPI.NET
                     .HasColumnType("datetime");
 
                 entity.HasOne(e => e.OstForm)
-                    .WithMany(o => o.OstFormFields)
+                    .WithMany(e => e.OstFormFields)
                     .HasForeignKey(e => e.FormId);
             });
 
@@ -2231,13 +2231,13 @@ namespace OSTicketAPI.NET
                     .HasColumnType("varchar(32)")
                     .HasDefaultValueSql("''");
 
-                entity.HasOne(o => o.OstDepartment)
+                entity.HasOne(e => e.OstDepartment)
                     .WithMany(o=>o.OstStaff)
                     .HasForeignKey(o=>o.DeptId);
 
-                entity.HasMany(o => o.OstStaffDepartmentAccess)
-                    .WithOne(o => o.Staff)
-                    .HasForeignKey(o => o.StaffId);
+                entity.HasMany(e => e.OstStaffDepartmentAccess)
+                    .WithOne(e => e.Staff)
+                    .HasForeignKey(e => e.StaffId);
             });
 
             modelBuilder.Entity<OstStaffDeptAccess>(entity =>
@@ -2877,10 +2877,37 @@ namespace OSTicketAPI.NET
                     .HasColumnName("user_id")
                     .HasDefaultValueSql("'0'");
 
-                entity.HasOne(e => e.OstFormEntry)
-                    .WithOne(o => o.OstTicket)
-                    .IsRequired(false)
-                    .HasForeignKey<OstFormEntry>(f => f.ObjectId);
+                entity.HasOne(e => e.OstStaff)
+                    .WithMany(e => e.OstTickets)
+                    .HasForeignKey(e => e.StaffId)
+                    .IsRequired(false);
+
+                entity.HasOne(e => e.OstSla)
+                    .WithMany(e => e.OstTickets)
+                    .HasForeignKey(e => e.SlaId)
+                    .IsRequired(false);
+
+                entity.HasOne(e => e.OstUser)
+                    .WithMany(e => e.OstTickets)
+                    .HasForeignKey(e => e.UserId);
+
+                entity.HasOne(e => e.OstHelpTopic)
+                    .WithMany(e => e.OstTickets)
+                    .HasForeignKey(e => e.TopicId)
+                    .IsRequired(false);
+
+                entity.HasOne(e => e.OstTicketStatus)
+                    .WithMany(e => e.OstTickets)
+                    .HasForeignKey(e => e.StatusId);
+
+                entity.HasOne(e => e.OstDepartment)
+                    .WithMany(e => e.OstTickets)
+                    .HasForeignKey(e => e.DeptId);
+
+                entity.HasOne(e => e.OstTeam)
+                    .WithMany(e => e.OstTickets)
+                    .HasForeignKey(e => e.TeamId)
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<OstTicketCdata>(entity =>

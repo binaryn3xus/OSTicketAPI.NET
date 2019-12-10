@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
@@ -13,10 +13,10 @@ namespace OSTicketAPI.NET.Entities
         public int UserEmailId { get; set; }
         public int StatusId { get; set; }
         public int DeptId { get; set; }
-        public int SlaId { get; set; }
-        public int TopicId { get; set; }
-        public int StaffId { get; set; }
-        public int TeamId { get; set; }
+        public int? SlaId { get; set; }
+        public int? TopicId { get; set; }
+        public int? StaffId { get; set; }
+        public int? TeamId { get; set; }
         public int EmailId { get; set; }
         public int LockId { get; set; }
         public int Flags { get; set; }
@@ -33,30 +33,12 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        [ForeignKey("UserId")]
+        public virtual OstSla OstSla { get; set; }
+        public virtual OstStaff OstStaff { get; set; }
         public OstUser OstUser { get; set; }
-
-        [ForeignKey("StatusId")]
-        public OstTicketStatus OstTicketStatus { get; set; }
-
-        [ForeignKey("DeptId")]
-        public OstDepartment OstDepartment { get; set; }
-
-        [ForeignKey("SlaId")]
-        public OstSla OstSla { get; set; }
-
-        [ForeignKey("TopicId")]
         public OstHelpTopic OstHelpTopic { get; set; }
-
-        [ForeignKey("StaffId")]
-        public OstStaff OstStaff { get; set; }
-
-        [ForeignKey("TeamId")]
+        public OstTicketStatus OstTicketStatus { get; set; }
+        public OstDepartment OstDepartment { get; set; }
         public OstTeam OstTeam { get; set; }
-
-        [InverseProperty("OstTicket")]
-        public OstThread OstThread { get; set; }
-
-        public virtual OstFormEntry OstFormEntry { get; set; }
     }
 }
