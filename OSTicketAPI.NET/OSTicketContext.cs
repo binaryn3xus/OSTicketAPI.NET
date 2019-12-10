@@ -2754,7 +2754,7 @@ namespace OSTicketAPI.NET
                 entity.HasIndex(e => e.DeptId)
                     .HasName("dept_id");
 
-                entity.HasIndex(e => e.Duedate)
+                entity.HasIndex(e => e.DueDate)
                     .HasName("duedate");
 
                 entity.HasIndex(e => e.SlaId)
@@ -2789,7 +2789,7 @@ namespace OSTicketAPI.NET
                     .HasColumnName("dept_id")
                     .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.Duedate)
+                entity.Property(e => e.DueDate)
                     .HasColumnName("duedate")
                     .HasColumnType("datetime");
 
@@ -2797,7 +2797,7 @@ namespace OSTicketAPI.NET
                     .HasColumnName("email_id")
                     .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.EstDuedate)
+                entity.Property(e => e.EstDueDate)
                     .HasColumnName("est_duedate")
                     .HasColumnType("datetime");
 
@@ -2811,15 +2811,15 @@ namespace OSTicketAPI.NET
                     .HasColumnType("varchar(64)")
                     .HasDefaultValueSql("''");
 
-                entity.Property(e => e.Isanswered)
+                entity.Property(e => e.IsAnswered)
                     .HasColumnName("isanswered")
                     .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.Isoverdue)
+                entity.Property(e => e.IsOverdue)
                     .HasColumnName("isoverdue")
                     .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.Lastupdate)
+                entity.Property(e => e.LastUpdate)
                     .HasColumnName("lastupdate")
                     .HasColumnType("datetime");
 
