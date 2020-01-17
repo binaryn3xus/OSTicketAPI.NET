@@ -142,14 +142,6 @@ namespace OSTicketAPI.NET.Repositories
                 ticketQuery = ticketQuery.Where(expression);
 
             var tickets = ticketQuery.ToList();
-            var ticketsIds = tickets.Select(e => e.TicketId);
-            var ticketAll = _osticketContext.OstTicket.Select(e => e.TicketId);
-
-            var result = ticketAll.Where(p => ticketsIds.All(p2 => p2 != p));
-            if (result.Any())
-            {
-                int fff = 2 + 3;
-            }
 
             var mappedTickets = _mapper.Map<List<Ticket>>(tickets);
 

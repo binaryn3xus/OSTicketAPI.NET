@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using OSTicketAPI.NET.Tests.Attributes;
 using OSTicketAPI.NET.Tests.Fixtures;
@@ -20,11 +19,19 @@ namespace OSTicketAPI.NET.Tests.Repositories
         }
 
         [RunnableInDebugOnly]
-        public void TicketRepository_GetTickets_ShouldBeAbleToGetAllTickets()
+        public void TicketRepository_GetTickets_EnsureTicketsAreNotBeingDropped()
         {
             var tickets = _fixture.OSTicketService.Tickets.GetTickets().Result.OrderBy(o => o.Number).ToList();
             _testOutputHelper.WriteLine("Current ticket count: {0}", tickets);
             Assert.NotEmpty(tickets);
+        }
+
+        [RunnableInDebugOnly]
+        public async Task TicketRepository_GetTickets_ShouldBeGettingAllTickets()
+        {
+            var rawDbTickets = _fixture.OSTicketService.OstTicketContext.OstTicket.Count();
+            var processedTickets = await _fixture.OSTicketService.Tickets.GetTickets();
+            Assert.Equal(rawDbTickets, processedTickets.Count());
         }
 
         [RunnableInDebugOnly]
