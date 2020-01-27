@@ -20,6 +20,6 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Updated { get; set; }
 
         public virtual OstForm OstForm { get; set; }
-        public virtual ICollection<OstFormEntryValues> OstFormEntryValues { get; set; }
+        public virtual ICollection<OstFormEntryValue> OstFormEntryValues { get; set; }
     }
 }

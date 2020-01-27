@@ -9,6 +9,7 @@ using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
 using OSTicketAPI.NET.Logging;
 using OSTicketAPI.NET.Models;
+using Z.EntityFramework.Plus;
 
 namespace OSTicketAPI.NET.Repositories
 {
@@ -125,27 +126,32 @@ namespace OSTicketAPI.NET.Repositories
 
         private async Task<IEnumerable<Ticket>> GetQueryableTicketsAsync(Expression<Func<OstTicket, bool>> expression)
         {
-            var ticketQuery = _osticketContext.OstTicket
-                .Include(o => o.OstUser)
-                .Include(o => o.OstTicketStatus)
-                .Include(o => o.OstDepartment)
-                .Include(o => o.OstSla)
-                .Include(o => o.OstStaff)
-                .Include(o => o.OstTeam)
-                .Include(o => o.OstHelpTopic)
-                .ThenInclude(o => o.HelpTopicForms)
-                .ThenInclude(o => o.OstForm)
-                .ThenInclude(o => o.OstFormFields)
-                .AsQueryable();
+            return await Task.Run(() =>
+            {
+                var ticketQuery = _osticketContext.OstTicket
+                    .IncludeFilter(o => o.OstUser)
+                    .IncludeFilter(o => o.OstTicketStatus)
+                    .IncludeFilter(o => o.OstDepartment)
+                    .IncludeFilter(o => o.OstSla)
+                    .IncludeFilter(o => o.OstStaff)
+                    .IncludeFilter(o => o.OstTeam)
+                    .IncludeFilter(o => o.OstHelpTopic)
+                    .IncludeFilter(o => o.OstHelpTopic.HelpTopicForms.Select(htf => htf))
+                    .IncludeFilter(o => o.OstHelpTopic.HelpTopicForms.Select(of => of.OstForm))
+                    .IncludeFilter(o => o.OstHelpTopic.HelpTopicForms.Select(of => of.OstForm).SelectMany(off => off.OstFormFields))
+                    .IncludeFilter(o => o.OstFormEntry.Where(e => e.ObjectType == "T"))
+                    .IncludeFilter(o => o.OstFormEntry.Where(e => e.ObjectType == "T").SelectMany(fe => fe.OstFormEntryValues))
+                    .AsQueryable();
 
-            if (expression != null)
-                ticketQuery = ticketQuery.Where(expression);
+                if (expression != null)
+                    ticketQuery = ticketQuery.Where(expression);
 
-            var tickets = ticketQuery.ToList();
+                var tickets = ticketQuery.ToList();
 
-            var mappedTickets = _mapper.Map<List<Ticket>>(tickets);
+                var mappedTickets = _mapper.Map<List<Ticket>>(tickets);
 
-            return mappedTickets.AsQueryable();
+                return mappedTickets.AsQueryable();
+            }).ConfigureAwait(false);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
@@ -34,10 +35,11 @@ namespace OSTicketAPI.NET.Entities
 
         public virtual OstSla OstSla { get; set; }
         public virtual OstStaff OstStaff { get; set; }
-        public OstUser OstUser { get; set; }
-        public OstHelpTopic OstHelpTopic { get; set; }
-        public OstTicketStatus OstTicketStatus { get; set; }
-        public OstDepartment OstDepartment { get; set; }
-        public OstTeam OstTeam { get; set; }
+        public virtual OstUser OstUser { get; set; }
+        public virtual OstHelpTopic OstHelpTopic { get; set; }
+        public virtual OstTicketStatus OstTicketStatus { get; set; }
+        public virtual OstDepartment OstDepartment { get; set; }
+        public virtual OstTeam OstTeam { get; set; }
+        public virtual ICollection<OstFormEntry> OstFormEntry { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using AutoMapper;
 using Newtonsoft.Json;
@@ -31,7 +30,7 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.Staff, opt => opt.MapFrom(src => src.OstStaff))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.OstTicketStatus))
                 .ForMember(dest => dest.FormFields, opt => opt.MapFrom<TicketFormFieldsResolver>())
-                .ForAllOtherMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllOtherMembers(opts => opts.Condition((_, __, srcMember) => srcMember != null));
         }
     }
 
@@ -43,12 +42,22 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
         }
     }
 
-    public class TicketFormFieldsResolver : IValueResolver<OstTicket, Ticket, Dictionary<FormField, object>>
+    public class TicketFormFieldsResolver : IValueResolver<OstTicket, Ticket, Dictionary<FormField, OstFormEntryValue>>
     {
-        public Dictionary<FormField, object> Resolve(OstTicket source, Ticket destination, Dictionary<FormField, object> destMember, ResolutionContext context)
+        public Dictionary<FormField, OstFormEntryValue> Resolve(OstTicket source, Ticket destination, Dictionary<FormField, OstFormEntryValue> destMember, ResolutionContext context)
         {
-            //TODO Finish
-            return new Dictionary<FormField, object>();
+            var formFieldDictionary = new Dictionary<FormField, OstFormEntryValue>();
+
+            foreach (var formEntry in source.OstFormEntry)
+            {
+                foreach (var formEntryValue in formEntry.OstFormEntryValues.Where(fe => fe.OstFormField != null))
+                {
+                    var formField = context.Mapper.Map<FormField>(formEntryValue.OstFormField);
+                    formFieldDictionary.Add(formField, formEntryValue);
+                }
+            }
+
+            return formFieldDictionary;
         }
     }
 }

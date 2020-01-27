@@ -31,18 +31,10 @@ namespace OSTicketAPI.NET.Repositories
         /// <returns>Returns an IEnumerable of OstForm that matches the expression</returns>
         public async Task<IEnumerable<HelpTopic>> GetHelpTopics(Expression<Func<OstHelpTopic, bool>> expression = null)
         {
-            try
-            {
                 var topics = await GetQueryableHelpTopicsAsync(expression).ConfigureAwait(false);
                 if (topics.Any())
                     _logger.Debug("Found {TopicCount} topics", topics.Count());
                 return topics;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, ex.Message);
-                return null;
-            }
         }
 
         /// <summary>

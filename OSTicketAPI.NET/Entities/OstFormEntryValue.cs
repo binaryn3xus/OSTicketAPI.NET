@@ -3,7 +3,7 @@
 namespace OSTicketAPI.NET.Entities
 {
     [DebuggerDisplay("{" + nameof(Value) + "}")]
-    public class OstFormEntryValues
+    public class OstFormEntryValue
     {
         public int EntryId { get; set; }
         public int FieldId { get; set; }

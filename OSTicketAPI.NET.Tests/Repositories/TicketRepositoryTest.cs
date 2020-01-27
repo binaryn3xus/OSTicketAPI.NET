@@ -19,18 +19,11 @@ namespace OSTicketAPI.NET.Tests.Repositories
         }
 
         [RunnableInDebugOnly]
-        public void TicketRepository_GetTickets_EnsureTicketsAreNotBeingDropped()
-        {
-            var tickets = _fixture.OSTicketService.Tickets.GetTickets().Result.OrderBy(o => o.Number).ToList();
-            _testOutputHelper.WriteLine("Current ticket count: {0}", tickets);
-            Assert.NotEmpty(tickets);
-        }
-
-        [RunnableInDebugOnly]
         public async Task TicketRepository_GetTickets_ShouldBeGettingAllTickets()
         {
             var rawDbTickets = _fixture.OSTicketService.OstTicketContext.OstTicket.Count();
-            var processedTickets = await _fixture.OSTicketService.Tickets.GetTickets();
+            var processedTickets = await _fixture.OSTicketService.Tickets.GetTickets().ConfigureAwait(false);
+            _testOutputHelper.WriteLine($"{rawDbTickets} DB Entries and {processedTickets.Count()} collected tickets");
             Assert.Equal(rawDbTickets, processedTickets.Count());
         }
 
@@ -54,7 +47,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
         public async Task TicketRepository_GetTickets_ShouldBeAbleToGetTicketData()
         {
             var ticketId = _fixture.OSTicketService.Tickets.GetTickets().Result.First().TicketId;
-            var tickets = await _fixture.OSTicketService.Tickets.GetTickets(o => o.TicketId == ticketId);
+            var tickets = await _fixture.OSTicketService.Tickets.GetTickets(o => o.TicketId == ticketId).ConfigureAwait(false);
             var ticket = tickets.FirstOrDefault();
             Assert.NotNull(ticket);
         }

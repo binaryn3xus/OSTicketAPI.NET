@@ -36,7 +36,7 @@ namespace OSTicketAPI.NET
         public virtual DbSet<OstFilterRule> OstFilterRule { get; set; }
         public virtual DbSet<OstForm> OstForm { get; set; }
         public virtual DbSet<OstFormEntry> OstFormEntry { get; set; }
-        public virtual DbSet<OstFormEntryValues> OstFormEntryValues { get; set; }
+        public virtual DbSet<OstFormEntryValue> OstFormEntryValues { get; set; }
         public virtual DbSet<OstFormField> OstFormField { get; set; }
         public virtual DbSet<OstGroup> OstGroup { get; set; }
         public virtual DbSet<OstHelpTopic> OstHelpTopic { get; set; }
@@ -1139,7 +1139,7 @@ namespace OSTicketAPI.NET
                 entity.HasMany(e => e.OstFormEntries)
                     .WithOne(e => e.OstForm)
                     .HasForeignKey(e => e.FormId);
-                
+
                 entity.HasMany(e => e.OstHelpTopicForms)
                     .WithOne(e => e.OstForm)
                     .HasForeignKey(e => e.FormId);
@@ -1189,7 +1189,7 @@ namespace OSTicketAPI.NET
                     .HasForeignKey(e => e.FormId);
             });
 
-            modelBuilder.Entity<OstFormEntryValues>(entity =>
+            modelBuilder.Entity<OstFormEntryValue>(entity =>
             {
                 entity.HasKey(e => new { e.EntryId, e.FieldId })
                     .HasName("PRIMARY");
@@ -2907,6 +2907,11 @@ namespace OSTicketAPI.NET
                 entity.HasOne(e => e.OstTeam)
                     .WithMany(e => e.OstTickets)
                     .HasForeignKey(e => e.TeamId)
+                    .IsRequired(false);
+
+                entity.HasMany(e => e.OstFormEntry)
+                    .WithOne(e => e.OstTicket)
+                    .HasForeignKey(e => e.ObjectId)
                     .IsRequired(false);
             });
 

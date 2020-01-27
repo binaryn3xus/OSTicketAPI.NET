@@ -83,16 +83,13 @@ namespace OSTicketAPI.NET
             Users = new UserRepository(osticketContext, mapper);
         }
 
-        private IMapper GetOSTicketAutoMapperInstance()
+        private static IMapper GetOSTicketAutoMapperInstance()
         {
             var profileClasses = typeof(OSTicketService).Assembly.GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(Profile)))
                 .Select(t => (Profile)Activator.CreateInstance(t));
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfiles(profileClasses);
-            });
+            var mappingConfig = new MapperConfiguration(mc => mc.AddProfiles(profileClasses));
 
             return mappingConfig.CreateMapper();
         }
