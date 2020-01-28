@@ -13,7 +13,7 @@ __This project is a work in progress__
 
 This library tries to make setup as painless as possible. Use the options that best fits your application.
 
-#### Option 1 - Using AppSettings.json
+#### Option 1 - Using AppSettings.json (Recommended)
 
 Update your `appsettings.json` to include the appropriate configuration.
 
@@ -56,7 +56,7 @@ serviceCollection.AddOSTicketServices(options =>
 });
 ```
 
-#### Option 3 - Create the raw OSTicketService object
+#### Option 3 - Create the raw OSTicketService object (Warning)
 
 In the event that you dont want to use one of the other methods available, you can simply initialize the `OSTicketService` yourself.
 
@@ -64,6 +64,8 @@ In the event that you dont want to use one of the other methods available, you c
 new OSTicketService(DatabaseConnectionString,
     new OSTicketOfficialApi(BaseUrl, ApiKey))
 ```
+
+*Warning: This method has not been fully tested since Dependancy Injection is the preferred method but theoretically it should work.*
 
 *Remember to add it to your dependancy injection if you are using it*
 
@@ -81,3 +83,4 @@ It has been tested on the versions listed below:
 | --- | ----------- |
 | v1.12 | a076918 |
 | v1.12.2 | a5d898b |
+| v1.12.5 | 933bb1f |
