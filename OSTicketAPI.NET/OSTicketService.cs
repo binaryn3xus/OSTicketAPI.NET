@@ -77,7 +77,7 @@ namespace OSTicketAPI.NET
         {
             var mapper = GetOSTicketAutoMapperInstance();
             Departments = new DepartmentRepository(osticketContext, mapper);
-            HelpTopics = new HelpTopicRepository(osticketContext, mapper);
+            HelpTopics = new HelpTopicRepository(osticketContext,  mapper);
             Staff = new StaffRepository(osticketContext, mapper);
             Tickets = new TicketRepository(osticketContext, mapper);
             Users = new UserRepository(osticketContext, mapper);

@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
-using OSTicketAPI.NET.Logging;
 using OSTicketAPI.NET.Models;
 
 namespace OSTicketAPI.NET.Repositories
@@ -16,11 +16,12 @@ namespace OSTicketAPI.NET.Repositories
     {
         private readonly OSTicketContext _osticketContext;
         private readonly IMapper _mapper;
-        private readonly ILog _logger = LogProvider.For<HelpTopicRepository>();
+        private readonly ILogger _logger;
 
-        public HelpTopicRepository(OSTicketContext osticketContext, IMapper mapper)
+        public HelpTopicRepository(OSTicketContext osticketContext, IMapper mapper, ILogger<HelpTopicRepository> logger = null)
         {
             _osticketContext = osticketContext;
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -33,7 +34,7 @@ namespace OSTicketAPI.NET.Repositories
         {
                 var topics = await GetQueryableHelpTopicsAsync(expression).ConfigureAwait(false);
                 if (topics.Any())
-                    _logger.Debug("Found {TopicCount} topics", topics.Count());
+                    _logger?.LogDebug("Found {TopicCount} topics", topics.Count());
                 return topics;
         }
 
@@ -46,7 +47,7 @@ namespace OSTicketAPI.NET.Repositories
         {
             var topics = await GetQueryableHelpTopicsAsync(o => o.TopicId == topicId).ConfigureAwait(false);
             var topic = topics.FirstOrDefault(o => o.TopicId == topicId);
-            _logger.Debug("Topic Id: {TopicId} (Found: {FoundStatus})", topicId, topic != null);
+            _logger?.LogDebug("Topic Id: {TopicId} (Found: {FoundStatus})", topicId, topic != null);
             return topic;
         }
 
@@ -59,7 +60,7 @@ namespace OSTicketAPI.NET.Repositories
         {
             var topics = await GetQueryableHelpTopicsAsync(o => o.DeptId == departmentId).ConfigureAwait(false);
 
-            _logger.Debug("{NumberOfTopicsFound} topics found for Department Id {DepartmentId}", topics.Count(), departmentId);
+            _logger?.LogDebug("{NumberOfTopicsFound} topics found for Department Id {DepartmentId}", topics.Count(), departmentId);
             return topics;
         }
 

@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
-using OSTicketAPI.NET.Logging;
 using OSTicketAPI.NET.Models;
 
 namespace OSTicketAPI.NET.Repositories
@@ -16,11 +16,12 @@ namespace OSTicketAPI.NET.Repositories
     {
         private readonly OSTicketContext _osticketContext;
         private readonly IMapper _mapper;
-        private readonly ILog _logger = LogProvider.For<StaffRepository>();
+        private readonly ILogger _logger;
 
-        public StaffRepository(OSTicketContext osticketContext, IMapper mapper)
+        public StaffRepository(OSTicketContext osticketContext, IMapper mapper, ILogger<StaffRepository> logger = null)
         {
             _osticketContext = osticketContext;
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -46,9 +47,9 @@ namespace OSTicketAPI.NET.Repositories
             var staff = staffMembers.FirstOrDefault();
 
             if (staff != null)
-                _logger.Debug("{Username} found using the email address of {EmailAddress}", staff.Username, email);
+                _logger?.LogDebug("{Username} found using the email address of {EmailAddress}", staff.Username, email);
             else
-                _logger.Warn("Unable to find a staff member with the email of {EmailAddress}", email);
+                _logger?.LogWarning("Unable to find a staff member with the email of {EmailAddress}", email);
 
             return staff;
         }
@@ -64,9 +65,9 @@ namespace OSTicketAPI.NET.Repositories
             var staff = staffMembers.FirstOrDefault();
 
             if (staff != null)
-                _logger.Debug("{UserName} found using the Id of {UserId}", staff.Username, id);
+                _logger?.LogDebug("{UserName} found using the Id of {UserId}", staff.Username, id);
             else
-                _logger.Warn("Unable to find a staff member with the Id of {UserId}", id);
+                _logger?.LogWarning("Unable to find a staff member with the Id of {UserId}", id);
 
             return staff;
         }
@@ -82,9 +83,9 @@ namespace OSTicketAPI.NET.Repositories
 
             var staffMember = staff.FirstOrDefault();
             if (staffMember != null)
-                _logger.Debug("{UserName} found using the username of {Username}", staffMember.Username, username);
+                _logger?.LogDebug("{UserName} found using the username of {Username}", staffMember.Username, username);
             else
-                _logger.Warn("Unable to find a staff member with the username of {Username}", username);
+                _logger?.LogWarning("Unable to find a staff member with the username of {Username}", username);
 
             return staffMember;
         }

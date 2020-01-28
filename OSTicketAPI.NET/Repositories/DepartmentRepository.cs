@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
-using OSTicketAPI.NET.Logging;
 using OSTicketAPI.NET.Models;
 
 namespace OSTicketAPI.NET.Repositories
@@ -16,11 +16,12 @@ namespace OSTicketAPI.NET.Repositories
     {
         private readonly OSTicketContext _osticketContext;
         private readonly IMapper _mapper;
-        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
+        private readonly ILogger _logger;
 
-        public DepartmentRepository(OSTicketContext osticketContext, IMapper mapper)
+        public DepartmentRepository(OSTicketContext osticketContext, IMapper mapper, ILogger<DepartmentRepository> logger = null)
         {
             _osticketContext = osticketContext;
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -45,7 +46,7 @@ namespace OSTicketAPI.NET.Repositories
             var data = await GetQueryableDepartmentsAsync(o => o.Id == id).ConfigureAwait(false);
             var department = data.FirstOrDefault(o => o.Id == id);
             if (department != null)
-                _logger.Debug("Found Department: '{TicketId}'", department.Name);
+                _logger?.LogDebug("Found Department: '{TicketId}'", department.Name);
             return department;
         }
 
@@ -56,7 +57,7 @@ namespace OSTicketAPI.NET.Repositories
                 var deptQuery = _osticketContext.OstDepartment
                 .Include(o => o.OstStaff)
                 .AsQueryable();
-                
+
                 if (expression != null)
                     deptQuery = deptQuery.Where(expression);
 

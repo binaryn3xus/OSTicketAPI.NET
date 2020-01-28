@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
-using OSTicketAPI.NET.Logging;
 using OSTicketAPI.NET.Models;
 using Z.EntityFramework.Plus;
 
@@ -17,11 +17,12 @@ namespace OSTicketAPI.NET.Repositories
     {
         private readonly OSTicketContext _osticketContext;
         private readonly IMapper _mapper;
-        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
+        private readonly ILogger<TicketRepository> _logger;
 
-        public TicketRepository(OSTicketContext osticketContext, IMapper mapper)
+        public TicketRepository(OSTicketContext osticketContext, IMapper mapper, ILogger<TicketRepository> logger = null)
         {
             _osticketContext = osticketContext;
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -62,7 +63,7 @@ namespace OSTicketAPI.NET.Repositories
             var data = await GetQueryableTicketsAsync(o => o.TicketId == ticketId).ConfigureAwait(false);
             var ticket = data.FirstOrDefault(o => o.TicketId == ticketId);
             if (ticket != null)
-                _logger.Debug("Found {TicketId}", ticket.TicketId);
+                _logger?.LogDebug("Found {TicketId}", ticket.TicketId);
             return ticket;
         }
 
@@ -76,7 +77,7 @@ namespace OSTicketAPI.NET.Repositories
             var data = await GetQueryableTicketsAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
             var ticket = data.FirstOrDefault(o => o.Number == ticketNumber);
             if (ticket != null)
-                _logger.Debug("Found {TicketId}", ticket.TicketId);
+                _logger?.LogDebug("Found {TicketId}", ticket.TicketId);
             return ticket;
         }
 
@@ -92,7 +93,7 @@ namespace OSTicketAPI.NET.Repositories
         {
             var data = await GetQueryableTicketsAsync(o => o.UserId.Equals(userId)).ConfigureAwait(false);
             var ticketList = data.ToList();
-            _logger.Debug("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, userId);
+            _logger?.LogDebug("Found {TicketCount} tickets for User ID {userId}", ticketList.Count, userId);
             return ticketList;
         }
 
