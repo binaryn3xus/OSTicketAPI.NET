@@ -30,11 +30,11 @@ namespace OSTicketAPI.NET.Helpers
                     return $"Ticket has been claimed by {threadEvent.Username}";
                 case "add":
                     var add = data["add"].First.First.Children().ToList();
-                    var add1 = add[0].Children().ToList().First();
+                    var add1 = add[0].Children().First();
                     return $"Added \"{add1}\" as a ticket coordinator";
                 case "del":
                     var del = data["del"].First.First.Children().ToList();
-                    var del1 = del[0].Children().ToList().First();
+                    var del1 = del[0].Children().First();
                     return $"Removed \"{del1}\" as a ticket coordinator";
                 case "topic_id":
                     return $" {threadEvent.Username} changed the topic of the ticket";

@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Data;
+using System.Linq;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MySql.Data.MySqlClient;
 using OSTicketAPI.NET.DTO;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
+using OSTicketAPI.NET.Models;
 using OSTicketAPI.NET.Repositories;
 
 namespace OSTicketAPI.NET
@@ -12,12 +16,11 @@ namespace OSTicketAPI.NET
     public class OSTicketService
     {
         public OSTicketContext OstTicketContext { get; set; }
-        public IDepartmentRepository<OstDepartment> Departments { get; set; }
-        public IFormRepository<OstForm> Forms { get; set; }
-        public IHelpTopicRepository<OstHelpTopic> HelpTopics { get; set; }
-        public IListRepository<OstList> Lists { get; set; }
-        public ITicketRepository<OstTicket> Tickets { get; set; }
-        public IUserRepository<OstUser> Users { get; set; }
+        public IDepartmentRepository<Department, OstDepartment> Departments { get; set; }
+        public IHelpTopicRepository<HelpTopic, OstHelpTopic> HelpTopics { get; set; }
+        public IStaffRepository<Staff, OstStaff> Staff { get; set; }
+        public ITicketRepository<Ticket, OstTicket, TicketStatus> Tickets { get; set; }
+        public IUserRepository<User, OstUser> Users { get; set; }
         public IOSTicketOfficialApi OSTicketOfficialApi { get; }
 
         public OSTicketService(IOptions<OSTicketServiceOptions> options)
@@ -26,11 +29,12 @@ namespace OSTicketAPI.NET
                 throw new ArgumentException("OSTicketServiceOptions cannot be null", nameof(options));
 
             if (string.IsNullOrWhiteSpace(options.Value?.ConnectionString))
-                throw new ArgumentException("Connection string cannot be null or empty", nameof(options.Value.ConnectionString));
+                throw new NoNullAllowedException($"Connection string cannot be null or empty ({ nameof(options.Value.ConnectionString) })");
 
             var osticketContext = BuildOSTicketContext(options.Value.ConnectionString);
             OSTicketOfficialApi = new OSTicketOfficialApi(options.Value.BaseUrl, options.Value.ApiKey);
             OstTicketContext = osticketContext;
+            GetOSTicketAutoMapperInstance();
             InitializeRepositories(osticketContext);
         }
 
@@ -71,12 +75,23 @@ namespace OSTicketAPI.NET
 
         private void InitializeRepositories(OSTicketContext osticketContext)
         {
-            Departments = new DepartmentRepository(osticketContext);
-            Forms = new FormRepository(osticketContext);
-            HelpTopics = new HelpTopicRepository(osticketContext);
-            Lists = new ListRepository(osticketContext);
-            Tickets = new TicketRepository(osticketContext);
-            Users = new UserRepository(osticketContext);
+            var mapper = GetOSTicketAutoMapperInstance();
+            Departments = new DepartmentRepository(osticketContext, mapper);
+            HelpTopics = new HelpTopicRepository(osticketContext,  mapper);
+            Staff = new StaffRepository(osticketContext, mapper);
+            Tickets = new TicketRepository(osticketContext, mapper);
+            Users = new UserRepository(osticketContext, mapper);
+        }
+
+        private static IMapper GetOSTicketAutoMapperInstance()
+        {
+            var profileClasses = typeof(OSTicketService).Assembly.GetTypes()
+                .Where(t => t.IsSubclassOf(typeof(Profile)))
+                .Select(t => (Profile)Activator.CreateInstance(t));
+
+            var mappingConfig = new MapperConfiguration(mc => mc.AddProfiles(profileClasses));
+
+            return mappingConfig.CreateMapper();
         }
 
         private static OSTicketContext BuildOSTicketContext(string connectionString)

@@ -7,5 +7,8 @@
         public int FormId { get; set; }
         public int Sort { get; set; }
         public string Extra { get; set; }
+
+        public virtual OstHelpTopic OstHelpTopic { get; set; }
+        public virtual OstForm OstForm { get; set; }
     }
 }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace OSTicketAPI.NET.Entities
+namespace OSTicketAPI.NET.Models
 {
     [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
-    public class OstDepartment
+    public class Department
     {
         public int Id { get; set; }
         public int? Pid { get; set; }
@@ -22,11 +22,9 @@ namespace OSTicketAPI.NET.Entities
         public sbyte TicketAutoResponse { get; set; }
         public sbyte MessageAutoResponse { get; set; }
         public string Path { get; set; }
+        public Staff Manager { get; set; }
+        public IEnumerable<Staff> StaffMembers { get; set; }
         public DateTime Updated { get; set; }
         public DateTime Created { get; set; }
-
-        public virtual ICollection<OstTicket> OstTickets { get; set; }
-        public virtual ICollection<OstStaff> OstStaff { get; set; }
-        public virtual OstStaff Manager { get; set; }
     }
 }

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace OSTicketAPI.NET.Entities
+namespace OSTicketAPI.NET.Models
 {
-    [DebuggerDisplay("{Lastname,nq}, {Firstname,nq}")]
-    public class OstStaff
+    [DebuggerDisplay("{" + nameof(Username) + "}")]
+    public class Staff
     {
         public int StaffId { get; set; }
         public int DeptId { get; set; }
@@ -35,16 +35,12 @@ namespace OSTicketAPI.NET.Entities
         public int AutoRefreshRate { get; set; }
         public string DefaultSignatureType { get; set; }
         public string DefaultPaperSize { get; set; }
-        public string Extra { get; set; }
-        public string Permissions { get; set; }
+        public IEnumerable<Department> DepartmentManagerOf { get; set; }
+        public Dictionary<string, object> Extra { get; set; }
+        public Dictionary<string, int> Permissions { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Lastlogin { get; set; }
         public DateTime? Passwdreset { get; set; }
         public DateTime Updated { get; set; }
-
-        public virtual ICollection<OstTicket> OstTickets { get; set; }
-        public virtual OstDepartment OstDepartment { get; set; }
-        public virtual ICollection<OstDepartment> DepartmentManagerOf { get; set; }
-        public virtual ICollection<OstStaffDeptAccess> OstStaffDepartmentAccess { get; set; }
     }
 }

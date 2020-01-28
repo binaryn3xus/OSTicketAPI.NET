@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
@@ -25,5 +26,8 @@ namespace OSTicketAPI.NET.Entities
         public string Notes { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
+
+        public virtual ICollection<OstTicket> OstTickets { get; set; }
+        public virtual ICollection<OstHelpTopicForm> HelpTopicForms { get; set; }
     }
 }

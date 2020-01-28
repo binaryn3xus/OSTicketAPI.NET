@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using OSTicketAPI.NET.Entities;
+using OSTicketAPI.NET.Models;
 using OSTicketAPI.NET.Tests.Attributes;
 using OSTicketAPI.NET.Tests.Fixtures;
 using Xunit;
@@ -25,7 +25,7 @@ namespace OSTicketAPI.NET.Tests.Repositories
             foreach (var department in departments)
             {
                 _testOutputHelper.WriteLine(department.Name);
-                foreach (var staff in department.OstStaff)
+                foreach (var staff in department.StaffMembers)
                     _testOutputHelper.WriteLine("--{0}, {1}", staff.Lastname, staff.Firstname);
             }
 
@@ -36,7 +36,8 @@ namespace OSTicketAPI.NET.Tests.Repositories
         public void GetDepartments_ShouldReturnADepartmentWithAValidManagerObject()
         {
             var departments = _fixture.OSTicketService.Departments.GetDepartments().Result.ToList();
-            Assert.Equal(typeof(OstStaff), departments[0].Manager.GetType());
+            Assert.NotNull(departments[0].Manager);
+            Assert.Equal(typeof(Staff), departments[0].Manager.GetType());
         }
 
         [RunnableInDebugOnly]

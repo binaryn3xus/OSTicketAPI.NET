@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using OSTicketAPI.NET.Tests.Attributes;
 using OSTicketAPI.NET.Tests.Fixtures;
@@ -20,48 +19,45 @@ namespace OSTicketAPI.NET.Tests.Repositories
         }
 
         [RunnableInDebugOnly]
-        public void TicketRepository_GetTickets_ShouldBeAbleToGetAllTickets()
+        public async Task TicketRepository_GetTickets_ShouldBeGettingAllTickets()
         {
-            var tickets = _fixture.OSTicketService.Tickets.GetTickets().Result.OrderBy(o => o.Number).ToList();
-            _testOutputHelper.WriteLine("Current ticket count: {0}", tickets);
-            Assert.NotEmpty(tickets);
+            var rawDbTickets = _fixture.OSTicketService.OstTicketContext.OstTicket.Count();
+            var processedTickets = await _fixture.OSTicketService.Tickets.GetTickets().ConfigureAwait(false);
+            _testOutputHelper.WriteLine($"{rawDbTickets} DB Entries and {processedTickets.Count()} collected tickets");
+            Assert.Equal(rawDbTickets, processedTickets.Count());
         }
 
         [RunnableInDebugOnly]
-        public async Task TicketRepository_GetTickets_ShouldBePopulatedWithAllRelatedTableData()
+        public async Task TicketRepository_GetTickets_ShouldBeAbleToGetASingleTicketId()
         {
-            //Might need to change this number when testing
-            const int ticketId = 142;
-            var tickets = await _fixture.OSTicketService.Tickets.GetTickets(o => o.TicketId == ticketId);
+            var ticket = _fixture.OSTicketService.Tickets.GetTickets().Result.First();
+            var singleTicket = await _fixture.OSTicketService.Tickets.GetTicketByTicketId(ticket.TicketId).ConfigureAwait(false);
+            Assert.NotNull(singleTicket);
+        }
+
+        [RunnableInDebugOnly]
+        public async Task TicketRepository_GetTickets_ShouldBeAbleToGetASingleTicketNumber()
+        {
+            var ticket = _fixture.OSTicketService.Tickets.GetTickets().Result.First();
+            var singleTicket = await _fixture.OSTicketService.Tickets.GetTicketByTicketNumber(ticket.Number).ConfigureAwait(false);
+            Assert.NotNull(singleTicket);
+        }
+
+        [RunnableInDebugOnly]
+        public async Task TicketRepository_GetTickets_ShouldBeAbleToGetTicketData()
+        {
+            var ticketId = _fixture.OSTicketService.Tickets.GetTickets().Result.First().TicketId;
+            var tickets = await _fixture.OSTicketService.Tickets.GetTickets(o => o.TicketId == ticketId).ConfigureAwait(false);
             var ticket = tickets.FirstOrDefault();
             Assert.NotNull(ticket);
-            Assert.NotNull(ticket.OstFormEntry);
-            Assert.NotNull(ticket.OstDepartment);
-            Assert.NotNull(ticket.OstHelpTopic);
-            Assert.NotNull(ticket.OstSla);
-            Assert.NotNull(ticket.OstThread);
-            Assert.NotNull(ticket.OstTicketStatus);
-            Assert.NotNull(ticket.OstUser);
         }
 
         [RunnableInDebugOnly]
-        public async Task TicketRepository_GetTickets_ShouldBeAbleToFindTicketsByAFormField()
+        public void TicketRepository_GetTickets_TicketServiceCountShouldMatchDatabaseCount()
         {
-            //Might need to change this number when testing
-            var tickets = await _fixture.OSTicketService.Tickets.GetTickets();
-            var customFormItemName = "legacyTicketNumber";
-            var foundValues = false;
-            foreach (var ticket in tickets)
-            {
-                if (!ticket.OstFormEntry.OstFormEntryValues.Any(o => o.OstFormField.Name.Equals(customFormItemName, StringComparison.OrdinalIgnoreCase)))
-                    continue;
-
-                var formEntryValue = ticket.OstFormEntry.OstFormEntryValues
-                    .FirstOrDefault(o => o.OstFormField.Name.Equals(customFormItemName, StringComparison.OrdinalIgnoreCase));
-                _testOutputHelper.WriteLine("Ticket #{0} has a {1} of {2}", ticket.Number, customFormItemName, formEntryValue?.Value);
-                foundValues = true;
-            }
-            Assert.True(foundValues);
+            var dbTicketCount = _fixture.OSTicketService.OstTicketContext.OstTicket.Count();
+            var serviceTicketCount = _fixture.OSTicketService.Tickets.GetTickets().Result.Count();
+            Assert.Equal(dbTicketCount, serviceTicketCount);
         }
 
         [RunnableInDebugOnly]

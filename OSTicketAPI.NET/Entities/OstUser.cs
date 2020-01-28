@@ -16,8 +16,7 @@ namespace OSTicketAPI.NET.Entities
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        [InverseProperty("OstUser")]
-        public ICollection<OstTicket> Tickets { get; set; }
+        public ICollection<OstTicket> OstTickets { get; set; }
 
         [ForeignKey("OrgId")]
         public virtual OstOrganization OstOrganization { get; set; }

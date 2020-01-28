@@ -3,21 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OSTicketAPI.NET.Entities;
 using OSTicketAPI.NET.Interfaces;
-using OSTicketAPI.NET.Logging;
+using OSTicketAPI.NET.Models;
 
 namespace OSTicketAPI.NET.Repositories
 {
-    public class DepartmentRepository : IDepartmentRepository<OstDepartment>
+    public class DepartmentRepository : IDepartmentRepository<Department, OstDepartment>
     {
         private readonly OSTicketContext _osticketContext;
-        private readonly ILog _logger = LogProvider.GetCurrentClassLogger();
+        private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public DepartmentRepository(OSTicketContext osticketContext)
+        public DepartmentRepository(OSTicketContext osticketContext, IMapper mapper, ILogger<DepartmentRepository> logger = null)
         {
             _osticketContext = osticketContext;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -25,7 +30,7 @@ namespace OSTicketAPI.NET.Repositories
         /// </summary>
         /// <param name="expression">An optional expression for narrowing the search for departments</param>
         /// <returns>Returns an IEnumerable of OStDepartment objects</returns>
-        public async Task<IEnumerable<OstDepartment>> GetDepartments(Expression<Func<OstDepartment, bool>> expression = null)
+        public async Task<IEnumerable<Department>> GetDepartments(Expression<Func<OstDepartment, bool>> expression = null)
         {
             var data = await GetQueryableDepartmentsAsync(expression).ConfigureAwait(false);
             return data.ToList();
@@ -36,16 +41,16 @@ namespace OSTicketAPI.NET.Repositories
         /// </summary>
         /// <param name="id">A required integer value for the Department</param>
         /// <returns>Returns an OstDepartment or a null value if nothing is found</returns>
-        public async Task<OstDepartment> GetDepartmentById(int id)
+        public async Task<Department> GetDepartmentById(int id)
         {
             var data = await GetQueryableDepartmentsAsync(o => o.Id == id).ConfigureAwait(false);
             var department = data.FirstOrDefault(o => o.Id == id);
             if (department != null)
-                _logger.Debug("Found Department: '{TicketId}'", department.Name);
+                _logger?.LogDebug("Found Department: '{TicketId}'", department.Name);
             return department;
         }
 
-        private async Task<IQueryable<OstDepartment>> GetQueryableDepartmentsAsync(Expression<Func<OstDepartment, bool>> expression)
+        private async Task<IQueryable<Department>> GetQueryableDepartmentsAsync(Expression<Func<OstDepartment, bool>> expression)
         {
             return await Task.Run(() =>
             {
@@ -56,7 +61,7 @@ namespace OSTicketAPI.NET.Repositories
                 if (expression != null)
                     deptQuery = deptQuery.Where(expression);
 
-                return deptQuery;
+                return _mapper.Map <IEnumerable<Department>>(deptQuery).AsQueryable();
             }).ConfigureAwait(false);
         }
     }

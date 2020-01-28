@@ -3,11 +3,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OSTicketAPI.NET.DTO;
 using OSTicketAPI.NET.Interfaces;
-using OSTicketAPI.NET.Logging;
 
 namespace OSTicketAPI.NET
 {
@@ -15,9 +15,9 @@ namespace OSTicketAPI.NET
     {
         private readonly HttpClient _client = new HttpClient();
         private readonly JsonSerializerSettings _jsonSerializerSettings;
-        private readonly ILog _logger = LogProvider.For<OSTicketOfficialApi>();
+        private readonly ILogger _logger;
 
-        public OSTicketOfficialApi(string baseUri, string apiKey)
+        public OSTicketOfficialApi(string baseUri, string apiKey, ILogger<OSTicketOfficialApi> logger = null)
         {
             if (string.IsNullOrWhiteSpace(baseUri))
                 throw new ArgumentException("osTicket base uri cannot be null or empty", nameof(baseUri));
@@ -32,6 +32,8 @@ namespace OSTicketAPI.NET
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
+
+            _logger = logger;
         }
 
         async Task<HttpResponseMessage> IOSTicketOfficialApi.CreateTicket(TicketCreationOptions options)
@@ -46,13 +48,13 @@ namespace OSTicketAPI.NET
                 var result = await _client.SendAsync(request).ConfigureAwait(false);
 
                 if (!result.IsSuccessStatusCode)
-                    _logger.Error($"{result.ReasonPhrase}: {result.Content}");
+                    _logger?.LogError($"{result.ReasonPhrase}: {result.Content}");
 
                 return result;
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger?.LogError(ex, ex.Message);
                 throw;
             }
         }
