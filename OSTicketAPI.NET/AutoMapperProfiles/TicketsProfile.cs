@@ -29,6 +29,8 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.HelpTopic, opt => opt.MapFrom(src => src.OstHelpTopic))
                 .ForMember(dest => dest.Staff, opt => opt.MapFrom(src => src.OstStaff))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.OstTicketStatus))
+                .ForMember(dest => dest.Events, opt => opt.MapFrom(src => src.OstThread.OstThreadEvents.AsEnumerable()))
+                .ForMember(dest => dest.ThreadEntries, opt => opt.MapFrom(src => src.OstThread.OstThreadEntries.AsEnumerable()))
                 .ForMember(dest => dest.FormFields, opt => opt.MapFrom<TicketFormFieldsResolver>())
                 .ForAllOtherMembers(opts => opts.Condition((_, __, srcMember) => srcMember != null));
         }

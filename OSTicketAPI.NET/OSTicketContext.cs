@@ -1482,6 +1482,11 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.Updated)
                     .HasColumnName("updated")
                     .HasColumnType("datetime");
+
+                entity.HasMany(e => e.OstListItems)
+                    .WithOne(e => e.OstList)
+                    .HasForeignKey(e => e.ListId)
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<OstListItems>(entity =>
@@ -2496,6 +2501,14 @@ namespace OSTicketAPI.NET
                     .IsRequired()
                     .HasColumnName("object_type")
                     .HasColumnType("char(1)");
+
+                entity.HasMany(e => e.OstThreadEntries)
+                    .WithOne(e => e.OstThread)
+                    .HasForeignKey(e => e.ThreadId);
+
+                entity.HasMany(e => e.OstThreadEvents)
+                    .WithOne(e => e.OstThread)
+                    .HasForeignKey(e => e.ThreadId);
             });
 
             modelBuilder.Entity<OstThreadCollaborator>(entity =>
@@ -2913,6 +2926,11 @@ namespace OSTicketAPI.NET
                     .WithOne(e => e.OstTicket)
                     .HasForeignKey(e => e.ObjectId)
                     .IsRequired(false);
+
+                entity.HasOne(e => e.OstThread)
+                    .WithOne(e => e.OstTicket)
+                    .HasForeignKey<OstThread>(e => e.ObjectId)
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<OstTicketCdata>(entity =>
@@ -3119,6 +3137,10 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.Updated)
                     .HasColumnName("updated")
                     .HasColumnType("datetime");
+
+                entity.HasOne(e => e.OstOrganization)
+                    .WithMany(e => e.OstUsers)
+                    .HasForeignKey(e => e.OrgId);
             });
 
             modelBuilder.Entity<OstUserAccount>(entity =>
@@ -3168,6 +3190,10 @@ namespace OSTicketAPI.NET
                 entity.Property(e => e.Username)
                     .HasColumnName("username")
                     .HasColumnType("varchar(64)");
+
+                entity.HasOne(e => e.OstUser)
+                    .WithOne(e => e.OstUserAccount)
+                    .HasForeignKey<OstUserAccount>(e => e.UserId);
             });
 
             modelBuilder.Entity<OstUserCdata>(entity =>
@@ -3221,6 +3247,10 @@ namespace OSTicketAPI.NET
                     .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(e => e.OstUser)
+                    .WithOne(e => e.OstUserEmail)
+                    .HasForeignKey<OstUserEmail>(e => e.UserId);
             });
         }
     }

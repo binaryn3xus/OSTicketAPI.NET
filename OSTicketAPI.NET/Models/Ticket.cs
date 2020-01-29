@@ -16,6 +16,9 @@ namespace OSTicketAPI.NET.Models
         public HelpTopic HelpTopic { get; set; }
         public Staff Staff { get; set; }
         public Dictionary<FormField, OstFormEntryValue> FormFields { get; set; }
+        public OstThread OstThread { get; set; }
+        public IEnumerable<OstThreadEntry> ThreadEntries { get; set; }
+        public IEnumerable<OstThreadEvent> Events { get; set; }
         public int SlaId { get; set; }
         public int TeamId { get; set; }
         public int LockId { get; set; }

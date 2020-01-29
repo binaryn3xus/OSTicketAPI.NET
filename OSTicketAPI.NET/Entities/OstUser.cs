@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 namespace OSTicketAPI.NET.Entities
 {
-    [DebuggerDisplay("{Name,nq}")]
+    [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
     public class OstUser
     {
         public int Id { get; set; }
@@ -18,13 +17,10 @@ namespace OSTicketAPI.NET.Entities
 
         public ICollection<OstTicket> OstTickets { get; set; }
 
-        [ForeignKey("OrgId")]
         public virtual OstOrganization OstOrganization { get; set; }
 
-        [InverseProperty("OstUser")]
         public virtual OstUserEmail OstUserEmail { get; set; }
 
-        [InverseProperty("OstUser")]
         public virtual OstUserAccount OstUserAccount { get; set; }
     }
 }

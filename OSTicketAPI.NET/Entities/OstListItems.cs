@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace OSTicketAPI.NET.Entities
+﻿namespace OSTicketAPI.NET.Entities
 {
     public class OstListItems
     {
@@ -12,7 +10,6 @@ namespace OSTicketAPI.NET.Entities
         public int Sort { get; set; }
         public string Properties { get; set; }
 
-        [ForeignKey("ListId")]
         public virtual OstList OstList { get; set; }
     }
 }
