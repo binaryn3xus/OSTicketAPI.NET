@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSTicketAPI.NET.Entities
 {
@@ -19,7 +18,6 @@ namespace OSTicketAPI.NET.Entities
         public bool Annulled { get; set; }
         public DateTime Timestamp { get; set; }
 
-        [ForeignKey("ThreadId")]
         public virtual OstThread OstThread { get; set; }
     }
 }

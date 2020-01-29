@@ -40,6 +40,7 @@ namespace OSTicketAPI.NET.Entities
         public virtual OstTicketStatus OstTicketStatus { get; set; }
         public virtual OstDepartment OstDepartment { get; set; }
         public virtual OstTeam OstTeam { get; set; }
+        public virtual OstThread OstThread { get; set; }
         public virtual ICollection<OstFormEntry> OstFormEntry { get; set; }
     }
 }

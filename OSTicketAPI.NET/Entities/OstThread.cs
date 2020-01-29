@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OSTicketAPI.NET.Entities
 {
@@ -14,10 +13,8 @@ namespace OSTicketAPI.NET.Entities
         public DateTime? Lastmessage { get; set; }
         public DateTime Created { get; set; }
 
-        [InverseProperty("OstThread")]
         public virtual ICollection<OstThreadEntry> OstThreadEntries { get; set; }
 
-        [InverseProperty("OstThread")]
         public virtual ICollection<OstThreadEvent> OstThreadEvents { get; set; }
 
         public virtual OstTicket OstTicket { get; set; }

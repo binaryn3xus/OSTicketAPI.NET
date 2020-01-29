@@ -19,15 +19,15 @@ namespace OSTicketAPI.NET.Tests.Repositories
         [RunnableInDebugOnly]
         public async Task GetUsers_NotUsingAnExpression()
         {
-            var forms = await _fixture.OSTicketService.Users.GetUsers().ConfigureAwait(false);
-            Assert.NotEmpty(forms);
+            var data = await _fixture.OSTicketService.Users.GetUsers().ConfigureAwait(false);
+            Assert.NotEmpty(data);
         }
 
         [RunnableInDebugOnly]
         public async Task GetUsers_UsingAnExpression()
         {
-            var forms = await _fixture.OSTicketService.Users.GetUsers(o => o.OrgId == 1).ConfigureAwait(false);
-            Assert.NotEmpty(forms);
+            var data = await _fixture.OSTicketService.Users.GetUsers(o => o.OrgId == 1).ConfigureAwait(false);
+            Assert.NotEmpty(data);
         }
 
         [RunnableInDebugOnly]

@@ -140,6 +140,9 @@ namespace OSTicketAPI.NET.Repositories
                     .IncludeFilter(o => o.OstHelpTopic.HelpTopicForms.Select(htf => htf))
                     .IncludeFilter(o => o.OstHelpTopic.HelpTopicForms.Select(of => of.OstForm))
                     .IncludeFilter(o => o.OstHelpTopic.HelpTopicForms.Select(of => of.OstForm).SelectMany(off => off.OstFormFields))
+                    .IncludeFilter(o => o.OstThread)
+                    .IncludeFilter(o => o.OstThread.OstThreadEntries.Select(ote=>ote))
+                    .IncludeFilter(o => o.OstThread.OstThreadEvents.Select(ote=>ote))
                     .IncludeFilter(o => o.OstFormEntry.Where(e => e.ObjectType == "T"))
                     .IncludeFilter(o => o.OstFormEntry.Where(e => e.ObjectType == "T").SelectMany(fe => fe.OstFormEntryValues))
                     .AsQueryable();
