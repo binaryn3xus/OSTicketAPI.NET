@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OSTicketAPI.NET.Enums;
 using OSTicketAPI.NET.Helpers;
 using OSTicketAPI.NET.Models;
 using OSTicketAPI.NET.Tests.Attributes;
@@ -11,12 +12,12 @@ using Xunit.Abstractions;
 
 namespace OSTicketAPI.NET.Tests.Helpers
 {
-    public class OSTicketJsonDecoderTests : IClassFixture<ConfigurationFixture>
+    public class OSTicketDecoderTests : IClassFixture<ConfigurationFixture>
     {
         private readonly ConfigurationFixture _fixture;
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public OSTicketJsonDecoderTests(ConfigurationFixture fixture, ITestOutputHelper testOutputHelper)
+        public OSTicketDecoderTests(ConfigurationFixture fixture, ITestOutputHelper testOutputHelper)
         {
             _fixture = fixture;
             _testOutputHelper = testOutputHelper;
@@ -53,6 +54,41 @@ namespace OSTicketAPI.NET.Tests.Helpers
                 }
             }
             Assert.Empty(exceptions);
+        }
+
+        [Fact]
+        public void DecoderTests_ShouldDecodeFormFieldFlags()
+        {
+            //Test 'Optional' (13057)
+            var flags = FormFieldFlagsDecoder.DecodeFlag(13057);
+            Assert.Contains(FormFieldFlagsDecoder.FormFieldFlags.FlagEnabled, flags);
+
+            //Test 'Required' (488739)
+            flags = FormFieldFlagsDecoder.DecodeFlag(488739);
+            Assert.Contains(FormFieldFlagsDecoder.FormFieldFlags.FlagClientRequired, flags);
+
+            //Test 'Internal, Optional' (274609)
+            flags = FormFieldFlagsDecoder.DecodeFlag(488739);
+            Assert.Contains(FormFieldFlagsDecoder.FormFieldFlags.FlagAgentView, flags);
+        }
+
+        [Fact]
+        public void DecoderTests_ShouldGetFriendlyMethodsResolved()
+        {
+            //Test 'Optional' (13057)
+            var flags = FormFieldFlagsDecoder.DecodeFlag(13057).ToList();
+            Assert.False(flags.IsRequiredForStaff());
+            Assert.False(flags.IsRequiredForUsers());
+
+            //Test 'Required For Agents Only' (29441)
+            flags = FormFieldFlagsDecoder.DecodeFlag(29441).ToList();
+            Assert.True(flags.IsRequiredForStaff());
+            Assert.False(flags.IsRequiredForUsers());
+
+            //Test 'Required For Users Only' (14081)
+            flags = FormFieldFlagsDecoder.DecodeFlag(14081).ToList();
+            Assert.False(flags.IsRequiredForStaff());
+            Assert.True(flags.IsRequiredForUsers());
         }
     }
 }
