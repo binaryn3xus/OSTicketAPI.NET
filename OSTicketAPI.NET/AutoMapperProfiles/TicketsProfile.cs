@@ -33,6 +33,21 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.ThreadEntries, opt => opt.MapFrom(src => src.OstThread.OstThreadEntries.AsEnumerable()))
                 .ForMember(dest => dest.FormFields, opt => opt.MapFrom<TicketFormFieldsResolver>())
                 .ForAllOtherMembers(opts => opts.Condition((_, __, srcMember) => srcMember != null));
+
+            CreateMap<Ticket, OstTicket>()
+                .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
+                .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.Number))
+                .ForMember(dest => dest.OstUser, opt => opt.MapFrom(src => src.User))
+                .ForMember(dest => dest.OstDepartment, opt => opt.MapFrom(src => src.Department))
+                .ForMember(dest => dest.OstHelpTopic, opt => opt.MapFrom(src => src.HelpTopic))
+                .ForMember(dest => dest.OstStaff, opt => opt.MapFrom(src => src.Staff))
+                .ForMember(dest => dest.OstTicketStatus, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
+                .ForMember(dest => dest.Closed, opt => opt.MapFrom(src => src.Closed))
+                .ForMember(dest => dest.OstThread.OstThreadEvents, opt => opt.MapFrom(src => src.Events))
+                .ForMember(dest => dest.OstThread.OstThreadEntries, opt => opt.MapFrom(src => src.ThreadEntries))
+                .ForMember(dest => dest.OstFormEntry, opt => opt.Ignore())
+                .ForAllOtherMembers(opts => opts.Condition((_, __, srcMember) => srcMember != null));
         }
     }
 
