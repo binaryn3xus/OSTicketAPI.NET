@@ -103,7 +103,19 @@ namespace OSTicketAPI.NET.Repositories
         /// <param name="ticketNumber">Number of the ticket to update</param>
         /// <param name="ticket">Ticket object to update</param>
         /// <returns>The ticket object will be returned</returns>
-        public async Task<Ticket> UpdateTicketById(int ticketNumber, OstTicket ticket)
+        public async Task<Ticket> UpdateTicketByIdAsync(int ticketNumber, Ticket ticket)
+        {
+            var ostTicket = _mapper.Map<OstTicket>(ticket);
+            return await UpdateTicketByIdAsync(ticket.TicketId, ostTicket).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Update a ticket by Id
+        /// </summary>
+        /// <param name="ticketNumber">Number of the ticket to update</param>
+        /// <param name="ticket">Ticket object to update</param>
+        /// <returns>The ticket object will be returned</returns>
+        public async Task<Ticket> UpdateTicketByIdAsync(int ticketNumber, OstTicket ticket)
         {
             var dbTicket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.TicketId == ticketNumber).ConfigureAwait(false);
             _osticketContext.Entry(ticket).CurrentValues.SetValues(dbTicket);
@@ -117,7 +129,19 @@ namespace OSTicketAPI.NET.Repositories
         /// <param name="ticketNumber">Number of the ticket to update</param>
         /// <param name="ticket">Ticket object to update</param>
         /// <returns>The ticket object will be returned</returns>
-        public async Task<Ticket> UpdateTicketByNumber(string ticketNumber, OstTicket ticket)
+        public async Task<Ticket> UpdateTicketByNumberAsync(string ticketNumber, Ticket ticket)
+        {
+            var ostTicket = _mapper.Map<OstTicket>(ticket);
+            return await UpdateTicketByNumberAsync(ticket.Number, ostTicket).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Update a ticket by Number
+        /// </summary>
+        /// <param name="ticketNumber">Number of the ticket to update</param>
+        /// <param name="ticket">Ticket object to update</param>
+        /// <returns>The ticket object will be returned</returns>
+        public async Task<Ticket> UpdateTicketByNumberAsync(string ticketNumber, OstTicket ticket)
         {
             var dbTicket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
             _osticketContext.Entry(dbTicket).CurrentValues.SetValues(ticket);
