@@ -12,6 +12,7 @@
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>osticket</PackageTags>
     <LangVersion>latest</LangVersion>
+    <UserSecretsId>f55c5094-740c-46de-bc90-6ef5607d7d38</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using Newtonsoft.Json.Linq;
 using OSTicketAPI.NET.Entities;
+using OSTicketAPI.NET.Enums;
 using OSTicketAPI.NET.Models;
 
 namespace OSTicketAPI.NET.AutoMapperProfiles
@@ -40,7 +41,7 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 var disabled = JObject.Parse(htForm.Extra)["disable"].Select(o => (int)o).ToArray();
                 formFields.AddRange(from field in htForm.OstForm.OstFormFields
                 where !disabled.Contains(field.Id)
-                select new FormField()
+                select new FormField
                 {
                     Id = field.Id,
                     FormId = field.FormId,
@@ -51,6 +52,8 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                     Configuration = field.Configuration,
                     Sort = field.Sort,
                     Hint = field.Hint,
+                    IsRequiredForStaff = FormFieldFlagsDecoder.DecodeFlag(field.Flags).IsRequiredForStaff(),
+                    IsRequiredForUser = FormFieldFlagsDecoder.DecodeFlag(field.Flags).IsRequiredForUsers(),
                     Created = field.Created,
                     Updated = field.Updated
                 });
