@@ -89,6 +89,16 @@ namespace OSTicketAPI.NET.Tests.Helpers
             flags = FormFieldFlagsDecoder.DecodeFlag(14081).ToList();
             Assert.False(flags.IsRequiredForStaff());
             Assert.True(flags.IsRequiredForUsers());
+
+            //Test 'Internal' (12289)
+            flags = FormFieldFlagsDecoder.DecodeFlag(12289).ToList();
+            Assert.False(flags.IsVisibleToUsers());
+            Assert.True(flags.IsVisibleToStaff());
+
+            //Test 'For EndUsers Only' (8449)
+            flags = FormFieldFlagsDecoder.DecodeFlag(8449).ToList();
+            Assert.True(flags.IsVisibleToUsers());
+            Assert.False(flags.IsVisibleToStaff());
         }
     }
 }
