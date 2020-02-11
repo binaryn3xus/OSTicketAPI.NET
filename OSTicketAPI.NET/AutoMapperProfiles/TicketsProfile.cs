@@ -44,8 +44,7 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.OstTicketStatus, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
                 .ForMember(dest => dest.Closed, opt => opt.MapFrom(src => src.Closed))
-                .ForMember(dest => dest.OstThread.OstThreadEvents, opt => opt.MapFrom(src => src.Events))
-                .ForMember(dest => dest.OstThread.OstThreadEntries, opt => opt.MapFrom(src => src.ThreadEntries))
+                .ForMember(dest => dest.OstThread, opt => opt.MapFrom(src => src.OstThread))
                 .ForMember(dest => dest.OstFormEntry, opt => opt.Ignore())
                 .ForAllOtherMembers(opts => opts.Condition((_, __, srcMember) => srcMember != null));
         }
