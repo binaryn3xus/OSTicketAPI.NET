@@ -52,10 +52,12 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                     Configuration = field.Configuration,
                     Sort = field.Sort,
                     Hint = field.Hint,
+                    Created = field.Created,
+                    Updated = field.Updated,
                     IsRequiredForStaff = FormFieldFlagsDecoder.DecodeFlag(field.Flags).IsRequiredForStaff(),
                     IsRequiredForUser = FormFieldFlagsDecoder.DecodeFlag(field.Flags).IsRequiredForUsers(),
-                    Created = field.Created,
-                    Updated = field.Updated
+                    IsVisibleForStaff = FormFieldFlagsDecoder.DecodeFlag(field.Flags).IsVisibleToStaff(),
+                    IsVisibleForUser = FormFieldFlagsDecoder.DecodeFlag(field.Flags).IsVisibleToUsers()
                 });
             }
 

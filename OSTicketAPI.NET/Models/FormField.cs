@@ -16,7 +16,9 @@ namespace OSTicketAPI.NET.Models
         public int Sort { get; set; }
         public string Hint { get; set; }
         public bool IsRequiredForUser { get; set; }
+        public bool IsVisibleForUser { get; set; }
         public bool IsRequiredForStaff { get; set; }
+        public bool IsVisibleForStaff { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
     }

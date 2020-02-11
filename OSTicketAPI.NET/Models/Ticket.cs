@@ -26,13 +26,13 @@ namespace OSTicketAPI.NET.Models
         public string IpAddress { get; set; }
         public string Source { get; set; }
         public string SourceExtra { get; set; }
-        public bool Isoverdue { get; set; }
-        public bool Isanswered { get; set; }
-        public DateTime? Duedate { get; set; }
+        public bool IsOverDue { get; set; }
+        public bool IsAnswered { get; set; }
+        public DateTime? DueDate { get; set; }
         public DateTime? EstDuedate { get; set; }
         public DateTime? Reopened { get; set; }
         public DateTime? Closed { get; set; }
-        public DateTime? Lastupdate { get; set; }
+        public DateTime? LastUpdate { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
     }
