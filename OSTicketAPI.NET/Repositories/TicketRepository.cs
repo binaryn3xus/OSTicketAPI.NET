@@ -169,6 +169,7 @@ namespace OSTicketAPI.NET.Repositories
                     .IncludeFilter(o => o.OstThread.OstThreadEvents.Select(ote=>ote))
                     .IncludeFilter(o => o.OstFormEntry.Where(e => e.ObjectType == "T"))
                     .IncludeFilter(o => o.OstFormEntry.Where(e => e.ObjectType == "T").SelectMany(fe => fe.OstFormEntryValues))
+                    .IncludeFilter(o => o.OstTicketCdata)
                     .AsQueryable();
 
                 if (expression != null)
