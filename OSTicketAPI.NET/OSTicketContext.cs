@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OSTicketAPI.NET.Entities;
+// ReSharper disable StringLiteralTypo
 
 namespace OSTicketAPI.NET
 {
@@ -2931,6 +2932,10 @@ namespace OSTicketAPI.NET
                     .WithOne(e => e.OstTicket)
                     .HasForeignKey<OstThread>(e => e.ObjectId)
                     .IsRequired(false);
+
+                entity.HasOne(e => e.OstTicketCdata)
+                    .WithOne(e => e.OstTicket)
+                    .HasForeignKey<OstTicketCdata>(e => e.TicketId);
             });
 
             modelBuilder.Entity<OstTicketCdata>(entity =>
@@ -2960,7 +2965,7 @@ namespace OSTicketAPI.NET
 
                 entity.ToTable("ost_ticket_priority");
 
-                entity.HasIndex(e => e.Ispublic)
+                entity.HasIndex(e => e.IsPublic)
                     .HasName("ispublic");
 
                 entity.HasIndex(e => e.Priority)
@@ -2974,7 +2979,7 @@ namespace OSTicketAPI.NET
                     .HasColumnName("priority_id")
                     .HasColumnType("tinyint(4)");
 
-                entity.Property(e => e.Ispublic)
+                entity.Property(e => e.IsPublic)
                     .HasColumnName("ispublic")
                     .HasColumnType("tinyint(1)")
                     .HasDefaultValueSql("'1'");
