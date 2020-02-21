@@ -53,7 +53,7 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.DeptId, opt => opt.MapFrom(src => src.Department.Id))
                 .ForMember(dest => dest.SlaId, opt => opt.MapFrom(src => src.SlaId))
                 .ForMember(dest => dest.TopicId, opt => opt.MapFrom(src => src.HelpTopic.TopicId))
-                .ForMember(dest => dest.StaffId, opt => opt.MapFrom(src => src.Staff.StaffId))
+                .ForMember(dest => dest.StaffId, opt => opt.NullSubstitute(0))
                 .ForMember(dest => dest.OstTicketStatus, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.TeamId, opt => opt.MapFrom(src => src.TeamId))
                 .ForMember(dest => dest.EmailId, opt => opt.UseDestinationValue())

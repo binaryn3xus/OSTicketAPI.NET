@@ -9,22 +9,22 @@ namespace OSTicketAPI.NET.Entities
     {
         public int TicketId { get; set; }
         public string Number { get; set; }
-        public int UserId { get; set; }
-        public int UserEmailId { get; set; }
-        public int StatusId { get; set; }
-        public int DeptId { get; set; }
-        public int? SlaId { get; set; }
-        public int? TopicId { get; set; }
-        public int? StaffId { get; set; }
-        public int? TeamId { get; set; }
-        public int EmailId { get; set; }
-        public int LockId { get; set; }
-        public int Flags { get; set; }
+        public int UserId { get; set; } = 0;
+        public int UserEmailId { get; set; } = 0;
+        public int StatusId { get; set; } = 0;
+        public int DeptId { get; set; } = 0;
+        public int? SlaId { get; set; } = 0;
+        public int? TopicId { get; set; } = 0;
+        public int? StaffId { get; set; } = 0;
+        public int? TeamId { get; set; } = 0;
+        public int EmailId { get; set; } = 0;
+        public int LockId { get; set; } = 0;
+        public int Flags { get; set; } = 0;
         public string IpAddress { get; set; }
         public string Source { get; set; }
         public string SourceExtra { get; set; }
-        public bool IsOverDue { get; set; }
-        public bool IsAnswered { get; set; }
+        public bool IsOverDue { get; set; } = false;
+        public bool IsAnswered { get; set; } = false;
         public DateTime? DueDate { get; set; }
         public DateTime? EstDueDate { get; set; }
         public DateTime? Reopened { get; set; }
