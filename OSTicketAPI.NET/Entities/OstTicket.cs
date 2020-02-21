@@ -23,7 +23,7 @@ namespace OSTicketAPI.NET.Entities
         public string IpAddress { get; set; }
         public string Source { get; set; }
         public string SourceExtra { get; set; }
-        public bool IsOverdue { get; set; }
+        public bool IsOverDue { get; set; }
         public bool IsAnswered { get; set; }
         public DateTime? DueDate { get; set; }
         public DateTime? EstDueDate { get; set; }

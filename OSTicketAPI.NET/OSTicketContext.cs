@@ -2829,7 +2829,7 @@ namespace OSTicketAPI.NET
                     .HasColumnName("isanswered")
                     .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.IsOverdue)
+                entity.Property(e => e.IsOverDue)
                     .HasColumnName("isoverdue")
                     .HasDefaultValueSql("'0'");
 

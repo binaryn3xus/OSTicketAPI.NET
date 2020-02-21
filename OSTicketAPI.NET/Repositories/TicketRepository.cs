@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OSTicketAPI.NET.Entities;
+using OSTicketAPI.NET.Exceptions;
 using OSTicketAPI.NET.Interfaces;
 using OSTicketAPI.NET.Models;
 using Z.EntityFramework.Plus;
@@ -118,9 +119,10 @@ namespace OSTicketAPI.NET.Repositories
         public async Task<Ticket> UpdateTicketByIdAsync(int ticketNumber, OstTicket ticket)
         {
             var dbTicket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.TicketId == ticketNumber).ConfigureAwait(false);
-            _osticketContext.Entry(ticket).CurrentValues.SetValues(dbTicket);
-            await _osticketContext.SaveChangesAsync().ConfigureAwait(false);
-            return null;
+            _osticketContext.Entry(dbTicket).CurrentValues.SetValues(ticket);
+            if (await _osticketContext.SaveChangesAsync().ConfigureAwait(false) > 0)
+                return _mapper.Map<Ticket>(dbTicket);
+            throw new TicketUpdateException("Ticket was not updated");
         }
 
         /// <summary>
@@ -145,8 +147,9 @@ namespace OSTicketAPI.NET.Repositories
         {
             var dbTicket = await _osticketContext.OstTicket.FirstOrDefaultAsync(o => o.Number == ticketNumber).ConfigureAwait(false);
             _osticketContext.Entry(dbTicket).CurrentValues.SetValues(ticket);
-            await _osticketContext.SaveChangesAsync().ConfigureAwait(false);
-            return null;
+            if (await _osticketContext.SaveChangesAsync().ConfigureAwait(false) > 0)
+                return _mapper.Map<Ticket>(dbTicket);
+            throw new TicketUpdateException("Ticket was not updated");
         }
 
         private async Task<IEnumerable<Ticket>> GetQueryableTicketsAsync(Expression<Func<OstTicket, bool>> expression)
