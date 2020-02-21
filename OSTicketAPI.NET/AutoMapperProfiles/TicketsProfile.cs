@@ -19,7 +19,17 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.Sort, opt => opt.MapFrom(src => src.Sort))
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
                 .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
-                .ForMember(dest => dest.Properties, opt => opt.MapFrom<TicketStatusPropertiesResolver>());
+                .ForMember(dest => dest.Properties, opt => opt.MapFrom<TicketStatusPropertiesJsonResolver>());
+
+            CreateMap<TicketStatus, OstTicketStatus>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Mode, opt => opt.MapFrom(src => src.Mode))
+                .ForMember(dest => dest.Flags, opt => opt.MapFrom(src => src.Flags))
+                .ForMember(dest => dest.Sort, opt => opt.MapFrom(src => src.Sort))
+                .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
+                .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
+                .ForMember(dest => dest.Properties, opt => opt.MapFrom<TicketStatusPropertiesDictionaryResolver>());
 
             CreateMap<OstTicket, Ticket>()
                 .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
@@ -37,24 +47,47 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
             CreateMap<Ticket, OstTicket>()
                 .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
                 .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.Number))
-                .ForMember(dest => dest.OstUser, opt => opt.MapFrom(src => src.User))
-                .ForMember(dest => dest.OstDepartment, opt => opt.MapFrom(src => src.Department))
-                .ForMember(dest => dest.OstHelpTopic, opt => opt.MapFrom(src => src.HelpTopic))
-                .ForMember(dest => dest.OstStaff, opt => opt.MapFrom(src => src.Staff))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
+                .ForMember(dest => dest.UserEmailId, opt => opt.UseDestinationValue())
+                .ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.Status.Id))
+                .ForMember(dest => dest.DeptId, opt => opt.MapFrom(src => src.Department.Id))
+                .ForMember(dest => dest.SlaId, opt => opt.MapFrom(src => src.SlaId))
+                .ForMember(dest => dest.TopicId, opt => opt.MapFrom(src => src.HelpTopic.TopicId))
+                .ForMember(dest => dest.StaffId, opt => opt.MapFrom(src => src.Staff.StaffId))
                 .ForMember(dest => dest.OstTicketStatus, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
+                .ForMember(dest => dest.TeamId, opt => opt.MapFrom(src => src.TeamId))
+                .ForMember(dest => dest.EmailId, opt => opt.UseDestinationValue())
+                .ForMember(dest => dest.LockId, opt => opt.MapFrom(src => src.LockId))
+                .ForMember(dest => dest.Flags, opt => opt.MapFrom(src => src.Flags))
+                .ForMember(dest => dest.IpAddress, opt => opt.MapFrom(src => src.IpAddress))
+                .ForMember(dest => dest.Source, opt => opt.MapFrom(src => src.Source))
+                .ForMember(dest => dest.SourceExtra, opt => opt.MapFrom(src => src.SourceExtra))
+                .ForMember(dest => dest.IsOverDue, opt => opt.MapFrom(src => src.IsOverDue))
+                .ForMember(dest => dest.IsAnswered, opt => opt.MapFrom(src => src.IsAnswered))
+                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DueDate))
+                .ForMember(dest => dest.EstDueDate, opt => opt.MapFrom(src => src.EstDuedate))
+                .ForMember(dest => dest.Reopened, opt => opt.MapFrom(src => src.Reopened))
                 .ForMember(dest => dest.Closed, opt => opt.MapFrom(src => src.Closed))
-                .ForMember(dest => dest.OstThread, opt => opt.MapFrom(src => src.OstThread))
-                .ForMember(dest => dest.OstFormEntry, opt => opt.Ignore())
+                .ForMember(dest => dest.LastUpdate, opt => opt.MapFrom(src => src.LastUpdate))
+                .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
+                .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
                 .ForAllOtherMembers(opts => opts.Condition((_, __, srcMember) => srcMember != null));
         }
     }
 
-    public class TicketStatusPropertiesResolver : IValueResolver<OstTicketStatus, TicketStatus, Dictionary<string, object>>
+    public class TicketStatusPropertiesJsonResolver : IValueResolver<OstTicketStatus, TicketStatus, Dictionary<string, object>>
     {
         public Dictionary<string, object> Resolve(OstTicketStatus source, TicketStatus destination, Dictionary<string, object> destMember, ResolutionContext context)
         {
             return JsonConvert.DeserializeObject<Dictionary<string, object>>(source.Properties);
+        }
+    }
+
+    public class TicketStatusPropertiesDictionaryResolver : IValueResolver<TicketStatus, OstTicketStatus, string>
+    {
+        public string Resolve(TicketStatus source, OstTicketStatus destination, string destMember, ResolutionContext context)
+        {
+            return JsonConvert.SerializeObject(source.Properties);
         }
     }
 

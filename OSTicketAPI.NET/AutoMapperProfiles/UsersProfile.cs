@@ -19,7 +19,8 @@ namespace OSTicketAPI.NET.AutoMapperProfiles
                 .ForMember(dest => dest.Timezone, opt => opt.MapFrom(src => src.OstUserAccount.Timezone))
                 .ForMember(dest => dest.Registered, opt => opt.MapFrom(src => src.OstUserAccount.Registered))
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.Created))
-                .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated));
+                .ForMember(dest => dest.Updated, opt => opt.MapFrom(src => src.Updated))
+                .ReverseMap();
         }
     }
 }
